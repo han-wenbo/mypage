@@ -1,0 +1,18 @@
+baseURL = 'https://wenbo-han/notes'
+languageCode = 'en-us'
+title = "Wenbo's Study Notes"
+theme = "book"
+defaultContentLanguage = "ch"
+
+[languages]
+  [languages.en]
+    languageName = "English"
+    weight = 1
+    contentDir = "content/en"
+
+  [languages.ch]
+    languageName = "中文"
+    weight = 2
+    contentDir = "content/ch"
+[markup.goldmark.renderer]
+  unsafe = true

@@ -1,0 +1,8 @@
+baseURL = 'http://wenbo-han.github.io/'
+languageCode = 'en-us'
+title = 'My Hugo Site'
+theme = 'github.com/wenbohan1/cv'
+
+[module]
+[[module.imports]]
+path = 'github.com/wenbohan1/cv'
