@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>第二章 on Wenbo&#39;s Study Notes</title>
+    <link>http://localhost:1313/notes/docs/cs/csapp/%E4%B8%8A%E6%8E%A8%E8%87%AA%E5%8A%A8%E6%9C%BA/</link>
+    <description>Recent content in 第二章 on Wenbo&#39;s Study Notes</description>
+    <generator>Hugo</generator>
+    <language>ch</language>
+    <atom:link href="http://localhost:1313/notes/docs/cs/csapp/%E4%B8%8A%E6%8E%A8%E8%87%AA%E5%8A%A8%E6%9C%BA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>http://localhost:1313/notes/docs/cs/csapp/%E4%B8%8A%E6%8E%A8%E8%87%AA%E5%8A%A8%E6%9C%BA/out/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/docs/cs/csapp/%E4%B8%8A%E6%8E%A8%E8%87%AA%E5%8A%A8%E6%9C%BA/out/</guid>
+      <description>&lt;p&gt;状态最小化算法一些思考（来自《Elements of the theroy of the computation》 P62）：&lt;/p&gt;&#xA;&lt;p&gt;在考虑问题前，先考虑一些问题。首先， &#xA;&lt;link rel=&#34;stylesheet&#34; href=&#34;http://localhost:1313/notes/katex/katex.min.css&#34; /&gt;&#xA;&lt;script defer src=&#34;http://localhost:1313/notes/katex/katex.min.js&#34;&gt;&lt;/script&gt;&#xA;&lt;script defer src=&#34;http://localhost:1313/notes/katex/auto-render.min.js&#34; onload=&#34;renderMathInElement(document.body);&#34;&gt;&lt;/script&gt;&lt;span&gt;&#xA;  \( \equiv_n\)&#xA;&lt;/span&gt;&#xA; 是什么： 这是一个&lt;strong&gt;等价关系&lt;/strong&gt;， &lt;span&gt;&#xA;  \( \equiv_n \subseteq K \times K\)&#xA;&lt;/span&gt;&#xA;，其中每个元素的两个状态就是对于任意同一个长度小于等于n的串&lt;strong&gt;要么接受，要么不接受&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;p&gt;算法第 &lt;span&gt;&#xA;  \(k\)&#xA;&lt;/span&gt;&#xA; 次迭代完成，维护了等价关系：&lt;span&gt;&#xA;  \( \equiv_{k}\)&#xA;&lt;/span&gt;&#xA;。&lt;/p&gt;&#xA;&lt;p&gt;&lt;span&gt;&#xA;  \(\forall{p \in K} ~ \forall q \in K(p \equiv_{100}q \iff p \equiv_{99}q)\)&#xA;&lt;/span&gt;&#xA;  意味着什么：&lt;strong&gt;这两个等价关系的元素完全相同&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;p&gt;算法在进行第 &lt;span&gt;&#xA;  \(k\)&#xA;&lt;/span&gt;&#xA; 次迭代时候，会进行如下操作：&lt;strong&gt;对 &lt;span&gt;&#xA;  \(\equiv_{k}\)&#xA;&lt;/span&gt;&#xA; 中每一个 &lt;span&gt;&#xA;  \((p,q)\)&#xA;&lt;/span&gt;&#xA; ，检测 &lt;span&gt;&#xA;  \(\forall{a \in \Sigma}((\delta(p,a),\delta(q,a))\in \equiv_{k-1})\)&#xA;&lt;/span&gt;&#xA; , 根据定理2.5.1， 如果在这个关系中，那么说明 &lt;span&gt;&#xA;  \(p\equiv_{k}q\)&#xA;&lt;/span&gt;&#xA;&lt;/strong&gt;。&lt;/p&gt;&#xA;&lt;p&gt;如何通过 &lt;span&gt;&#xA;  \(\forall{p \in K} ~ \forall q \in K(p \equiv_{n-1}q \iff p \equiv_{n}q)\)&#xA;&lt;/span&gt;&#xA;  推导出  &lt;span&gt;&#xA;  \( \forall{p \in K} ~ \forall q \in K(p \equiv_{n+1}q \iff p \equiv_{n}q)\)&#xA;&lt;/span&gt;&#xA; ，可以通过&lt;strong&gt;两个角度&lt;/strong&gt;来思考这个问题：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -10,7 +10,13 @@
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/linuxsysprograming/</loc>
   </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/csapp/chapter2/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/automaton/</loc>
+  </url><url>
     <loc>http://localhost:1313/notes/docs/cs/arch/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/csapp/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/hugo/</loc>
   </url><url>
@@ -21,6 +27,10 @@
     <loc>http://localhost:1313/notes/docs/cs/arch/3rd-level/4th-level/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/arch/3rd-level/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/automaton/%E4%B8%8A%E6%8E%A8%E8%87%AA%E5%8A%A8%E6%9C%BA/out/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/csapp/chapter2/out/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/hidden/</loc>
   </url><url>
