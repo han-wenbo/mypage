@@ -3,62 +3,102 @@
 <head><script src="/notes/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=notes/livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="状态最小化算法一些思考（来自《Elements of the theroy of the computation》 P62）：
-在考虑问题前，先考虑一些问题。首先， 
+<meta name="description" content="
+  证明：
+  #
 
 
 
-  \( \equiv_n\)
+  1.引入问题
+  #
 
- 是什么： 这是一个等价关系， 
-  \( \equiv_n \subseteq K \times K\)
 
-，其中每个元素的两个状态就是对于任意同一个长度小于等于n的串要么接受，要么不接受。
-算法第 
-  \(k\)
+在本章中，CSAPP定义了用长度为
+  \(w\)
 
- 次迭代完成，维护了等价关系：
-  \( \equiv_{k}\)
+的位向量编码无符号数与有符号数的方式，以及它们的各种算术运算。位向量可以写成两种形式 
+  \(\vec{x}\)
 
-。
+  表示整个向量，或 
+  \([x_{w-1},...,x_0]\)
 
-  \(\forall{p \in K} ~ \forall q \in K(p \equiv_{100}q \iff p \equiv_{99}q)\)
+形式，将其每一位表示出来。
 
-  意味着什么：这两个等价关系的元素完全相同。
-算法在进行第 
-  \(k\)
+注意
+在考虑本章中位向量时，要注意的是，虽然它长相与二进制数相同，但在本章中的含义并不是二进制数，而是上面所说的位向量，也并未在这种向量上定义加法，例如
 
- 次迭代时候，会进行如下操作：对 
-  \(\equiv_{k}\)
 
- 中每一个 
-  \((p,q)\)
 
- ，检测 
-  \(\forall{a \in \Sigma}((\delta(p,a),\delta(q,a))\in \equiv_{k-1})\)
+  \(10&#43;01=11\)
 
- , 根据定理2.5.1， 如果在这个关系中，那么说明 
-  \(p\equiv_{k}q\)
+ ； 仅仅是使用0和1构成的串进行编码，每一位有根据其编码方式所定义的权重。
 
-。
-如何通过 
-  \(\forall{p \in K} ~ \forall q \in K(p \equiv_{n-1}q \iff p \equiv_{n}q)\)
+现在考虑这样一个问题：设有 
+  \(w\)
 
-  推导出  
-  \( \forall{p \in K} ~ \forall q \in K(p \equiv_{n&#43;1}q \iff p \equiv_{n}q)\)
+ 位的两个位向量 
+  \(\vec{x}\)
 
- ，可以通过两个角度来思考这个问题：">
+ 和 
+  \(\vec{y}\)
+
+ , 考虑如下等式是否成立：
+
+  \[
+U2B_w(B2U_w(\vec{x}) &#43;_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) &#43;_{t}^{w} B2T_w(\vec{y}))
+\]
+
+
+换句话说，将这两个向量转换成无符号数做加法，同时也将这两个数转换为有符号数做加法，再将两个加法的结果转换回向量形式，这两个向量是否相等？或者说，由于这两个加法是封闭的，加完之后的数一定也在各自相应的集合中，编码这两个数的位向量是否相同？
+
+  2. 证明这个等式的意义是什么？
+  #
+
+
+如果这个等式成立，那么就在机器指令层面就不需要区分无符号数和补码编码的数，只需要一条add指令即可完成这两种编码的数据的加法操作。如果对于减法、乘法、触发或是其他运算的该公式成立，那么ALU实现这些指令的时候，都不需要区分这两种数据编码方式。
+
+  3.三个引理
+  #
+
+
+想解决这个问题，需要先引入一些前置引理，来描述什么时候一个 
+  \(w\)
+
+​​ 位无符号数 
+  \(u = B2U_w(\vec{u})\)
+
+ 和一个补码编码的有符号数 
+  \(t = B2U_w(\vec{t})\)
+
+ 的向量相等。
+  引理3.1：如果 
+  \(u - t = 0\)
+
+ ，则 
+  \(\vec{u}=\vec{t}\)
+
+.
+  引理3.2： 如果 
+  \(u - t = 2^w\)
+
+ ，则 
+  \(\vec{u}=\vec{t}\)
+
+.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/csapp/chapter2/out/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="Wenbo&#39;s Study Notes">
-  <meta property="og:description" content="状态最小化算法一些思考（来自《Elements of the theroy of the computation》 P62）：
-在考虑问题前，先考虑一些问题。首先， \( \equiv_n\) 是什么： 这是一个等价关系， \( \equiv_n \subseteq K \times K\) ，其中每个元素的两个状态就是对于任意同一个长度小于等于n的串要么接受，要么不接受。
-算法第 \(k\) 次迭代完成，维护了等价关系： \( \equiv_{k}\) 。
-\(\forall{p \in K} ~ \forall q \in K(p \equiv_{100}q \iff p \equiv_{99}q)\) 意味着什么：这两个等价关系的元素完全相同。
-算法在进行第 \(k\) 次迭代时候，会进行如下操作：对 \(\equiv_{k}\) 中每一个 \((p,q)\) ，检测 \(\forall{a \in \Sigma}((\delta(p,a),\delta(q,a))\in \equiv_{k-1})\) , 根据定理2.5.1， 如果在这个关系中，那么说明 \(p\equiv_{k}q\) 。
-如何通过 \(\forall{p \in K} ~ \forall q \in K(p \equiv_{n-1}q \iff p \equiv_{n}q)\) 推导出 \( \forall{p \in K} ~ \forall q \in K(p \equiv_{n&#43;1}q \iff p \equiv_{n}q)\) ，可以通过两个角度来思考这个问题：">
+  <meta property="og:description" content="证明：#1.引入问题#在本章中，CSAPP定义了用长度为\(w\)的位向量编码无符号数与有符号数的方式，以及它们的各种算术运算。位向量可以写成两种形式 \(\vec{x}\)表示整个向量，或 \([x_{w-1},...,x_0]\)形式，将其每一位表示出来。
+注意
+在考虑本章中位向量时，要注意的是，虽然它长相与二进制数相同，但在本章中的含义并不是二进制数，而是上面所说的位向量，也并未在这种向量上定义加法，例如
+\(10&#43;01=11\)； 仅仅是使用0和1构成的串进行编码，每一位有根据其编码方式所定义的权重。现在考虑这样一个问题：设有 \(w\)位的两个位向量 \(\vec{x}\)和 \(\vec{y}\), 考虑如下等式是否成立：
+\[U2B_w(B2U_w(\vec{x}) &#43;_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) &#43;_{t}^{w} B2T_w(\vec{y}))\]换句话说，将这两个向量转换成无符号数做加法，同时也将这两个数转换为有符号数做加法，再将两个加法的结果转换回向量形式，这两个向量是否相等？或者说，由于这两个加法是封闭的，加完之后的数一定也在各自相应的集合中，编码这两个数的位向量是否相同？
+2. 证明这个等式的意义是什么？#如果这个等式成立，那么就在机器指令层面就不需要区分无符号数和补码编码的数，只需要一条add指令即可完成这两种编码的数据的加法操作。如果对于减法、乘法、触发或是其他运算的该公式成立，那么ALU实现这些指令的时候，都不需要区分这两种数据编码方式。
+3.三个引理#想解决这个问题，需要先引入一些前置引理，来描述什么时候一个 \(w\)​​ 位无符号数 \(u = B2U_w(\vec{u})\)和一个补码编码的有符号数 \(t = B2U_w(\vec{t})\)的向量相等。
+引理3.1：如果 \(u - t = 0\)，则 \(\vec{u}=\vec{t}\).
+引理3.2： 如果 \(u - t = 2^w\)，则 \(\vec{u}=\vec{t}\).">
   <meta property="og:locale" content="ch">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -66,9 +106,9 @@
 <link rel="icon" href="/notes/favicon.png" >
 <link rel="manifest" href="/notes/manifest.json">
 <link rel="canonical" href="http://localhost:1313/notes/docs/cs/csapp/chapter2/out/">
-<link rel="stylesheet" href="/notes/book.min.d14d18bc14a6d2fd562457706c03e6e290316c93043899f4d5b547d2922cfb1a.css" integrity="sha256-0U0YvBSm0v1WJFdwbAPm4pAxbJMEOJn01bVH0pIs&#43;xo=" crossorigin="anonymous">
+<link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
-  <script defer src="/notes/ch.search.min.4ceeafecce6631fa9b5246601350a13eb7860c353db99b43d92e73b8b79b1785.js" integrity="sha256-TO6v7M5mMfqbUkZgE1ChPreGDDU9uZtD2S5zuLebF4U=" crossorigin="anonymous"></script>
+  <script defer src="/notes/ch.search.min.1094ea184ebb5b3a74ffe660c885700117a0aa07959a3e0e9b21b908dfa9c0be.js" integrity="sha256-EJTqGE67Wzp0/&#43;ZgyIVwARegqgeVmj4OmyG5CN&#43;pwL4=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -153,8 +193,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f083dd2846afe9387d87444dc225d8f8" class="toggle"  />
-    <label for="section-f083dd2846afe9387d87444dc225d8f8" class="flex justify-between">
+    <input type="checkbox" id="section-62127cf7ca1a8ad048b3975f74775e79" class="toggle"  />
+    <label for="section-62127cf7ca1a8ad048b3975f74775e79" class="flex justify-between">
       <a role="button" class="">数学</a>
     </label>
   
@@ -174,8 +214,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7387b17546a6709918f470a269c6c3a6" class="toggle" checked />
-    <label for="section-7387b17546a6709918f470a269c6c3a6" class="flex justify-between">
+    <input type="checkbox" id="section-1c6520ef863c32fd72ab48eae3d159d7" class="toggle" checked />
+    <label for="section-1c6520ef863c32fd72ab48eae3d159d7" class="flex justify-between">
       <a role="button" class="">计算机</a>
     </label>
   
@@ -190,8 +230,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-883dd22d9088dfe0d517737e76e3f343" class="toggle"  />
-    <label for="section-883dd22d9088dfe0d517737e76e3f343" class="flex justify-between">
+    <input type="checkbox" id="section-2646f4bb7955f414fa27e6bf033bd556" class="toggle"  />
+    <label for="section-2646f4bb7955f414fa27e6bf033bd556" class="flex justify-between">
       <a role="button" class="">C programing Language</a>
     </label>
   
@@ -211,8 +251,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-ae66c65a3e55b00401d091ab5d118b72" class="toggle"  />
-    <label for="section-ae66c65a3e55b00401d091ab5d118b72" class="flex justify-between">
+    <input type="checkbox" id="section-3214e70fc2e9e10b345f37f6a865bd4e" class="toggle"  />
+    <label for="section-3214e70fc2e9e10b345f37f6a865bd4e" class="flex justify-between">
       <a role="button" class="">Linux系统编程</a>
     </label>
   
@@ -263,8 +303,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f44d397cbaf18f4a23241a642c5d95ca" class="toggle"  />
-    <label for="section-f44d397cbaf18f4a23241a642c5d95ca" class="flex justify-between">
+    <input type="checkbox" id="section-f86fcfc4a67780762eea618a550688a2" class="toggle"  />
+    <label for="section-f86fcfc4a67780762eea618a550688a2" class="flex justify-between">
       <a role="button" class="">自动机理论</a>
     </label>
   
@@ -297,8 +337,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-c6e70018c3380b17ff568157c6663973" class="toggle"  />
-    <label for="section-c6e70018c3380b17ff568157c6663973" class="flex justify-between">
+    <input type="checkbox" id="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="toggle"  />
+    <label for="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="flex justify-between">
       <a role="button" class="">计算机体系结构</a>
     </label>
   
@@ -349,8 +389,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7834110d471b5b8c31ba85b53defefb5" class="toggle" checked />
-    <label for="section-7834110d471b5b8c31ba85b53defefb5" class="flex justify-between">
+    <input type="checkbox" id="section-2a42a98837cbcf55263db65a309356f9" class="toggle" checked />
+    <label for="section-2a42a98837cbcf55263db65a309356f9" class="flex justify-between">
       <a role="button" class="">重读CSAPP</a>
     </label>
   
@@ -365,8 +405,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-60f476cc863906259125f414544d5b58" class="toggle" checked />
-    <label for="section-60f476cc863906259125f414544d5b58" class="flex justify-between">
+    <input type="checkbox" id="section-db68bb9624271c704aa7a3f3eb0e84a5" class="toggle" checked />
+    <label for="section-db68bb9624271c704aa7a3f3eb0e84a5" class="flex justify-between">
       <a role="button" class="">第二章</a>
     </label>
   
@@ -382,6 +422,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="/notes/docs/cs/csapp/chapter2/out/" class="active">Out</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/t/" class="">T</a>
   
 
         </li>
@@ -409,8 +462,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-4cb2487617b52817421380d9185ca1b2" class="toggle"  />
-    <label for="section-4cb2487617b52817421380d9185ca1b2" class="flex justify-between">
+    <input type="checkbox" id="section-7ff6b2b8a37987ef7dab1df904aea282" class="toggle"  />
+    <label for="section-7ff6b2b8a37987ef7dab1df904aea282" class="flex justify-between">
       <a role="button" class="">Hugo</a>
     </label>
   
@@ -456,8 +509,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-b2774c1bed9d3cc3dac066c29b3d0391" class="toggle"  />
-    <label for="section-b2774c1bed9d3cc3dac066c29b3d0391" class="flex justify-between">
+    <input type="checkbox" id="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="toggle"  />
+    <label for="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="flex justify-between">
       <a role="button" class="">Shortcodes</a>
     </label>
   
@@ -612,8 +665,10 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#一-直觉">一、 直觉</a></li>
-    <li><a href="#二从代数的角度考虑">二、从代数的角度考虑</a></li>
+    <li><a href="#1引入问题">1.引入问题</a></li>
+    <li><a href="#2-证明这个等式的意义是什么">2. 证明这个等式的意义是什么？</a></li>
+    <li><a href="#3三个引理">3.三个引理</a></li>
+    <li><a href="#4-同余知识">4. 同余知识</a></li>
   </ul>
 </nav>
 
@@ -626,108 +681,188 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><p>状态最小化算法一些思考（来自《Elements of the theroy of the computation》 P62）：</p>
-<p>在考虑问题前，先考虑一些问题。首先， 
+  <article class="markdown book-article"><h1 id="证明">
+  证明：
+  <a class="anchor" href="#%e8%af%81%e6%98%8e">#</a>
+</h1>
+<hr>
+<h2 id="1引入问题">
+  1.引入问题
+  <a class="anchor" href="#1%e5%bc%95%e5%85%a5%e9%97%ae%e9%a2%98">#</a>
+</h2>
+<hr>
+<p>在本章中，CSAPP定义了用长度为<span>
+  \(w\)
+</span>
+的<strong>位向量</strong>编码无符号数与有符号数的方式，以及它们的各种算术运算。位向量可以写成两种形式 <span>
+  \(\vec{x}\)
+</span>
+  表示整个向量，或 <span>
+  \([x_{w-1},...,x_0]\)
+</span>
+形式，将其每一位表示出来。</p>
+<blockquote class="book-hint danger">
+<p><strong>注意</strong><br>
+在考虑本章中位向量时，要注意的是，虽然它长相与二进制数相同，但在本章中的含义并不是二进制数，而是上面所说的位向量，也并未在这种向量上定义加法，例如</p>
 <link rel="stylesheet" href="/notes/katex/katex.min.css" />
 <script defer src="/notes/katex/katex.min.js"></script>
 <script defer src="/notes/katex/auto-render.min.js" onload="renderMathInElement(document.body);"></script><span>
-  \( \equiv_n\)
+  \(10+01=11\)
 </span>
- 是什么： 这是一个<strong>等价关系</strong>， <span>
-  \( \equiv_n \subseteq K \times K\)
+ ； 仅仅是使用0和1构成的串进行编码，每一位有根据其编码方式所定义的权重。
+</blockquote>
+<p>现在考虑这样一个问题：设有 <span>
+  \(w\)
 </span>
-，其中每个元素的两个状态就是对于任意同一个长度小于等于n的串<strong>要么接受，要么不接受</strong>。</p>
-<p>算法第 <span>
-  \(k\)
+ 位的两个位向量 <span>
+  \(\vec{x}\)
 </span>
- 次迭代完成，维护了等价关系：<span>
-  \( \equiv_{k}\)
+ 和 <span>
+  \(\vec{y}\)
 </span>
-。</p>
-<p><span>
-  \(\forall{p \in K} ~ \forall q \in K(p \equiv_{100}q \iff p \equiv_{99}q)\)
+ , 考虑如下等式是否成立：</p>
+<span>
+  \[
+U2B_w(B2U_w(\vec{x}) +_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) +_{t}^{w} B2T_w(\vec{y}))
+\]
 </span>
-  意味着什么：<strong>这两个等价关系的元素完全相同</strong>。</p>
-<p>算法在进行第 <span>
-  \(k\)
-</span>
- 次迭代时候，会进行如下操作：<strong>对 <span>
-  \(\equiv_{k}\)
-</span>
- 中每一个 <span>
-  \((p,q)\)
-</span>
- ，检测 <span>
-  \(\forall{a \in \Sigma}((\delta(p,a),\delta(q,a))\in \equiv_{k-1})\)
-</span>
- , 根据定理2.5.1， 如果在这个关系中，那么说明 <span>
-  \(p\equiv_{k}q\)
-</span>
-</strong>。</p>
-<p>如何通过 <span>
-  \(\forall{p \in K} ~ \forall q \in K(p \equiv_{n-1}q \iff p \equiv_{n}q)\)
-</span>
-  推导出  <span>
-  \( \forall{p \in K} ~ \forall q \in K(p \equiv_{n+1}q \iff p \equiv_{n}q)\)
-</span>
- ，可以通过<strong>两个角度</strong>来思考这个问题：</p>
-<h2 id="一-直觉">
-  一、 直觉
-  <a class="anchor" href="#%e4%b8%80-%e7%9b%b4%e8%a7%89">#</a>
+
+<p>换句话说，将这两个向量转换成无符号数做加法，同时也将这两个数转换为有符号数做加法，再将两个加法的结果转换回向量形式，这两个向量是否相等？<strong>或者说，由于这两个加法是封闭的，加完之后的数一定也在各自相应的集合中，编码这两个数的位向量是否相同？</strong></p>
+<h2 id="2-证明这个等式的意义是什么">
+  2. 证明这个等式的意义是什么？
+  <a class="anchor" href="#2-%e8%af%81%e6%98%8e%e8%bf%99%e4%b8%aa%e7%ad%89%e5%bc%8f%e7%9a%84%e6%84%8f%e4%b9%89%e6%98%af%e4%bb%80%e4%b9%88">#</a>
 </h2>
-<p>如果 <span>
-  \(\forall{p \in K} ~ \forall q \in K(p \equiv_{n-1}q \iff p \equiv_{n}q)\)
-</span>
- 成立， 说明<span>
-  \(\equiv_{n-1}~= ~\equiv_{n}\)
-</span>
-。</p>
-<p>考虑 <span>
-  \(n=100\)
-</span>
- 成立时，即此时要进行第 101 次迭代，会对 <span>
-  \(\equiv_{100}\)
-</span>
- 中每一个 <span>
-  \((p,q)\)
-</span>
- 检测<span>
-  \(\forall{a \in \Sigma}((\delta(p,a),\delta(q,a))\in \equiv_{100})\)
-</span>
-，而由于<span>
-  \(\equiv_{100}~= ~\equiv_{99}\)
-</span>
-，这相当于重复进行了一次 <span>
-  \(n=99\)
-</span>
- 时的迭代，因为要检测的等价关系是完全一样的。因此可以保证<span>
-  \(\equiv_{101}~= ~\equiv_{100}\)
-</span>
-。</p>
-<h2 id="二从代数的角度考虑">
-  二、从代数的角度考虑
-  <a class="anchor" href="#%e4%ba%8c%e4%bb%8e%e4%bb%a3%e6%95%b0%e7%9a%84%e8%a7%92%e5%ba%a6%e8%80%83%e8%99%91">#</a>
+<hr>
+<p>如果这个等式成立，那么就在机器指令层面就不需要区分无符号数和补码编码的数，只需要一条add指令即可完成这两种编码的数据的加法操作。如果对于减法、乘法、触发或是其他运算的该公式成立，那么ALU实现这些指令的时候，都不需要区分这两种数据编码方式。</p>
+<h2 id="3三个引理">
+  3.三个引理
+  <a class="anchor" href="#3%e4%b8%89%e4%b8%aa%e5%bc%95%e7%90%86">#</a>
 </h2>
-<p>为什么：如果 <span>
-  \(\forall{p \in K} ~ \forall q \in K(p \equiv_{n-1}q \iff p \equiv_{n}q)\)
+<hr>
+<p>想解决这个问题，需要先引入一些前置引理，来描述什么时候一个 <span>
+  \(w\)
 </span>
- 成立，为什么<span>
-  \(\forall{a \in \Sigma}((\delta(p,a),\delta(q,a))\in \equiv_{n})\)
+​​ 位无符号数 <span>
+  \(u = B2U_w(\vec{u})\)
 </span>
-一定成立？</p>
-<p>考虑要进行第n+1次迭代时，根据定理2.5.1的充分性，可以知道<span>
-  \(\forall{a \in \Sigma}((\delta(p,a),\delta(q,a))\in \equiv_{n-1})\)
+ 和一个补码编码的有符号数 <span>
+  \(t = B2U_w(\vec{t})\)
 </span>
- ，由于 <span>
-  \(\forall{p \in K} ~ \forall q \in K(p \equiv_{n-1}q \iff p \equiv_{n}q)\)
+ 的向量相等。</p>
+<p>  <strong>引理3.1</strong>：如果 <span>
+  \(u - t = 0\)
 </span>
- 成立，即 <span>
-  \(\equiv_{n-1}~= ~\equiv_{n}\)
+ ，则 <span>
+  \(\vec{u}=\vec{t}\)
 </span>
-， 所以<span>
-  \(\forall{a \in \Sigma}((\delta(p,a),\delta(q,a))\in \equiv_{n})\)
+.</p>
+<p>  <strong>引理3.2</strong>： 如果 <span>
+  \(u - t = 2^w\)
 </span>
-。 所以一定可以检测成功。</p>
+ ，则 <span>
+  \(\vec{u}=\vec{t}\)
+</span>
+.</p>
+<ol>
+<li>若 <span>
+  \( U2T(u) = t \)
+</span>
+  或 <span>
+  \( T2U(t) = u \)
+</span>
+ ，那么这两个数的位向量相同。</li>
+<li>当 <span>
+  \(t < 0\)
+</span>
+ 时, 如果 <span>
+  \(u + |t| = 2^w\)
+</span>
+ ，则  <span>
+  \(U2B_w(u) = T2B_w(t)\)
+</span>
+</li>
+</ol>
+<h2 id="4-同余知识">
+  4. 同余知识
+  <a class="anchor" href="#4-%e5%90%8c%e4%bd%99%e7%9f%a5%e8%af%86">#</a>
+</h2>
+<hr>
+<details ><summary>回忆：同余的定义</summary>
+  <div class="markdown-inner">
+<span>
+  \(a,b \in \Z，n \in \Z^+\)
+</span>
+ ，<span>
+  \(a\)
+</span>
+ 与 <span>
+  \(b\)
+</span>
+ 模 <span>
+  \(n\)
+</span>
+ 同余 <span>
+  \(\iff\)
+</span>
+ <span>
+  \(a~mod~n = b~mod~n\)
+</span>
+ ，记作<span>
+  \(a \equiv b(mod~m) \)
+</span>
+.
+  </div>
+</details>
+<details ><summary>回忆：同余的充分必要条件1</summary>
+  <div class="markdown-inner">
+<span>
+  \(a \equiv b(mod~m) \iff\)
+</span>
+ <span>
+  \(\exist{k \in \Z}(a = b +km)\)
+</span>
+.
+<p>这个含义就是如果a和b模m同余当且仅当他们之间相差整数个m倍。</p>
+  </div>
+</details>
+<p><strong>引理4.1</strong>: 有<span>
+  \(w\)
+</span>
+ 位无符号数 <span>
+  \(u = B2U_w(\vec{u})\)
+</span>
+ 和一个补码编码的有符号数 <span>
+  \(t = B2U_w(\vec{t})\)
+</span>
+，若 <span>
+  \(u \equiv t ~mod~2^w\)
+</span>
+，则对于 <span>
+  \( u = t + k2^w\)
+</span>
+ ，其中<span>
+  \(k=0\)
+</span>
+或<span>
+  \(k=1\)
+</span>
+.</p>
+<p><strong>引理4.2</strong>: <span>
+  \(u \equiv t ~mod~2^w
+
+\iff 
+
+\vec{u} = \vec{t}\)
+</span>
+.</p>
+<details ><summary>回忆：一个关于同余的定义</summary>
+  <div class="markdown-inner">
+<span>
+  \( m \in \Z^+，a \equiv b ~mod~n, a \equiv b ~mod~n \rightarrow a +c\equiv b+d ~mod~n \)
+</span>
+.
+  </div>
+</details>
 </article>
  
       
@@ -769,8 +904,10 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#一-直觉">一、 直觉</a></li>
-    <li><a href="#二从代数的角度考虑">二、从代数的角度考虑</a></li>
+    <li><a href="#1引入问题">1.引入问题</a></li>
+    <li><a href="#2-证明这个等式的意义是什么">2. 证明这个等式的意义是什么？</a></li>
+    <li><a href="#3三个引理">3.三个引理</a></li>
+    <li><a href="#4-同余知识">4. 同余知识</a></li>
   </ul>
 </nav>
 
