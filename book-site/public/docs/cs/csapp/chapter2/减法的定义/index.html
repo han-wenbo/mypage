@@ -4,60 +4,101 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="
-  KaTeX
-  #
-
-KaTeX shortcode let you render math typesetting in markdown document. See KaTeX
-
-  Example
+  整数运算中减法的定义：
   #
 
 
 
-{{&lt; katex display=true &gt;}}
-f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi
-{{&lt; /katex &gt;}}
+  1.引入问题
+  #
+
+
+CSAPP并未定义无符号数和补码的减法运算，但是无论在编程中还是设计ALU中都需要用到该方面的知识，因此必须有一个系统性的了解。
+
+  2.无符号数的减法
+  #
+
+
+考虑如何定义无符号数减法遇到的第一个问题就是：对于正常的整数减法，小数减大数的结果为一个负数，但是
+
+无符号数并未给负数编码，
+运算结果也不能为负数。
+
+回忆：模运算处理负数
   
 
 
 
+  \[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\]
 
-  \[
-f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi
-\]
+  
+
+此时可以引入模运算来处理这种情况，这样就能解决上述的两个问题：当w位无符号数减法出现负数结果 a 时，让结果等于
+  \( a~ mod~ 2^w = 2^w - |a| = 2^w&#43;a\)
+
+。
+
+   对于 
+  \(w\)
+
+ 位无符号数 
+  \(x,y\)
+
+，定义
+  \(x-_w^u y =: (x-y)mod~2^w\)
+
+
+
+   对于 
+  \(w\)
+
+ 位无符号数 
+  \(x,y\)
+
+，定义
+  \(x-_w^u y =: (x-y)mod~2^w\)
+
+
+
+  3. 使用加法逆元定义减法
+  #
+
+
+w位无符号数加法逆元
+  
+
+  \[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\]
 
   
 
 
-  Display Mode Example
-  #
+   对于 
+  \(w\)
 
-Here is some inline example: 
-  \(\pi(x)\)
+ 位无符号数 
+  \(x,y\)
 
-, rendered in the same line. And below is display example, having display: block
-
-  \[
-f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi
-\]
+，定义
+  \(x-_w^u y =: x&#43;(-_w^t y)\)
 
 
-Text continues here.">
+这种定义看起来并不直观，但是非常适用于ALU设计，因为在这种方法中，不需要额外的电路实现减法操作，只用加法电路就可以实现无符号数减法。">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/shortcodes/katex/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
-  <meta property="og:title" content="KaTeX">
-  <meta property="og:description" content="KaTeX#KaTeX shortcode let you render math typesetting in markdown document. See KaTeX
-Example#{{&lt; katex display=true &gt;}} f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi {{&lt; /katex &gt;}} \[f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi\]Display Mode Example#Here is some inline example: \(\pi(x)\), rendered in the same line. And below is display example, having display: block \[f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi\]Text continues here.">
+  <meta property="og:title" content="Wenbo&#39;s Study Notes">
+  <meta property="og:description" content="整数运算中减法的定义：#1.引入问题#CSAPP并未定义无符号数和补码的减法运算，但是无论在编程中还是设计ALU中都需要用到该方面的知识，因此必须有一个系统性的了解。
+2.无符号数的减法#考虑如何定义无符号数减法遇到的第一个问题就是：对于正常的整数减法，小数减大数的结果为一个负数，但是
+无符号数并未给负数编码， 运算结果也不能为负数。 回忆：模运算处理负数\[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\]此时可以引入模运算来处理这种情况，这样就能解决上述的两个问题：当w位无符号数减法出现负数结果 a 时，让结果等于\( a~ mod~ 2^w = 2^w - |a| = 2^w&#43;a\)。
+对于 \(w\)位无符号数 \(x,y\)，定义\(x-_w^u y =: (x-y)mod~2^w\)对于 \(w\)位无符号数 \(x,y\)，定义\(x-_w^u y =: (x-y)mod~2^w\)3. 使用加法逆元定义减法#w位无符号数加法逆元\[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\]对于 \(w\)位无符号数 \(x,y\)，定义\(x-_w^u y =: x&#43;(-_w^t y)\)这种定义看起来并不直观，但是非常适用于ALU设计，因为在这种方法中，不需要额外的电路实现减法操作，只用加法电路就可以实现无符号数减法。">
   <meta property="og:locale" content="ch">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-<title>KaTeX | Wenbo&#39;s Study Notes</title>
+<title>减法的定义 | Wenbo&#39;s Study Notes</title>
 <link rel="icon" href="/notes/favicon.png" >
 <link rel="manifest" href="/notes/manifest.json">
-<link rel="canonical" href="http://localhost:1313/notes/docs/shortcodes/katex/">
-  <link rel="alternate" hreflang="en" href="http://localhost:1313/notes/en/docs/shortcodes/katex/" title="KaTeX">
+<link rel="canonical" href="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/">
 <link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
   <script defer src="/notes/ch.search.min.b27622ecda727c9005c7309c90d086babb01cf3fc6571e74856599cf20b3b363.js" integrity="sha256-snYi7NpyfJAFxzCckNCGursBzz/GVx50hWWZzyCzs2M=" crossorigin="anonymous"></script>
@@ -99,8 +140,6 @@ https://github.com/alex-shpak/hugo-book
   
 
 
-  
-
 
 <ul class="book-languages">
   <li>
@@ -115,7 +154,7 @@ https://github.com/alex-shpak/hugo-book
     <ul>
       
       <li>
-        <a href="/notes/en/docs/shortcodes/katex/">
+        <a href="/notes/en/">
           English
         </a>
       </li>
@@ -168,7 +207,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-1c6520ef863c32fd72ab48eae3d159d7" class="toggle"  />
+    <input type="checkbox" id="section-1c6520ef863c32fd72ab48eae3d159d7" class="toggle" checked />
     <label for="section-1c6520ef863c32fd72ab48eae3d159d7" class="flex justify-between">
       <a role="button" class="">计算机</a>
     </label>
@@ -343,7 +382,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-2a42a98837cbcf55263db65a309356f9" class="toggle"  />
+    <input type="checkbox" id="section-2a42a98837cbcf55263db65a309356f9" class="toggle" checked />
     <label for="section-2a42a98837cbcf55263db65a309356f9" class="flex justify-between">
       <a role="button" class="">重读CSAPP</a>
     </label>
@@ -359,7 +398,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-db68bb9624271c704aa7a3f3eb0e84a5" class="toggle"  />
+    <input type="checkbox" id="section-db68bb9624271c704aa7a3f3eb0e84a5" class="toggle" checked />
     <label for="section-db68bb9624271c704aa7a3f3eb0e84a5" class="flex justify-between">
       <a role="button" class="">第二章</a>
     </label>
@@ -375,7 +414,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/notes/docs/cs/csapp/chapter2/%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/" class="">减法的定义</a>
+    <a href="/notes/docs/cs/csapp/chapter2/%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/" class="active">减法的定义</a>
   
 
         </li>
@@ -463,7 +502,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="toggle" checked />
+    <input type="checkbox" id="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="toggle"  />
     <label for="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="flex justify-between">
       <a role="button" class="">Shortcodes</a>
     </label>
@@ -557,7 +596,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/notes/docs/shortcodes/katex/" class="active">KaTeX</a>
+    <a href="/notes/docs/shortcodes/katex/" class="">KaTeX</a>
   
 
         </li>
@@ -603,7 +642,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/notes/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>KaTeX</h3>
+  <h3>减法的定义</h3>
 
   <label for="toc-control">
     
@@ -619,8 +658,9 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#example">Example</a></li>
-    <li><a href="#display-mode-example">Display Mode Example</a></li>
+    <li><a href="#1引入问题">1.引入问题</a></li>
+    <li><a href="#2无符号数的减法">2.无符号数的减法</a></li>
+    <li><a href="#3-使用加法逆元定义减法">3. 使用加法逆元定义减法</a></li>
   </ul>
 </nav>
 
@@ -633,46 +673,86 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="katex">
-  KaTeX
-  <a class="anchor" href="#katex">#</a>
+  <article class="markdown book-article"><h1 id="整数运算中减法的定义">
+  整数运算中减法的定义：
+  <a class="anchor" href="#%e6%95%b4%e6%95%b0%e8%bf%90%e7%ae%97%e4%b8%ad%e5%87%8f%e6%b3%95%e7%9a%84%e5%ae%9a%e4%b9%89">#</a>
 </h1>
-<p>KaTeX shortcode let you render math typesetting in markdown document. See <a href="https://katex.org/">KaTeX</a></p>
-<h2 id="example">
-  Example
-  <a class="anchor" href="#example">#</a>
+<hr>
+<h2 id="1引入问题">
+  1.引入问题
+  <a class="anchor" href="#1%e5%bc%95%e5%85%a5%e9%97%ae%e9%a2%98">#</a>
 </h2>
-<div class="book-columns flex flex-wrap">
-<div class="flex-even markdown-inner" style="flex-grow: 1;">
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-latex" data-lang="latex"><span style="display:flex;"><span>{{&lt; katex display=true &gt;}}
-</span></span><span style="display:flex;"><span>f(x) = <span style="color:#66d9ef">\int</span>_{-<span style="color:#66d9ef">\infty</span>}^<span style="color:#66d9ef">\infty\hat</span> f(<span style="color:#66d9ef">\xi</span>)<span style="color:#66d9ef">\,</span>e^{2 <span style="color:#66d9ef">\pi</span> i <span style="color:#66d9ef">\xi</span> x}<span style="color:#66d9ef">\,</span>d<span style="color:#66d9ef">\xi</span>
-</span></span><span style="display:flex;"><span>{{&lt; /katex &gt;}}
-</span></span></code></pre></div>  </div>
-<div class="flex-even markdown-inner" style="flex-grow: 1;">
+<hr>
+<p>CSAPP并未定义无符号数和补码的减法运算，但是无论在编程中还是设计ALU中都需要用到该方面的知识，因此必须有一个系统性的了解。</p>
+<h2 id="2无符号数的减法">
+  2.无符号数的减法
+  <a class="anchor" href="#2%e6%97%a0%e7%ac%a6%e5%8f%b7%e6%95%b0%e7%9a%84%e5%87%8f%e6%b3%95">#</a>
+</h2>
+<hr>
+<p>考虑如何定义无符号数减法遇到的第一个问题就是：对于正常的整数减法，小数减大数的结果为一个负数，但是</p>
+<ol>
+<li>无符号数并未给负数编码，</li>
+<li>运算结果也不能为负数。</li>
+</ol>
+<details ><summary>回忆：模运算处理负数</summary>
+  <div class="markdown-inner">
 <link rel="stylesheet" href="/notes/katex/katex.min.css" />
 <script defer src="/notes/katex/katex.min.js"></script>
 <script defer src="/notes/katex/auto-render.min.js" onload="renderMathInElement(document.body);"></script><span>
-  \[
-f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi
-\]
+  \[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\]
 </span>
   </div>
-</div>
-<h2 id="display-mode-example">
-  Display Mode Example
-  <a class="anchor" href="#display-mode-example">#</a>
+</details>
+<p>此时可以引入模运算来处理这种情况，这样就能解决上述的两个问题：<strong>当w位无符号数减法出现负数结果 a 时，让结果等于<span>
+  \( a~ mod~ 2^w = 2^w - |a| = 2^w+a\)
+</span>
+。</strong></p>
+<blockquote class="book-hint def">
+   对于 <span>
+  \(w\)
+</span>
+ 位无符号数 <span>
+  \(x,y\)
+</span>
+，定义<span>
+  \(x-_w^u y =: (x-y)mod~2^w\)
+</span>
+</blockquote>
+<blockquote class="book-hint def">
+   对于 <span>
+  \(w\)
+</span>
+ 位无符号数 <span>
+  \(x,y\)
+</span>
+，定义<span>
+  \(x-_w^u y =: (x-y)mod~2^w\)
+</span>
+</blockquote>
+<h2 id="3-使用加法逆元定义减法">
+  3. 使用加法逆元定义减法
+  <a class="anchor" href="#3-%e4%bd%bf%e7%94%a8%e5%8a%a0%e6%b3%95%e9%80%86%e5%85%83%e5%ae%9a%e4%b9%89%e5%87%8f%e6%b3%95">#</a>
 </h2>
-<p>Here is some inline example: <span>
-  \(\pi(x)\)
-</span>
-, rendered in the same line. And below is <code>display</code> example, having <code>display: block</code>
+<hr>
+<details ><summary>w位无符号数加法逆元</summary>
+  <div class="markdown-inner">
 <span>
-  \[
-f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi
-\]
+  \[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\]
 </span>
-
-Text continues here.</p>
+  </div>
+</details>
+<blockquote class="book-hint def">
+   对于 <span>
+  \(w\)
+</span>
+ 位无符号数 <span>
+  \(x,y\)
+</span>
+，定义<span>
+  \(x-_w^u y =: x+(-_w^t y)\)
+</span>
+</blockquote>
+<p>这种定义看起来并不直观，但是非常适用于ALU设计，因为在这种方法中，不需要额外的电路实现减法操作，只用加法电路就可以实现无符号数减法。</p>
 </article>
  
       
@@ -714,8 +794,9 @@ Text continues here.</p>
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#example">Example</a></li>
-    <li><a href="#display-mode-example">Display Mode Example</a></li>
+    <li><a href="#1引入问题">1.引入问题</a></li>
+    <li><a href="#2无符号数的减法">2.无符号数的减法</a></li>
+    <li><a href="#3-使用加法逆元定义减法">3. 使用加法逆元定义减法</a></li>
   </ul>
 </nav>
 
