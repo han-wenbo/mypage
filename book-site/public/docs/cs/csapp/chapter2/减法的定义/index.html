@@ -49,14 +49,20 @@ CSAPP并未定义无符号数和补码的减法运算，但是无论在编程中
 
 
 
-   对于 
-  \(w\)
+  \( x,y \)
 
- 位无符号数 
-  \(x,y\)
+ 分别取 0 和最大值，再反过来取，可以计算出减法的范围：
+  \(- 2^w - 1 \le x-y \le  2^w - 1\)
 
-，定义
-  \(x-_w^u y =: (x-y)mod~2^w\)
+，因此该定义可以写为
+
+  \(
+\\x -_w^u y = 
+\begin{cases}
+x - y,                   & x -y \geq  0\\
+x - y &#43; 2^w,       &  x - y &lt; 0 
+\end{cases}
+\)
 
 
 
@@ -67,7 +73,22 @@ CSAPP并未定义无符号数和补码的减法运算，但是无论在编程中
 w位无符号数加法逆元
   
 
-  \[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\]
+  \(\forall x \in [0,2^w)\)
+
+ ，其 
+  \(w\)
+
+ 位的无符号逆元 
+  \(-_w^u x\)
+
+ 由下式给出：
+
+  \[ -_w^u x =
+ \begin{cases}
+ x, & x = 0 \\
+ 2^w - x, & x &gt; 0
+ \end{cases}
+ \]
 
   
 
@@ -82,16 +103,17 @@ w位无符号数加法逆元
   \(x-_w^u y =: x&#43;(-_w^t y)\)
 
 
-这种定义看起来并不直观，但是非常适用于ALU设计，因为在这种方法中，不需要额外的电路实现减法操作，只用加法电路就可以实现无符号数减法。">
+将其代入无符号数加法公式，可以得到">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="Wenbo&#39;s Study Notes">
-  <meta property="og:description" content="整数运算中减法的定义：#1.引入问题#CSAPP并未定义无符号数和补码的减法运算，但是无论在编程中还是设计ALU中都需要用到该方面的知识，因此必须有一个系统性的了解。
-2.无符号数的减法#考虑如何定义无符号数减法遇到的第一个问题就是：对于正常的整数减法，小数减大数的结果为一个负数，但是
-无符号数并未给负数编码， 运算结果也不能为负数。 回忆：模运算处理负数\[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\]此时可以引入模运算来处理这种情况，这样就能解决上述的两个问题：当w位无符号数减法出现负数结果 a 时，让结果等于\( a~ mod~ 2^w = 2^w - |a| = 2^w&#43;a\)。
-对于 \(w\)位无符号数 \(x,y\)，定义\(x-_w^u y =: (x-y)mod~2^w\)对于 \(w\)位无符号数 \(x,y\)，定义\(x-_w^u y =: (x-y)mod~2^w\)3. 使用加法逆元定义减法#w位无符号数加法逆元\[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\]对于 \(w\)位无符号数 \(x,y\)，定义\(x-_w^u y =: x&#43;(-_w^t y)\)这种定义看起来并不直观，但是非常适用于ALU设计，因为在这种方法中，不需要额外的电路实现减法操作，只用加法电路就可以实现无符号数减法。">
+  <meta property="og:description" content="整数运算中减法的定义： # 1.引入问题 # CSAPP并未定义无符号数和补码的减法运算，但是无论在编程中还是设计ALU中都需要用到该方面的知识，因此必须有一个系统性的了解。
+2.无符号数的减法 # 考虑如何定义无符号数减法遇到的第一个问题就是：对于正常的整数减法，小数减大数的结果为一个负数，但是
+无符号数并未给负数编码， 运算结果也不能为负数。 回忆：模运算处理负数 \[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\] 此时可以引入模运算来处理这种情况，这样就能解决上述的两个问题：当w位无符号数减法出现负数结果 a 时，让结果等于 \( a~ mod~ 2^w = 2^w - |a| = 2^w&#43;a\) 。
+对于 \(w\) 位无符号数 \(x,y\) ，定义 \(x-_w^u y =: (x-y)mod~2^w\) \( x,y \) 分别取 0 和最大值，再反过来取，可以计算出减法的范围： \(- 2^w - 1 \le x-y \le 2^w - 1\) ，因此该定义可以写为
+\( \\x -_w^u y = \begin{cases} x - y, &amp; x -y \geq 0\\ x - y &#43; 2^w, &amp; x - y &lt; 0 \end{cases} \) 3. 使用加法逆元定义减法 # w位无符号数加法逆元 \(\forall x \in [0,2^w)\) ，其 \(w\) 位的无符号逆元 \(-_w^u x\) 由下式给出： \[ -_w^u x = \begin{cases} x, &amp; x = 0 \\ 2^w - x, &amp; x &gt; 0 \end{cases} \] 对于 \(w\) 位无符号数 \(x,y\) ，定义 \(x-_w^u y =: x&#43;(-_w^t y)\) 将其代入无符号数加法公式，可以得到">
   <meta property="og:locale" content="ch">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -101,7 +123,7 @@ w位无符号数加法逆元
 <link rel="canonical" href="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/">
 <link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
-  <script defer src="/notes/ch.search.min.b27622ecda727c9005c7309c90d086babb01cf3fc6571e74856599cf20b3b363.js" integrity="sha256-snYi7NpyfJAFxzCckNCGursBzz/GVx50hWWZzyCzs2M=" crossorigin="anonymous"></script>
+  <script defer src="/notes/ch.search.min.af2c43706c1ef06779b2c4cb08b79dc1dc8be5353950fa7d2487ae6358ba83bd.js" integrity="sha256-ryxDcGwe8Gd5ssTLCLedwdyL5TU5UPp9JIeuY1i6g70=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -186,8 +208,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-62127cf7ca1a8ad048b3975f74775e79" class="toggle"  />
-    <label for="section-62127cf7ca1a8ad048b3975f74775e79" class="flex justify-between">
+    <input type="checkbox" id="section-f083dd2846afe9387d87444dc225d8f8" class="toggle"  />
+    <label for="section-f083dd2846afe9387d87444dc225d8f8" class="flex justify-between">
       <a role="button" class="">数学</a>
     </label>
   
@@ -207,8 +229,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-1c6520ef863c32fd72ab48eae3d159d7" class="toggle" checked />
-    <label for="section-1c6520ef863c32fd72ab48eae3d159d7" class="flex justify-between">
+    <input type="checkbox" id="section-7387b17546a6709918f470a269c6c3a6" class="toggle" checked />
+    <label for="section-7387b17546a6709918f470a269c6c3a6" class="flex justify-between">
       <a role="button" class="">计算机</a>
     </label>
   
@@ -223,8 +245,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-2646f4bb7955f414fa27e6bf033bd556" class="toggle"  />
-    <label for="section-2646f4bb7955f414fa27e6bf033bd556" class="flex justify-between">
+    <input type="checkbox" id="section-883dd22d9088dfe0d517737e76e3f343" class="toggle"  />
+    <label for="section-883dd22d9088dfe0d517737e76e3f343" class="flex justify-between">
       <a role="button" class="">C programing Language</a>
     </label>
   
@@ -244,8 +266,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-3214e70fc2e9e10b345f37f6a865bd4e" class="toggle"  />
-    <label for="section-3214e70fc2e9e10b345f37f6a865bd4e" class="flex justify-between">
+    <input type="checkbox" id="section-ae66c65a3e55b00401d091ab5d118b72" class="toggle"  />
+    <label for="section-ae66c65a3e55b00401d091ab5d118b72" class="flex justify-between">
       <a role="button" class="">Linux系统编程</a>
     </label>
   
@@ -296,8 +318,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f86fcfc4a67780762eea618a550688a2" class="toggle"  />
-    <label for="section-f86fcfc4a67780762eea618a550688a2" class="flex justify-between">
+    <input type="checkbox" id="section-f44d397cbaf18f4a23241a642c5d95ca" class="toggle"  />
+    <label for="section-f44d397cbaf18f4a23241a642c5d95ca" class="flex justify-between">
       <a role="button" class="">自动机理论</a>
     </label>
   
@@ -330,8 +352,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="toggle"  />
-    <label for="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="flex justify-between">
+    <input type="checkbox" id="section-c6e70018c3380b17ff568157c6663973" class="toggle"  />
+    <label for="section-c6e70018c3380b17ff568157c6663973" class="flex justify-between">
       <a role="button" class="">计算机体系结构</a>
     </label>
   
@@ -382,8 +404,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-2a42a98837cbcf55263db65a309356f9" class="toggle" checked />
-    <label for="section-2a42a98837cbcf55263db65a309356f9" class="flex justify-between">
+    <input type="checkbox" id="section-7834110d471b5b8c31ba85b53defefb5" class="toggle" checked />
+    <label for="section-7834110d471b5b8c31ba85b53defefb5" class="flex justify-between">
       <a role="button" class="">重读CSAPP</a>
     </label>
   
@@ -398,8 +420,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-db68bb9624271c704aa7a3f3eb0e84a5" class="toggle" checked />
-    <label for="section-db68bb9624271c704aa7a3f3eb0e84a5" class="flex justify-between">
+    <input type="checkbox" id="section-60f476cc863906259125f414544d5b58" class="toggle" checked />
+    <label for="section-60f476cc863906259125f414544d5b58" class="flex justify-between">
       <a role="button" class="">第二章</a>
     </label>
   
@@ -414,7 +436,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/notes/docs/cs/csapp/chapter2/%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/" class="active">减法的定义</a>
+    <a href="/notes/docs/cs/csapp/chapter2/%E8%AF%81%E6%98%8E%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E4%BD%8D%E7%BA%A7%E8%A1%A8%E7%A4%BA%E4%B8%80%E6%A0%B7/" class="">证明：无符号数和补码加法位级表示一样</a>
   
 
         </li>
@@ -427,7 +449,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/notes/docs/cs/csapp/chapter2/%E8%AF%81%E6%98%8E%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E4%BD%8D%E7%BA%A7%E8%A1%A8%E7%A4%BA%E4%B8%80%E6%A0%B7/" class="">证明：无符号数和补码加法位级表示一样</a>
+    <a href="/notes/docs/cs/csapp/chapter2/%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/" class="active">减法的定义</a>
   
 
         </li>
@@ -455,8 +477,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7ff6b2b8a37987ef7dab1df904aea282" class="toggle"  />
-    <label for="section-7ff6b2b8a37987ef7dab1df904aea282" class="flex justify-between">
+    <input type="checkbox" id="section-4cb2487617b52817421380d9185ca1b2" class="toggle"  />
+    <label for="section-4cb2487617b52817421380d9185ca1b2" class="flex justify-between">
       <a role="button" class="">Hugo</a>
     </label>
   
@@ -502,8 +524,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="toggle"  />
-    <label for="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="flex justify-between">
+    <input type="checkbox" id="section-b2774c1bed9d3cc3dac066c29b3d0391" class="toggle"  />
+    <label for="section-b2774c1bed9d3cc3dac066c29b3d0391" class="flex justify-between">
       <a role="button" class="">Shortcodes</a>
     </label>
   
@@ -661,6 +683,7 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#1引入问题">1.引入问题</a></li>
     <li><a href="#2无符号数的减法">2.无符号数的减法</a></li>
     <li><a href="#3-使用加法逆元定义减法">3. 使用加法逆元定义减法</a></li>
+    <li><a href="#4-证明两种减法是等价的">4. 证明两种减法是等价的</a></li>
   </ul>
 </nav>
 
@@ -718,17 +741,23 @@ https://github.com/alex-shpak/hugo-book
   \(x-_w^u y =: (x-y)mod~2^w\)
 </span>
 </blockquote>
-<blockquote class="book-hint def">
-   对于 <span>
-  \(w\)
+<p><span>
+  \( x,y \)
 </span>
- 位无符号数 <span>
-  \(x,y\)
+ 分别取 0 和最大值，再反过来取，可以计算出减法的范围：<span>
+  \(- 2^w - 1 \le x-y \le  2^w - 1\)
 </span>
-，定义<span>
-  \(x-_w^u y =: (x-y)mod~2^w\)
+，因此该定义可以写为</p>
+<span>
+  \(
+\\x -_w^u y = 
+\begin{cases}
+x - y,                   & x -y \geq  0\\
+x - y + 2^w,       &  x - y < 0 
+\end{cases}
+\)
 </span>
-</blockquote>
+
 <h2 id="3-使用加法逆元定义减法">
   3. 使用加法逆元定义减法
   <a class="anchor" href="#3-%e4%bd%bf%e7%94%a8%e5%8a%a0%e6%b3%95%e9%80%86%e5%85%83%e5%ae%9a%e4%b9%89%e5%87%8f%e6%b3%95">#</a>
@@ -737,7 +766,22 @@ https://github.com/alex-shpak/hugo-book
 <details ><summary>w位无符号数加法逆元</summary>
   <div class="markdown-inner">
 <span>
-  \[-2~mod~8 = 6\\-3~mod~8=5\\...\\-8~mod~8=0\\-9~mod~8=7\\\]
+  \(\forall x \in [0,2^w)\)
+</span>
+ ，其 <span>
+  \(w\)
+</span>
+ 位的无符号逆元 <span>
+  \(-_w^u x\)
+</span>
+ 由下式给出：
+<span>
+  \[ -_w^u x =
+ \begin{cases}
+ x, & x = 0 \\
+ 2^w - x, & x > 0
+ \end{cases}
+ \]
 </span>
   </div>
 </details>
@@ -752,7 +796,33 @@ https://github.com/alex-shpak/hugo-book
   \(x-_w^u y =: x+(-_w^t y)\)
 </span>
 </blockquote>
+<p>将其代入无符号数加法公式，可以得到</p>
+<span>
+  \[
+
+\\x -_w^u y = 
+
+ x+(-_w^t y) = 
+
+\begin{cases}
+x + (-_w^t y) ,                   & x + (-_w^t y)  < 2^w\\
+x  +(-_w^t y)  - 2^w,       & 2^w \le x + (-_w^t y)  < 2^{w+1} 
+\end{cases}
+
+\]
+</span>
+
 <p>这种定义看起来并不直观，但是非常适用于ALU设计，因为在这种方法中，不需要额外的电路实现减法操作，只用加法电路就可以实现无符号数减法。</p>
+<h2 id="4-证明两种减法是等价的">
+  4. 证明两种减法是等价的
+  <a class="anchor" href="#4-%e8%af%81%e6%98%8e%e4%b8%a4%e7%a7%8d%e5%87%8f%e6%b3%95%e6%98%af%e7%ad%89%e4%bb%b7%e7%9a%84">#</a>
+</h2>
+<hr>
+<p>可以通过证明下面这个等式成立，来证明两种减法的定义是等价的：</p>
+<p><span>
+  \[\forall x,y \in [~0,2^w)~((x-y)mod~2^w= x+(-_w^t y)) \]
+</span>
+ .</p>
 </article>
  
       
@@ -797,6 +867,7 @@ https://github.com/alex-shpak/hugo-book
     <li><a href="#1引入问题">1.引入问题</a></li>
     <li><a href="#2无符号数的减法">2.无符号数的减法</a></li>
     <li><a href="#3-使用加法逆元定义减法">3. 使用加法逆元定义减法</a></li>
+    <li><a href="#4-证明两种减法是等价的">4. 证明两种减法是等价的</a></li>
   </ul>
 </nav>
 
