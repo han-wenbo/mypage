@@ -4,50 +4,101 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="
-  3rd Level of Menu
+  补码减法
   #
 
-Nefas discordemque domino montes numen tum humili nexilibusque exit, Iove. Quae
-miror esse, scelerisque Melaneus viribus. Miseri laurus. Hoc est proposita me
-ante aliquid, aura inponere candidioribus quidque accendit bella, sumpta.
-Intravit quam erat figentem hunc, motus de fontes parvo tempestate.
-iscsi_virus = pitch(json_in_on(eupViral),
-        northbridge_services_troubleshooting, personal(
-        firmware_rw.trash_rw_crm.device(interactive_gopher_personal,
-        software, -1), megabit, ergonomicsSoftware(cmyk_usb_panel,
-        mips_whitelist_duplex, cpa)));
-if (5) {
-    managementNetwork &#43;= dma - boolean;
-    kilohertz_token = 2;
-    honeypot_affiliate_ergonomics = fiber;
-}
-mouseNorthbridge = byte(nybble_xmp_modem.horse_subnet(
-        analogThroughputService * graphicPoint, drop(daw_bit, dnsIntranet),
-        gateway_ospf), repository.domain_key.mouse(serverData(fileNetwork,
-        trim_duplex_file), cellTapeDirect, token_tooltip_mashup(
-        ripcordingMashup)));
-module_it = honeypot_driver(client_cold_dvr(593902, ripping_frequency) &#43;
-        coreLog.joystick(componentUdpLink), windows_expansion_touchscreen);
-bashGigabit.external.reality(2, server_hardware_codec.flops.ebookSampling(
-        ciscNavigationBacklink, table &#43; cleanDriver), indexProtocolIsp);
-">
+
+
+  1. 定义补码减法的思路
+  #
+
+
+在定义一种新运算时，首先要考虑如下几个问题：
+
+是否会出现未被编码的结果，例如在无符号数减法中，结果为负数。
+是否会出现溢出，溢出的条件是什么，溢出时如何处理？
+
+在做w位补码减法时，所有结果都被编码了，但是w位无法容纳发生溢出时的结果：一个正数减去一个负数的结果可能大于  
+  \(2^{w-1} - 1\)
+
+ ，此时与补码加法正溢出类似；同样，一个负数减去一个正数可能会小于  
+  \(-2^{w-1}\)
+
+，这时称减法发生了负溢出。
+
+   对于 
+
+
+
+  \(w\)
+
+ 位补码 
+  \(x,y\)
+
+，定义补码减法为：
+
+  \( \\x-_w^t y =:   \begin{cases}x - y - 2^w,                   & x - y  \ge 2^{w-1}\\   x-y, & -2^w &lt; x-y &lt; 2^{w-1} \\x  - y  &#43; 2^w,       & x-y  \le -2^{w-1} -1  \end{cases} \)
+
+
+
+  2.使用加法逆元定义补码减法
+  #
+
+
+为了方便硬件实现减法，此处给出一种使用补码加法实现补码减法的定义。
+w位无符号数加法逆元
+  
+
+  \(\forall x \in [-2^{w-1},2^{w-1}-1]\)
+
+ ，其 
+  \(w\)
+
+ 位的补码加法逆元 
+  \(-_w^t x\)
+
+ 由下式给出：
+
+  \[ -_w^t x =
+ \begin{cases}
+ x,             & x = -2^{w-1} \\
+-x             & x &gt; -2^{w-1} 
+ \end{cases}
+ \]
+
+  
+
+
+   对于 
+  \(w\)
+
+ 位补码 
+  \(x,y\)
+
+，定义
+  \(x-_w^t y =: x&#43;_w^t (-_w^t y)\)
+
+
+将其代入补码加法公式，可以得到">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/arch/3rd-level/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89-copy/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="Wenbo&#39;s Study Notes">
-  <meta property="og:description" content="3rd Level of Menu # Nefas discordemque domino montes numen tum humili nexilibusque exit, Iove. Quae miror esse, scelerisque Melaneus viribus. Miseri laurus. Hoc est proposita me ante aliquid, aura inponere candidioribus quidque accendit bella, sumpta. Intravit quam erat figentem hunc, motus de fontes parvo tempestate.
-iscsi_virus = pitch(json_in_on(eupViral), northbridge_services_troubleshooting, personal( firmware_rw.trash_rw_crm.device(interactive_gopher_personal, software, -1), megabit, ergonomicsSoftware(cmyk_usb_panel, mips_whitelist_duplex, cpa))); if (5) { managementNetwork &#43;= dma - boolean; kilohertz_token = 2; honeypot_affiliate_ergonomics = fiber; } mouseNorthbridge = byte(nybble_xmp_modem.horse_subnet( analogThroughputService * graphicPoint, drop(daw_bit, dnsIntranet), gateway_ospf), repository.domain_key.mouse(serverData(fileNetwork, trim_duplex_file), cellTapeDirect, token_tooltip_mashup( ripcordingMashup))); module_it = honeypot_driver(client_cold_dvr(593902, ripping_frequency) &#43; coreLog.joystick(componentUdpLink), windows_expansion_touchscreen); bashGigabit.external.reality(2, server_hardware_codec.flops.ebookSampling( ciscNavigationBacklink, table &#43; cleanDriver), indexProtocolIsp);">
+  <meta property="og:description" content="补码减法 # 1. 定义补码减法的思路 # 在定义一种新运算时，首先要考虑如下几个问题：
+是否会出现未被编码的结果，例如在无符号数减法中，结果为负数。 是否会出现溢出，溢出的条件是什么，溢出时如何处理？ 在做w位补码减法时，所有结果都被编码了，但是w位无法容纳发生溢出时的结果：一个正数减去一个负数的结果可能大于 \(2^{w-1} - 1\) ，此时与补码加法正溢出类似；同样，一个负数减去一个正数可能会小于 \(-2^{w-1}\) ，这时称减法发生了负溢出。
+对于 \(w\) 位补码 \(x,y\) ，定义补码减法为： \( \\x-_w^t y =: \begin{cases}x - y - 2^w, &amp; x - y \ge 2^{w-1}\\ x-y, &amp; -2^w &lt; x-y &lt; 2^{w-1} \\x - y &#43; 2^w, &amp; x-y \le -2^{w-1} -1 \end{cases} \) 2.使用加法逆元定义补码减法 # 为了方便硬件实现减法，此处给出一种使用补码加法实现补码减法的定义。
+w位无符号数加法逆元 \(\forall x \in [-2^{w-1},2^{w-1}-1]\) ，其 \(w\) 位的补码加法逆元 \(-_w^t x\) 由下式给出： \[ -_w^t x = \begin{cases} x, &amp; x = -2^{w-1} \\ -x &amp; x &gt; -2^{w-1} \end{cases} \] 对于 \(w\) 位补码 \(x,y\) ，定义 \(x-_w^t y =: x&#43;_w^t (-_w^t y)\) 将其代入补码加法公式，可以得到">
   <meta property="og:locale" content="ch">
-  <meta property="og:type" content="website">
-<title>3rd Level | Wenbo&#39;s Study Notes</title>
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>无符号数减法的定义 Copy | Wenbo&#39;s Study Notes</title>
 <link rel="icon" href="/notes/favicon.png" >
 <link rel="manifest" href="/notes/manifest.json">
-<link rel="canonical" href="http://localhost:1313/notes/docs/cs/arch/3rd-level/">
+<link rel="canonical" href="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89-copy/">
 <link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
   <script defer src="/notes/ch.search.min.0c6608da6eedfcc5da72f89cd80d6e298c6f734cf00353779e085fbfad86adf0.js" integrity="sha256-DGYI2m7t/MXacvic2A1uKYxvc0zwA1N3nghfv62GrfA=" crossorigin="anonymous"></script>
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/notes/docs/cs/arch/3rd-level/index.xml" title="Wenbo's Study Notes" />
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -276,7 +327,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-c6e70018c3380b17ff568157c6663973" class="toggle" checked />
+    <input type="checkbox" id="section-c6e70018c3380b17ff568157c6663973" class="toggle"  />
     <label for="section-c6e70018c3380b17ff568157c6663973" class="flex justify-between">
       <a role="button" class="">计算机体系结构</a>
     </label>
@@ -292,7 +343,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/notes/docs/cs/arch/3rd-level/" class="active">3rd Level</a>
+    <a href="/notes/docs/cs/arch/3rd-level/" class="">3rd Level</a>
   
 
           
@@ -328,7 +379,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7834110d471b5b8c31ba85b53defefb5" class="toggle"  />
+    <input type="checkbox" id="section-7834110d471b5b8c31ba85b53defefb5" class="toggle" checked />
     <label for="section-7834110d471b5b8c31ba85b53defefb5" class="flex justify-between">
       <a role="button" class="">重读CSAPP</a>
     </label>
@@ -344,7 +395,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-60f476cc863906259125f414544d5b58" class="toggle"  />
+    <input type="checkbox" id="section-60f476cc863906259125f414544d5b58" class="toggle" checked />
     <label for="section-60f476cc863906259125f414544d5b58" class="flex justify-between">
       <a role="button" class="">第二章</a>
     </label>
@@ -399,7 +450,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89-copy/" class="">无符号数减法的定义 Copy</a>
+    <a href="/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89-copy/" class="active">无符号数减法的定义 Copy</a>
   
 
         </li>
@@ -614,7 +665,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/notes/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>3rd Level</h3>
+  <h3>无符号数减法的定义 Copy</h3>
 
   <label for="toc-control">
     
@@ -628,7 +679,12 @@ https://github.com/alex-shpak/hugo-book
   <aside class="hidden clearfix">
     
   
-<nav id="TableOfContents"></nav>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-定义补码减法的思路">1. 定义补码减法的思路</a></li>
+    <li><a href="#2使用加法逆元定义补码减法">2.使用加法逆元定义补码减法</a></li>
+  </ul>
+</nav>
 
 
 
@@ -639,34 +695,96 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="3rd-level-of-menu">
-  3rd Level of Menu
-  <a class="anchor" href="#3rd-level-of-menu">#</a>
+  <article class="markdown book-article"><h1 id="补码减法">
+  补码减法
+  <a class="anchor" href="#%e8%a1%a5%e7%a0%81%e5%87%8f%e6%b3%95">#</a>
 </h1>
-<p>Nefas discordemque domino montes numen tum humili nexilibusque exit, Iove. Quae
-miror esse, scelerisque Melaneus viribus. Miseri laurus. Hoc est proposita me
-ante aliquid, aura inponere candidioribus quidque accendit bella, sumpta.
-Intravit quam erat figentem hunc, motus de fontes parvo tempestate.</p>
-<pre><code>iscsi_virus = pitch(json_in_on(eupViral),
-        northbridge_services_troubleshooting, personal(
-        firmware_rw.trash_rw_crm.device(interactive_gopher_personal,
-        software, -1), megabit, ergonomicsSoftware(cmyk_usb_panel,
-        mips_whitelist_duplex, cpa)));
-if (5) {
-    managementNetwork += dma - boolean;
-    kilohertz_token = 2;
-    honeypot_affiliate_ergonomics = fiber;
-}
-mouseNorthbridge = byte(nybble_xmp_modem.horse_subnet(
-        analogThroughputService * graphicPoint, drop(daw_bit, dnsIntranet),
-        gateway_ospf), repository.domain_key.mouse(serverData(fileNetwork,
-        trim_duplex_file), cellTapeDirect, token_tooltip_mashup(
-        ripcordingMashup)));
-module_it = honeypot_driver(client_cold_dvr(593902, ripping_frequency) +
-        coreLog.joystick(componentUdpLink), windows_expansion_touchscreen);
-bashGigabit.external.reality(2, server_hardware_codec.flops.ebookSampling(
-        ciscNavigationBacklink, table + cleanDriver), indexProtocolIsp);
-</code></pre>
+<hr>
+<h2 id="1-定义补码减法的思路">
+  1. 定义补码减法的思路
+  <a class="anchor" href="#1-%e5%ae%9a%e4%b9%89%e8%a1%a5%e7%a0%81%e5%87%8f%e6%b3%95%e7%9a%84%e6%80%9d%e8%b7%af">#</a>
+</h2>
+<hr>
+<p>在定义一种新运算时，首先要考虑如下几个问题：</p>
+<ol>
+<li>是否会出现未被编码的结果，例如在无符号数减法中，结果为负数。</li>
+<li>是否会出现溢出，溢出的条件是什么，溢出时如何处理？</li>
+</ol>
+<p>在做w位补码减法时，所有结果都被编码了，但是w位无法容纳发生溢出时的结果：一个正数减去一个负数的结果可能大于  <span>
+  \(2^{w-1} - 1\)
+</span>
+ ，此时与补码加法正溢出类似；同样，一个负数减去一个正数可能会小于  <span>
+  \(-2^{w-1}\)
+</span>
+，这时称减法发生了负溢出。</p>
+<blockquote class="book-hint def">
+   对于 
+<link rel="stylesheet" href="/notes/katex/katex.min.css" />
+<script defer src="/notes/katex/katex.min.js"></script>
+<script defer src="/notes/katex/auto-render.min.js" onload="renderMathInElement(document.body);"></script><span>
+  \(w\)
+</span>
+ 位补码 <span>
+  \(x,y\)
+</span>
+，定义补码减法为：
+<span>
+  \( \\x-_w^t y =:   \begin{cases}x - y - 2^w,                   & x - y  \ge 2^{w-1}\\   x-y, & -2^w < x-y < 2^{w-1} \\x  - y  + 2^w,       & x-y  \le -2^{w-1} -1  \end{cases} \)
+</span>
+</blockquote>
+<h2 id="2使用加法逆元定义补码减法">
+  2.使用加法逆元定义补码减法
+  <a class="anchor" href="#2%e4%bd%bf%e7%94%a8%e5%8a%a0%e6%b3%95%e9%80%86%e5%85%83%e5%ae%9a%e4%b9%89%e8%a1%a5%e7%a0%81%e5%87%8f%e6%b3%95">#</a>
+</h2>
+<hr>
+<p>为了方便硬件实现减法，此处给出一种使用补码加法实现补码减法的定义。</p>
+<details ><summary>w位无符号数加法逆元</summary>
+  <div class="markdown-inner">
+<span>
+  \(\forall x \in [-2^{w-1},2^{w-1}-1]\)
+</span>
+ ，其 <span>
+  \(w\)
+</span>
+ 位的补码加法逆元 <span>
+  \(-_w^t x\)
+</span>
+ 由下式给出：
+<span>
+  \[ -_w^t x =
+ \begin{cases}
+ x,             & x = -2^{w-1} \\
+-x             & x > -2^{w-1} 
+ \end{cases}
+ \]
+</span>
+  </div>
+</details>
+<blockquote class="book-hint def">
+   对于 <span>
+  \(w\)
+</span>
+ 位补码 <span>
+  \(x,y\)
+</span>
+，定义<span>
+  \(x-_w^t y =: x+_w^t (-_w^t y)\)
+</span>
+</blockquote>
+<p>将其代入补码加法公式，可以得到</p>
+<span>
+  \[
+
+x +_w^t (-_w^t y) =
+\begin{cases}
+x + (-_w^t y) - 2^w, & \quad 2^{w-1} \le x + (-_w^t y) \\
+x + (-_w^t y), & \quad -2^{w-1} \le x + (-_w^t y) < 2^{w-1} \\
+x + (-_w^t y) + 2^w, & \quad x + (-_w^t y) < -2^{w-1}
+\end{cases}
+
+\]
+</span>
+
 </article>
  
       
@@ -706,7 +824,12 @@ bashGigabit.external.reality(2, server_hardware_codec.flops.ebookSampling(
       <div class="book-toc-content">
         
   
-<nav id="TableOfContents"></nav>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-定义补码减法的思路">1. 定义补码减法的思路</a></li>
+    <li><a href="#2使用加法逆元定义补码减法">2.使用加法逆元定义补码减法</a></li>
+  </ul>
+</nav>
 
 
  
