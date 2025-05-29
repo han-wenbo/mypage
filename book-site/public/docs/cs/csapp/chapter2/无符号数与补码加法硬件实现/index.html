@@ -13,9 +13,6 @@
    使用传统的二进制数加法器就可以同时实现无符号数与补码的加法操作。
 
 考虑实现一个无符号数加法的逻辑电路，他至少有两个输入
-
-
-
   \( \vec{x}_w,\vec{y}_w \)
 
 ，作为参与加法的位向量的输入和一个位向量结果输出
@@ -70,10 +67,10 @@ U2B_w(B2U_w(\vec{x}) &#43;_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) &#43;_
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E4%B8%8E%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="Wenbo&#39;s Study Notes">
-  <meta property="og:description" content="无符号数与补码加法硬件实现 # 本文的目的要描述下面这个命题：
-使用传统的二进制数加法器就可以同时实现无符号数与补码的加法操作。 考虑实现一个无符号数加法的逻辑电路，他至少有两个输入 \( \vec{x}_w,\vec{y}_w \) ，作为参与加法的位向量的输入和一个位向量结果输出 \( \vec{z}_w \) 。它的功能是：
-\[ \vec{z}_w = F( \vec{x}_w,\vec{y}_w )， \] 其中 \( \vec{z}_w \) 满足 \( \vec{z}_w = U2B_w(B2U_w(\vec{x}_w) &#43;B2U_w(\vec{y}_w)). \) 如果该电路要支持补码加法，那它同时也应该满足 \( \vec{z}_w = T2B_w(B2T_w(\vec{x}_w) &#43;B2T_w(\vec{y}_w)). \) 在上一节中，已经证明
-\[ U2B_w(B2U_w(\vec{x}) &#43;_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) &#43;_{t}^{w} B2T_w(\vec{y})) \] 是成立的，所以一个函数只要满足 \( \vec{z}_w = U2B_w(B2U_w(\vec{x}_w) &#43;B2U_w(\vec{y}_w)) \) ，那么它必然满足 \( \vec{z}_w = T2B_w(B2T_w(\vec{x}_w) &#43;B2T_w(\vec{y}_w)). \) 1. 位向量与二进制数的区别 # 首先，要区分开无符号数编码、补码编码与二进制数的区别。一个整数无论是什么进制，它有相同上数学的属性，为了更好的理解本章内容，考虑本章中的整数的时候都考虑其二进制写法；对于形如“001001”的二进制数，它属于整数集合 \( \Z^&#43; \) . 更细化一点，我们可以定义为 \( w \) 二进制数定义一个集合：">
+  <meta property="og:description" content="无符号数与补码加法硬件实现#本文的目的要描述下面这个命题：
+使用传统的二进制数加法器就可以同时实现无符号数与补码的加法操作。考虑实现一个无符号数加法的逻辑电路，他至少有两个输入\( \vec{x}_w,\vec{y}_w \)，作为参与加法的位向量的输入和一个位向量结果输出\( \vec{z}_w \)。它的功能是：
+\[ \vec{z}_w = F( \vec{x}_w,\vec{y}_w )，\]其中\( \vec{z}_w \)满足 \( \vec{z}_w = U2B_w(B2U_w(\vec{x}_w) &#43;B2U_w(\vec{y}_w)). \)如果该电路要支持补码加法，那它同时也应该满足 \( \vec{z}_w = T2B_w(B2T_w(\vec{x}_w) &#43;B2T_w(\vec{y}_w)). \)在上一节中，已经证明
+\[U2B_w(B2U_w(\vec{x}) &#43;_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) &#43;_{t}^{w} B2T_w(\vec{y}))\]是成立的，所以一个函数只要满足\( \vec{z}_w = U2B_w(B2U_w(\vec{x}_w) &#43;B2U_w(\vec{y}_w)) \)，那么它必然满足 \( \vec{z}_w = T2B_w(B2T_w(\vec{x}_w) &#43;B2T_w(\vec{y}_w)). \)1. 位向量与二进制数的区别#首先，要区分开无符号数编码、补码编码与二进制数的区别。一个整数无论是什么进制，它有相同上数学的属性，为了更好的理解本章内容，考虑本章中的整数的时候都考虑其二进制写法；对于形如“001001”的二进制数，它属于整数集合 \( \Z^&#43; \). 更细化一点，我们可以定义为 \( w \)二进制数定义一个集合：">
   <meta property="og:locale" content="ch">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -83,7 +80,7 @@ U2B_w(B2U_w(\vec{x}) &#43;_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) &#43;_
 <link rel="canonical" href="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E4%B8%8E%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0/">
 <link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
-  <script defer src="/notes/ch.search.min.3b549fe094d292bb57d795c2f62ac8729bb16f133e84e14e6bcd547fb9c7365d.js" integrity="sha256-O1Sf4JTSkrtX15XC9irIcpuxbxM&#43;hOFOa81Uf7nHNl0=" crossorigin="anonymous"></script>
+  <script defer src="/notes/ch.search.min.261c36c542194278d2ed967435491fafe93eb24ceb4561bc8b977b5804694f01.js" integrity="sha256-Jhw2xUIZQnjS7ZZ0NUkfr&#43;k&#43;skzrRWG8i5d7WARpTwE=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -168,8 +165,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f083dd2846afe9387d87444dc225d8f8" class="toggle"  />
-    <label for="section-f083dd2846afe9387d87444dc225d8f8" class="flex justify-between">
+    <input type="checkbox" id="section-62127cf7ca1a8ad048b3975f74775e79" class="toggle"  />
+    <label for="section-62127cf7ca1a8ad048b3975f74775e79" class="flex justify-between">
       <a role="button" class="">数学</a>
     </label>
   
@@ -189,8 +186,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7387b17546a6709918f470a269c6c3a6" class="toggle" checked />
-    <label for="section-7387b17546a6709918f470a269c6c3a6" class="flex justify-between">
+    <input type="checkbox" id="section-1c6520ef863c32fd72ab48eae3d159d7" class="toggle" checked />
+    <label for="section-1c6520ef863c32fd72ab48eae3d159d7" class="flex justify-between">
       <a role="button" class="">计算机</a>
     </label>
   
@@ -205,8 +202,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-883dd22d9088dfe0d517737e76e3f343" class="toggle"  />
-    <label for="section-883dd22d9088dfe0d517737e76e3f343" class="flex justify-between">
+    <input type="checkbox" id="section-2646f4bb7955f414fa27e6bf033bd556" class="toggle"  />
+    <label for="section-2646f4bb7955f414fa27e6bf033bd556" class="flex justify-between">
       <a role="button" class="">C programing Language</a>
     </label>
   
@@ -226,8 +223,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-ae66c65a3e55b00401d091ab5d118b72" class="toggle"  />
-    <label for="section-ae66c65a3e55b00401d091ab5d118b72" class="flex justify-between">
+    <input type="checkbox" id="section-3214e70fc2e9e10b345f37f6a865bd4e" class="toggle"  />
+    <label for="section-3214e70fc2e9e10b345f37f6a865bd4e" class="flex justify-between">
       <a role="button" class="">Linux系统编程</a>
     </label>
   
@@ -278,8 +275,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f44d397cbaf18f4a23241a642c5d95ca" class="toggle"  />
-    <label for="section-f44d397cbaf18f4a23241a642c5d95ca" class="flex justify-between">
+    <input type="checkbox" id="section-f86fcfc4a67780762eea618a550688a2" class="toggle"  />
+    <label for="section-f86fcfc4a67780762eea618a550688a2" class="flex justify-between">
       <a role="button" class="">自动机理论</a>
     </label>
   
@@ -312,8 +309,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-c6e70018c3380b17ff568157c6663973" class="toggle"  />
-    <label for="section-c6e70018c3380b17ff568157c6663973" class="flex justify-between">
+    <input type="checkbox" id="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="toggle"  />
+    <label for="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="flex justify-between">
       <a role="button" class="">计算机体系结构</a>
     </label>
   
@@ -364,8 +361,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7834110d471b5b8c31ba85b53defefb5" class="toggle" checked />
-    <label for="section-7834110d471b5b8c31ba85b53defefb5" class="flex justify-between">
+    <input type="checkbox" id="section-2a42a98837cbcf55263db65a309356f9" class="toggle" checked />
+    <label for="section-2a42a98837cbcf55263db65a309356f9" class="flex justify-between">
       <a role="button" class="">重读CSAPP</a>
     </label>
   
@@ -380,8 +377,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-60f476cc863906259125f414544d5b58" class="toggle" checked />
-    <label for="section-60f476cc863906259125f414544d5b58" class="flex justify-between">
+    <input type="checkbox" id="section-db68bb9624271c704aa7a3f3eb0e84a5" class="toggle" checked />
+    <label for="section-db68bb9624271c704aa7a3f3eb0e84a5" class="flex justify-between">
       <a role="button" class="">第二章</a>
     </label>
   
@@ -467,6 +464,8 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+    
   </ul>
 
         </li>
@@ -489,8 +488,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-4cb2487617b52817421380d9185ca1b2" class="toggle"  />
-    <label for="section-4cb2487617b52817421380d9185ca1b2" class="flex justify-between">
+    <input type="checkbox" id="section-7ff6b2b8a37987ef7dab1df904aea282" class="toggle"  />
+    <label for="section-7ff6b2b8a37987ef7dab1df904aea282" class="flex justify-between">
       <a role="button" class="">Hugo</a>
     </label>
   
@@ -536,8 +535,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-b2774c1bed9d3cc3dac066c29b3d0391" class="toggle"  />
-    <label for="section-b2774c1bed9d3cc3dac066c29b3d0391" class="flex justify-between">
+    <input type="checkbox" id="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="toggle"  />
+    <label for="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="flex justify-between">
       <a role="button" class="">Shortcodes</a>
     </label>
   
@@ -716,10 +715,7 @@ https://github.com/alex-shpak/hugo-book
 <blockquote class="book-hint def">
    使用传统的二进制数加法器就可以同时实现无符号数与补码的加法操作。
 </blockquote>
-<p>考虑实现一个无符号数加法的逻辑电路，他至少有两个输入
-<link rel="stylesheet" href="/notes/katex/katex.min.css" />
-<script defer src="/notes/katex/katex.min.js"></script>
-<script defer src="/notes/katex/auto-render.min.js" onload="renderMathInElement(document.body);"></script><span>
+<p>考虑实现一个无符号数加法的逻辑电路，他至少有两个输入<span>
   \( \vec{x}_w,\vec{y}_w \)
 </span>
 ，作为参与加法的位向量的输入和一个位向量结果输出<span>
@@ -837,7 +833,7 @@ V2N(\vec{v}_w) = \sum_{i=0}^{w-1}{v_i \cdot 2^{i}}，
 </h2>
 <hr>
 <p>在开始前，先引入一个有用的函数 <span>
-  \( Trunc_w: \Z \rightarrow \Z \)
+  \( TruncN_w: \Z \rightarrow \Z \)
 </span>
 ，它将二进制数截断为 w 位：</p>
 <span>
@@ -863,7 +859,25 @@ B2U_w(\vec{x}_w) + B2U_w(\vec{y}_w) - 2^w,         & 2^w \le B2U_w(\vec{x}_w) + 
  \]
 </span>
 
-<p>考虑他们背后的位向量与二进制数之间的关系：</p>
+<p>可以很明显的看出：</p>
+<blockquote class="book-hint def">
+   对任意 
+<link rel="stylesheet" href="/notes/katex/katex.min.css" />
+<script defer src="/notes/katex/katex.min.js"></script>
+<script defer src="/notes/katex/auto-render.min.js" onload="renderMathInElement(document.body);"></script><span>
+  \(w\)
+</span>
+ 位的两个位向量 <span>
+  \(\vec{x}\)
+</span>
+ 和 <span>
+  \(\vec{y}\)
+</span>
+，下式成立：<span>
+  \[ V2N(\vec{x}_w) + V2N(\vec{y}_w) = B2U_w(\vec{x}_w) + B2U_w(\vec{y}_w) \]
+</span>
+</blockquote>
+<p>因此，无符号加法不溢出的时候有：</p>
 <span>
   \[ 
 V2N(\vec{x}_w) + V2N(\vec{y}_w) = V2N(U2B_w(u)) 

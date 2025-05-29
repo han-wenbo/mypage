@@ -56,17 +56,17 @@
   \[B2U_w(\vec{x}) &#43;_w^u B2U_w(\vec{y}) = B2U_w(TruncV_w(N2V(V2N(Ext([0], \vec{x})) &#43; V2N(Ext([0], \vec{y}))))，\]
 
 
-之所以等式右侧使用V2N转换为二进制数做加法操作，是因为我们的ALU中加法器电路是二进制加法器电路。">
+之所以等式右侧使用V2N转换为二进制数做加法，是因为我们的ALU中加法器电路是二进制加法器电路。">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/csapp/chapter2/0%E6%89%A9%E5%B1%95%E7%9A%84%E5%8A%A0%E6%B3%95/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="Wenbo&#39;s Study Notes">
-  <meta property="og:description" content="1.引言 # 在使用HDL实现 \( w \) 位ALU时，对于参与加法的 \( w \) 位的位向量 \( [x_{w-1},...,x_{0}]， [y_{w-1},...,y_{0}] \) ， 需要通过0扩展将参与加法的两个数扩展到 \( w &#43; 1\) 位，加法后得到一个结果 \( [z_w,z_{w-1},...,z_{0}] \) ，然后取 \( [z_{w-1},...x_0] \) 作为 ALU 的加法结果的输出，并通过 \( z_w \) 来判断是否设置 carry flag。除此之外，补码加法同样使用无符号数加法的同一份电路，因此，也需要判断0扩展后，补码的加法是否还保持一样。
-为了方便描述本文内容，可以给出两个函数的定义，一个截断位向量： \( TruncaV_w: V \rightarrow V_w \) ，一个扩展位向量: \(Ext: V_q \times V_p \rightarrow V_{p&#43;q} \) 。
+  <meta property="og:description" content="1.引言#在使用HDL实现\( w \)位ALU时，对于参与加法的\( w \)位的位向量 \( [x_{w-1},...,x_{0}]， [y_{w-1},...,y_{0}] \)， 需要通过0扩展将参与加法的两个数扩展到 \( w &#43; 1\)位，加法后得到一个结果 \( [z_w,z_{w-1},...,z_{0}] \)，然后取\( [z_{w-1},...x_0] \)作为 ALU 的加法结果的输出，并通过\( z_w \)来判断是否设置 carry flag。除此之外，补码加法同样使用无符号数加法的同一份电路，因此，也需要判断0扩展后，补码的加法是否还保持一样。
+为了方便描述本文内容，可以给出两个函数的定义，一个截断位向量：\( TruncaV_w: V \rightarrow V_w \)，一个扩展位向量: \(Ext: V_q \times V_p \rightarrow V_{p&#43;q} \)。
 定义：
-而本文要证明,对任意 \(w\) 位的两个位向量 \(\vec{x}\) 和 \(\vec{y}\) ，下式成立：
-\[B2U_w(\vec{x}) &#43;_w^u B2U_w(\vec{y}) = B2U_w(TruncV_w(N2V(V2N(Ext([0], \vec{x})) &#43; V2N(Ext([0], \vec{y}))))，\] 之所以等式右侧使用V2N转换为二进制数做加法操作，是因为我们的ALU中加法器电路是二进制加法器电路。">
+而本文要证明,对任意 \(w\)位的两个位向量 \(\vec{x}\)和 \(\vec{y}\)，下式成立：
+\[B2U_w(\vec{x}) &#43;_w^u B2U_w(\vec{y}) = B2U_w(TruncV_w(N2V(V2N(Ext([0], \vec{x})) &#43; V2N(Ext([0], \vec{y}))))，\]之所以等式右侧使用V2N转换为二进制数做加法，是因为我们的ALU中加法器电路是二进制加法器电路。">
   <meta property="og:locale" content="ch">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -76,7 +76,7 @@
 <link rel="canonical" href="http://localhost:1313/notes/docs/cs/csapp/chapter2/0%E6%89%A9%E5%B1%95%E7%9A%84%E5%8A%A0%E6%B3%95/">
 <link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
-  <script defer src="/notes/ch.search.min.3b549fe094d292bb57d795c2f62ac8729bb16f133e84e14e6bcd547fb9c7365d.js" integrity="sha256-O1Sf4JTSkrtX15XC9irIcpuxbxM&#43;hOFOa81Uf7nHNl0=" crossorigin="anonymous"></script>
+  <script defer src="/notes/ch.search.min.261c36c542194278d2ed967435491fafe93eb24ceb4561bc8b977b5804694f01.js" integrity="sha256-Jhw2xUIZQnjS7ZZ0NUkfr&#43;k&#43;skzrRWG8i5d7WARpTwE=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -161,8 +161,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f083dd2846afe9387d87444dc225d8f8" class="toggle"  />
-    <label for="section-f083dd2846afe9387d87444dc225d8f8" class="flex justify-between">
+    <input type="checkbox" id="section-62127cf7ca1a8ad048b3975f74775e79" class="toggle"  />
+    <label for="section-62127cf7ca1a8ad048b3975f74775e79" class="flex justify-between">
       <a role="button" class="">数学</a>
     </label>
   
@@ -182,8 +182,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7387b17546a6709918f470a269c6c3a6" class="toggle" checked />
-    <label for="section-7387b17546a6709918f470a269c6c3a6" class="flex justify-between">
+    <input type="checkbox" id="section-1c6520ef863c32fd72ab48eae3d159d7" class="toggle" checked />
+    <label for="section-1c6520ef863c32fd72ab48eae3d159d7" class="flex justify-between">
       <a role="button" class="">计算机</a>
     </label>
   
@@ -198,8 +198,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-883dd22d9088dfe0d517737e76e3f343" class="toggle"  />
-    <label for="section-883dd22d9088dfe0d517737e76e3f343" class="flex justify-between">
+    <input type="checkbox" id="section-2646f4bb7955f414fa27e6bf033bd556" class="toggle"  />
+    <label for="section-2646f4bb7955f414fa27e6bf033bd556" class="flex justify-between">
       <a role="button" class="">C programing Language</a>
     </label>
   
@@ -219,8 +219,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-ae66c65a3e55b00401d091ab5d118b72" class="toggle"  />
-    <label for="section-ae66c65a3e55b00401d091ab5d118b72" class="flex justify-between">
+    <input type="checkbox" id="section-3214e70fc2e9e10b345f37f6a865bd4e" class="toggle"  />
+    <label for="section-3214e70fc2e9e10b345f37f6a865bd4e" class="flex justify-between">
       <a role="button" class="">Linux系统编程</a>
     </label>
   
@@ -271,8 +271,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f44d397cbaf18f4a23241a642c5d95ca" class="toggle"  />
-    <label for="section-f44d397cbaf18f4a23241a642c5d95ca" class="flex justify-between">
+    <input type="checkbox" id="section-f86fcfc4a67780762eea618a550688a2" class="toggle"  />
+    <label for="section-f86fcfc4a67780762eea618a550688a2" class="flex justify-between">
       <a role="button" class="">自动机理论</a>
     </label>
   
@@ -305,8 +305,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-c6e70018c3380b17ff568157c6663973" class="toggle"  />
-    <label for="section-c6e70018c3380b17ff568157c6663973" class="flex justify-between">
+    <input type="checkbox" id="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="toggle"  />
+    <label for="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="flex justify-between">
       <a role="button" class="">计算机体系结构</a>
     </label>
   
@@ -357,8 +357,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7834110d471b5b8c31ba85b53defefb5" class="toggle" checked />
-    <label for="section-7834110d471b5b8c31ba85b53defefb5" class="flex justify-between">
+    <input type="checkbox" id="section-2a42a98837cbcf55263db65a309356f9" class="toggle" checked />
+    <label for="section-2a42a98837cbcf55263db65a309356f9" class="flex justify-between">
       <a role="button" class="">重读CSAPP</a>
     </label>
   
@@ -373,8 +373,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-60f476cc863906259125f414544d5b58" class="toggle" checked />
-    <label for="section-60f476cc863906259125f414544d5b58" class="flex justify-between">
+    <input type="checkbox" id="section-db68bb9624271c704aa7a3f3eb0e84a5" class="toggle" checked />
+    <label for="section-db68bb9624271c704aa7a3f3eb0e84a5" class="flex justify-between">
       <a role="button" class="">第二章</a>
     </label>
   
@@ -460,6 +460,8 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
+      
+    
   </ul>
 
         </li>
@@ -482,8 +484,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-4cb2487617b52817421380d9185ca1b2" class="toggle"  />
-    <label for="section-4cb2487617b52817421380d9185ca1b2" class="flex justify-between">
+    <input type="checkbox" id="section-7ff6b2b8a37987ef7dab1df904aea282" class="toggle"  />
+    <label for="section-7ff6b2b8a37987ef7dab1df904aea282" class="flex justify-between">
       <a role="button" class="">Hugo</a>
     </label>
   
@@ -529,8 +531,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-b2774c1bed9d3cc3dac066c29b3d0391" class="toggle"  />
-    <label for="section-b2774c1bed9d3cc3dac066c29b3d0391" class="flex justify-between">
+    <input type="checkbox" id="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="toggle"  />
+    <label for="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="flex justify-between">
       <a role="button" class="">Shortcodes</a>
     </label>
   
@@ -753,10 +755,10 @@ https://github.com/alex-shpak/hugo-book
   \[B2U_w(\vec{x}) +_w^u B2U_w(\vec{y}) = B2U_w(TruncV_w(N2V(V2N(Ext([0], \vec{x})) + V2N(Ext([0], \vec{y}))))，\]
 </span>
 
-<p>之所以等式右侧使用V2N转换为二进制数做加法操作，是因为我们的ALU中加法器电路是二进制加法器电路。</p>
-<p>以及</p>
+<p>之所以等式右侧使用V2N转换为二进制数做加法，是因为我们的ALU中加法器电路是二进制加法器电路。</p>
+<p>以及证明：</p>
 <span>
-  \[B2T_w(\vec{x}) + B2T_w(\vec{y}) = B2T_w(TruncV_w(T2B_w(B2T_w(Ext([0], \vec{x})) + B2T_w(Ext([0], \vec{y})))).\]
+  \[B2T_w(\vec{x}) +_w^u B2T_w(\vec{y}) = B2T_w(TruncV_w(N2V(V2N(Ext([0], \vec{x})) + V2N(Ext([0], \vec{y})))).\]
 </span>
 
 <h2 id="2无符号数证明">
@@ -764,6 +766,45 @@ https://github.com/alex-shpak/hugo-book
   <a class="anchor" href="#2%e6%97%a0%e7%ac%a6%e5%8f%b7%e6%95%b0%e8%af%81%e6%98%8e">#</a>
 </h2>
 <hr>
+<p>对于整数，在其前面加上若干个0，并不会改变它的值，因此有：</p>
+<span>
+  \[
+
+V2N(Ext([0], \vec{x})) + V2N(Ext([0], \vec{y})) 
+
+= V2N(\vec{x}) + V2N(\vec{y}) .
+
+\]
+</span>
+
+<p>而</p>
+<span>
+  \[
+
+ V2N(\vec{x}) + V2N(\vec{y})  
+
+=
+B2U_w(\vec{x}_w) + B2U_w(\vec{y}_w) .            
+
+\]
+</span>
+
+<p><span>
+  \( B2U_w(\vec{x}_w) + B2U_w(\vec{y}_w)\)
+</span>
+  与 <span>
+  \(B2U_w(\vec{x}) +_w^u B2U_w(\vec{y})\)
+</span>
+ 要么相等，要么多了 <span>
+  \( 2^w\)
+</span>
+ . 所以将 <span>
+  \(N2V(V2N(Ext([0], \vec{x})) + V2N(Ext([0], \vec{y}))\)
+</span>
+ 截断到 w 位后，一定与<span>
+  \(B2U_w(\vec{x}) +_w^u B2U_w(\vec{y})\)
+</span>
+的位向量相同。</p>
 <h2 id="3-补码证明">
   3. 补码证明
   <a class="anchor" href="#3-%e8%a1%a5%e7%a0%81%e8%af%81%e6%98%8e">#</a>
