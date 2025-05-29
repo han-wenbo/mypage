@@ -4,49 +4,98 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="
-  This page is hidden in menu
+  补码减法
   #
 
 
-  Quondam non pater est dignior ille Eurotas
+
+  1. 定义补码减法的思路
   #
 
 
-  Latent te facies
+在定义一种新运算时，首先要考虑如下几个问题：
+
+是否会出现未被编码的结果，例如在无符号数减法中，结果为负数。
+是否会出现溢出，溢出的条件是什么，溢出时如何处理？
+
+在做w位补码减法时，所有结果都被编码了，但是w位无法容纳发生溢出时的结果：一个正数减去一个负数的结果可能大于  
+  \(2^{w-1} - 1\)
+
+ ，此时与补码加法正溢出类似；同样，一个负数减去一个正数可能会小于  
+  \(-2^{w-1}\)
+
+，这时称减法发生了负溢出。
+
+   对于 
+
+
+
+  \(w\)
+
+ 位补码 
+  \(x,y\)
+
+，定义补码减法为：
+
+  \( \\x-_w^t y =:   \begin{cases}x - y - 2^w,                   & x - y  \ge 2^{w-1}\\   x-y, & -2^w &lt; x-y &lt; 2^{w-1} \\x  - y  &#43; 2^w,       & x-y  \le -2^{w-1} -1  \end{cases} \)
+
+
+
+  2.使用加法逆元定义补码减法
   #
 
-Lorem markdownum arma ignoscas vocavit quoque ille texit mandata mentis ultimus,
-frementes, qui in vel. Hippotades Peleus pennas
-conscia cuiquam Caeneus quas.
 
-Pater demittere evincitque reddunt
-Maxime adhuc pressit huc Danaas quid freta
-Soror ego
-Luctus linguam saxa ultroque prior Tatiumque inquit
-Saepe liquitur subita superata dederat Anius sudor
+为了方便硬件实现减法，此处给出一种使用补码加法实现补码减法的定义。
+w位无符号数加法逆元
+  
+
+  \(\forall x \in [-2^{w-1},2^{w-1}-1]\)
+
+ ，其 
+  \(w\)
+
+ 位的补码加法逆元 
+  \(-_w^t x\)
+
+ 由下式给出：
+
+  \[ -_w^t x =
+ \begin{cases}
+ x,             & x = -2^{w-1} \\
+-x             & x &gt; -2^{w-1} 
+ \end{cases}
+ \]
+
+  
 
 
-  Cum honorum Latona
-  #
+   对于 
+  \(w\)
 
-O fallor in sustinui
-iussorum equidem.
-Nymphae operi oris alii fronde parens dumque, in auro ait mox ingenti proxima
-iamdudum maius?">
+ 位补码 
+  \(x,y\)
+
+，定义
+  \(x-_w^t y =: x&#43;_w^t (-_w^t y)\)
+
+
+将其代入补码加法公式，可以得到">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/math/hidden/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E8%A1%A5%E7%A0%81%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="Wenbo&#39;s Study Notes">
-  <meta property="og:description" content="This page is hidden in menu # Quondam non pater est dignior ille Eurotas # Latent te facies # Lorem markdownum arma ignoscas vocavit quoque ille texit mandata mentis ultimus, frementes, qui in vel. Hippotades Peleus pennas conscia cuiquam Caeneus quas.
-Pater demittere evincitque reddunt Maxime adhuc pressit huc Danaas quid freta Soror ego Luctus linguam saxa ultroque prior Tatiumque inquit Saepe liquitur subita superata dederat Anius sudor Cum honorum Latona # O fallor in sustinui iussorum equidem. Nymphae operi oris alii fronde parens dumque, in auro ait mox ingenti proxima iamdudum maius?">
+  <meta property="og:description" content="补码减法 # 1. 定义补码减法的思路 # 在定义一种新运算时，首先要考虑如下几个问题：
+是否会出现未被编码的结果，例如在无符号数减法中，结果为负数。 是否会出现溢出，溢出的条件是什么，溢出时如何处理？ 在做w位补码减法时，所有结果都被编码了，但是w位无法容纳发生溢出时的结果：一个正数减去一个负数的结果可能大于 \(2^{w-1} - 1\) ，此时与补码加法正溢出类似；同样，一个负数减去一个正数可能会小于 \(-2^{w-1}\) ，这时称减法发生了负溢出。
+对于 \(w\) 位补码 \(x,y\) ，定义补码减法为： \( \\x-_w^t y =: \begin{cases}x - y - 2^w, &amp; x - y \ge 2^{w-1}\\ x-y, &amp; -2^w &lt; x-y &lt; 2^{w-1} \\x - y &#43; 2^w, &amp; x-y \le -2^{w-1} -1 \end{cases} \) 2.使用加法逆元定义补码减法 # 为了方便硬件实现减法，此处给出一种使用补码加法实现补码减法的定义。
+w位无符号数加法逆元 \(\forall x \in [-2^{w-1},2^{w-1}-1]\) ，其 \(w\) 位的补码加法逆元 \(-_w^t x\) 由下式给出： \[ -_w^t x = \begin{cases} x, &amp; x = -2^{w-1} \\ -x &amp; x &gt; -2^{w-1} \end{cases} \] 对于 \(w\) 位补码 \(x,y\) ，定义 \(x-_w^t y =: x&#43;_w^t (-_w^t y)\) 将其代入补码加法公式，可以得到">
   <meta property="og:locale" content="ch">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-<title>Hidden | Wenbo&#39;s Study Notes</title>
+<title>补码减法的定义 | Wenbo&#39;s Study Notes</title>
 <link rel="icon" href="/notes/favicon.png" >
 <link rel="manifest" href="/notes/manifest.json">
-<link rel="canonical" href="http://localhost:1313/notes/docs/math/hidden/">
+<link rel="canonical" href="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E8%A1%A5%E7%A0%81%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/">
 <link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
   <script defer src="/notes/ch.search.min.03041c1d40cebb7ef46be8d4db194ade73b7d84d1e3e74804d684e8f32b33a4b.js" integrity="sha256-AwQcHUDOu370a&#43;jU2xlK3nO32E0ePnSATWhOjzKzOks=" crossorigin="anonymous"></script>
@@ -134,7 +183,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f083dd2846afe9387d87444dc225d8f8" class="toggle" checked />
+    <input type="checkbox" id="section-f083dd2846afe9387d87444dc225d8f8" class="toggle"  />
     <label for="section-f083dd2846afe9387d87444dc225d8f8" class="flex justify-between">
       <a role="button" class="">数学</a>
     </label>
@@ -155,7 +204,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7387b17546a6709918f470a269c6c3a6" class="toggle"  />
+    <input type="checkbox" id="section-7387b17546a6709918f470a269c6c3a6" class="toggle" checked />
     <label for="section-7387b17546a6709918f470a269c6c3a6" class="flex justify-between">
       <a role="button" class="">计算机</a>
     </label>
@@ -330,7 +379,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7834110d471b5b8c31ba85b53defefb5" class="toggle"  />
+    <input type="checkbox" id="section-7834110d471b5b8c31ba85b53defefb5" class="toggle" checked />
     <label for="section-7834110d471b5b8c31ba85b53defefb5" class="flex justify-between">
       <a role="button" class="">重读CSAPP</a>
     </label>
@@ -346,7 +395,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-60f476cc863906259125f414544d5b58" class="toggle"  />
+    <input type="checkbox" id="section-60f476cc863906259125f414544d5b58" class="toggle" checked />
     <label for="section-60f476cc863906259125f414544d5b58" class="flex justify-between">
       <a role="button" class="">第二章</a>
     </label>
@@ -401,7 +450,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/notes/docs/cs/csapp/chapter2/%E8%A1%A5%E7%A0%81%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/" class="">补码减法的定义</a>
+    <a href="/notes/docs/cs/csapp/chapter2/%E8%A1%A5%E7%A0%81%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/" class="active">补码减法的定义</a>
   
 
         </li>
@@ -629,7 +678,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/notes/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>Hidden</h3>
+  <h3>补码减法的定义</h3>
 
   <label for="toc-control">
     
@@ -645,9 +694,8 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#latent-te-facies">Latent te facies</a></li>
-    <li><a href="#cum-honorum-latona">Cum honorum Latona</a></li>
-    <li><a href="#fronde-cetera-dextrae-sequens-pennis-voce-muneris">Fronde cetera dextrae sequens pennis voce muneris</a></li>
+    <li><a href="#1-定义补码减法的思路">1. 定义补码减法的思路</a></li>
+    <li><a href="#2使用加法逆元定义补码减法">2.使用加法逆元定义补码减法</a></li>
   </ul>
 </nav>
 
@@ -660,63 +708,96 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="this-page-is-hidden-in-menu">
-  This page is hidden in menu
-  <a class="anchor" href="#this-page-is-hidden-in-menu">#</a>
+  <article class="markdown book-article"><h1 id="补码减法">
+  补码减法
+  <a class="anchor" href="#%e8%a1%a5%e7%a0%81%e5%87%8f%e6%b3%95">#</a>
 </h1>
-<h1 id="quondam-non-pater-est-dignior-ille-eurotas">
-  Quondam non pater est dignior ille Eurotas
-  <a class="anchor" href="#quondam-non-pater-est-dignior-ille-eurotas">#</a>
-</h1>
-<h2 id="latent-te-facies">
-  Latent te facies
-  <a class="anchor" href="#latent-te-facies">#</a>
+<hr>
+<h2 id="1-定义补码减法的思路">
+  1. 定义补码减法的思路
+  <a class="anchor" href="#1-%e5%ae%9a%e4%b9%89%e8%a1%a5%e7%a0%81%e5%87%8f%e6%b3%95%e7%9a%84%e6%80%9d%e8%b7%af">#</a>
 </h2>
-<p>Lorem markdownum arma ignoscas vocavit quoque ille texit mandata mentis ultimus,
-frementes, qui in vel. Hippotades Peleus <a href="http://gratia.net/tot-qua.php">pennas
-conscia</a> cuiquam Caeneus quas.</p>
-<ul>
-<li>Pater demittere evincitque reddunt</li>
-<li>Maxime adhuc pressit huc Danaas quid freta</li>
-<li>Soror ego</li>
-<li>Luctus linguam saxa ultroque prior Tatiumque inquit</li>
-<li>Saepe liquitur subita superata dederat Anius sudor</li>
-</ul>
-<h2 id="cum-honorum-latona">
-  Cum honorum Latona
-  <a class="anchor" href="#cum-honorum-latona">#</a>
+<hr>
+<p>在定义一种新运算时，首先要考虑如下几个问题：</p>
+<ol>
+<li>是否会出现未被编码的结果，例如在无符号数减法中，结果为负数。</li>
+<li>是否会出现溢出，溢出的条件是什么，溢出时如何处理？</li>
+</ol>
+<p>在做w位补码减法时，所有结果都被编码了，但是w位无法容纳发生溢出时的结果：一个正数减去一个负数的结果可能大于  <span>
+  \(2^{w-1} - 1\)
+</span>
+ ，此时与补码加法正溢出类似；同样，一个负数减去一个正数可能会小于  <span>
+  \(-2^{w-1}\)
+</span>
+，这时称减法发生了负溢出。</p>
+<blockquote class="book-hint def">
+   对于 
+<link rel="stylesheet" href="/notes/katex/katex.min.css" />
+<script defer src="/notes/katex/katex.min.js"></script>
+<script defer src="/notes/katex/auto-render.min.js" onload="renderMathInElement(document.body);"></script><span>
+  \(w\)
+</span>
+ 位补码 <span>
+  \(x,y\)
+</span>
+，定义补码减法为：
+<span>
+  \( \\x-_w^t y =:   \begin{cases}x - y - 2^w,                   & x - y  \ge 2^{w-1}\\   x-y, & -2^w < x-y < 2^{w-1} \\x  - y  + 2^w,       & x-y  \le -2^{w-1} -1  \end{cases} \)
+</span>
+</blockquote>
+<h2 id="2使用加法逆元定义补码减法">
+  2.使用加法逆元定义补码减法
+  <a class="anchor" href="#2%e4%bd%bf%e7%94%a8%e5%8a%a0%e6%b3%95%e9%80%86%e5%85%83%e5%ae%9a%e4%b9%89%e8%a1%a5%e7%a0%81%e5%87%8f%e6%b3%95">#</a>
 </h2>
-<p>O fallor <a href="http://www.spectataharundine.org/aquas-relinquit.html">in sustinui
-iussorum</a> equidem.
-Nymphae operi oris alii fronde parens dumque, in auro ait mox ingenti proxima
-iamdudum maius?</p>
-<pre><code>reality(burnDocking(apache_nanometer),
-        pad.property_data_programming.sectorBrowserPpga(dataMask, 37,
-        recycleRup));
-intellectualVaporwareUser += -5 * 4;
-traceroute_key_upnp /= lag_optical(android.smb(thyristorTftp));
-surge_host_golden = mca_compact_device(dual_dpi_opengl, 33,
-        commerce_add_ppc);
-if (lun_ipv) {
-    verticalExtranet(1, thumbnail_ttl, 3);
-    bar_graphics_jpeg(chipset - sector_xmp_beta);
-}
-</code></pre>
-<h2 id="fronde-cetera-dextrae-sequens-pennis-voce-muneris">
-  Fronde cetera dextrae sequens pennis voce muneris
-  <a class="anchor" href="#fronde-cetera-dextrae-sequens-pennis-voce-muneris">#</a>
-</h2>
-<p>Acta cretus diem restet utque; move integer, oscula non inspirat, noctisque
-scelus! Nantemque in suas vobis quamvis, et labori!</p>
-<pre><code>var runtimeDiskCompiler = home - array_ad_software;
-if (internic &gt; disk) {
-    emoticonLockCron += 37 + bps - 4;
-    wan_ansi_honeypot.cardGigaflops = artificialStorageCgi;
-    simplex -= downloadAccess;
-}
-var volumeHardeningAndroid = pixel + tftp + onProcessorUnmount;
-sector(memory(firewire + interlaced, wired));
-</code></pre>
+<hr>
+<p>为了方便硬件实现减法，此处给出一种使用补码加法实现补码减法的定义。</p>
+<details ><summary>w位无符号数加法逆元</summary>
+  <div class="markdown-inner">
+<span>
+  \(\forall x \in [-2^{w-1},2^{w-1}-1]\)
+</span>
+ ，其 <span>
+  \(w\)
+</span>
+ 位的补码加法逆元 <span>
+  \(-_w^t x\)
+</span>
+ 由下式给出：
+<span>
+  \[ -_w^t x =
+ \begin{cases}
+ x,             & x = -2^{w-1} \\
+-x             & x > -2^{w-1} 
+ \end{cases}
+ \]
+</span>
+  </div>
+</details>
+<blockquote class="book-hint def">
+   对于 <span>
+  \(w\)
+</span>
+ 位补码 <span>
+  \(x,y\)
+</span>
+，定义<span>
+  \(x-_w^t y =: x+_w^t (-_w^t y)\)
+</span>
+</blockquote>
+<p>将其代入补码加法公式，可以得到</p>
+<span>
+  \[
+
+x +_w^t (-_w^t y) =
+\begin{cases}
+x + (-_w^t y) - 2^w, & \quad 2^{w-1} \le x + (-_w^t y) \\
+x + (-_w^t y), & \quad -2^{w-1} \le x + (-_w^t y) < 2^{w-1} \\
+x + (-_w^t y) + 2^w, & \quad x + (-_w^t y) < -2^{w-1}
+\end{cases}
+
+\]
+</span>
+
 </article>
  
       
@@ -758,9 +839,8 @@ sector(memory(firewire + interlaced, wired));
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#latent-te-facies">Latent te facies</a></li>
-    <li><a href="#cum-honorum-latona">Cum honorum Latona</a></li>
-    <li><a href="#fronde-cetera-dextrae-sequens-pennis-voce-muneris">Fronde cetera dextrae sequens pennis voce muneris</a></li>
+    <li><a href="#1-定义补码减法的思路">1. 定义补码减法的思路</a></li>
+    <li><a href="#2使用加法逆元定义补码减法">2.使用加法逆元定义补码减法</a></li>
   </ul>
 </nav>
 
