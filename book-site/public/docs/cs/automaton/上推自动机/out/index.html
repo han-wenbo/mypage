@@ -54,11 +54,11 @@
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="Wenbo&#39;s Study Notes">
   <meta property="og:description" content="状态最小化算法一些思考（来自《Elements of the theroy of the computation》 P62）：
-在考虑问题前，先考虑一些问题。首先， \( \equiv_n\)是什么： 这是一个等价关系， \( \equiv_n \subseteq K \times K\)，其中每个元素的两个状态就是对于任意同一个长度小于等于n的串要么接受，要么不接受。
-算法第 \(k\)次迭代完成，维护了等价关系：\( \equiv_{k}\)。
-\(\forall{p \in K} ~ \forall q \in K(p \equiv_{100}q \iff p \equiv_{99}q)\)意味着什么：这两个等价关系的元素完全相同。
-算法在进行第 \(k\)次迭代时候，会进行如下操作：对 \(\equiv_{k}\)中每一个 \((p,q)\)，检测 \(\forall{a \in \Sigma}((\delta(p,a),\delta(q,a))\in \equiv_{k-1})\), 根据定理2.5.1， 如果在这个关系中，那么说明 \(p\equiv_{k}q\)。
-如何通过 \(\forall{p \in K} ~ \forall q \in K(p \equiv_{n-1}q \iff p \equiv_{n}q)\)推导出 \( \forall{p \in K} ~ \forall q \in K(p \equiv_{n&#43;1}q \iff p \equiv_{n}q)\)，可以通过两个角度来思考这个问题：">
+在考虑问题前，先考虑一些问题。首先， \( \equiv_n\) 是什么： 这是一个等价关系， \( \equiv_n \subseteq K \times K\) ，其中每个元素的两个状态就是对于任意同一个长度小于等于n的串要么接受，要么不接受。
+算法第 \(k\) 次迭代完成，维护了等价关系： \( \equiv_{k}\) 。
+\(\forall{p \in K} ~ \forall q \in K(p \equiv_{100}q \iff p \equiv_{99}q)\) 意味着什么：这两个等价关系的元素完全相同。
+算法在进行第 \(k\) 次迭代时候，会进行如下操作：对 \(\equiv_{k}\) 中每一个 \((p,q)\) ，检测 \(\forall{a \in \Sigma}((\delta(p,a),\delta(q,a))\in \equiv_{k-1})\) , 根据定理2.5.1， 如果在这个关系中，那么说明 \(p\equiv_{k}q\) 。
+如何通过 \(\forall{p \in K} ~ \forall q \in K(p \equiv_{n-1}q \iff p \equiv_{n}q)\) 推导出 \( \forall{p \in K} ~ \forall q \in K(p \equiv_{n&#43;1}q \iff p \equiv_{n}q)\) ，可以通过两个角度来思考这个问题：">
   <meta property="og:locale" content="ch">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -68,7 +68,7 @@
 <link rel="canonical" href="http://localhost:1313/notes/docs/cs/automaton/%E4%B8%8A%E6%8E%A8%E8%87%AA%E5%8A%A8%E6%9C%BA/out/">
 <link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
-  <script defer src="/notes/ch.search.min.261c36c542194278d2ed967435491fafe93eb24ceb4561bc8b977b5804694f01.js" integrity="sha256-Jhw2xUIZQnjS7ZZ0NUkfr&#43;k&#43;skzrRWG8i5d7WARpTwE=" crossorigin="anonymous"></script>
+  <script defer src="/notes/ch.search.min.06678b5d8fa249bb42e7525f18e4e79a3ca4da0bf3afe6820fb1045dc51b9b61.js" integrity="sha256-BmeLXY&#43;iSbtC51JfGOTnmjyk2gvzr&#43;aCD7EEXcUbm2E=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -153,8 +153,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-62127cf7ca1a8ad048b3975f74775e79" class="toggle"  />
-    <label for="section-62127cf7ca1a8ad048b3975f74775e79" class="flex justify-between">
+    <input type="checkbox" id="section-f083dd2846afe9387d87444dc225d8f8" class="toggle"  />
+    <label for="section-f083dd2846afe9387d87444dc225d8f8" class="flex justify-between">
       <a role="button" class="">数学</a>
     </label>
   
@@ -174,8 +174,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-1c6520ef863c32fd72ab48eae3d159d7" class="toggle" checked />
-    <label for="section-1c6520ef863c32fd72ab48eae3d159d7" class="flex justify-between">
+    <input type="checkbox" id="section-7387b17546a6709918f470a269c6c3a6" class="toggle" checked />
+    <label for="section-7387b17546a6709918f470a269c6c3a6" class="flex justify-between">
       <a role="button" class="">计算机</a>
     </label>
   
@@ -190,8 +190,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-2646f4bb7955f414fa27e6bf033bd556" class="toggle"  />
-    <label for="section-2646f4bb7955f414fa27e6bf033bd556" class="flex justify-between">
+    <input type="checkbox" id="section-883dd22d9088dfe0d517737e76e3f343" class="toggle"  />
+    <label for="section-883dd22d9088dfe0d517737e76e3f343" class="flex justify-between">
       <a role="button" class="">C programing Language</a>
     </label>
   
@@ -211,8 +211,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-3214e70fc2e9e10b345f37f6a865bd4e" class="toggle"  />
-    <label for="section-3214e70fc2e9e10b345f37f6a865bd4e" class="flex justify-between">
+    <input type="checkbox" id="section-ae66c65a3e55b00401d091ab5d118b72" class="toggle"  />
+    <label for="section-ae66c65a3e55b00401d091ab5d118b72" class="flex justify-between">
       <a role="button" class="">Linux系统编程</a>
     </label>
   
@@ -263,8 +263,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f86fcfc4a67780762eea618a550688a2" class="toggle" checked />
-    <label for="section-f86fcfc4a67780762eea618a550688a2" class="flex justify-between">
+    <input type="checkbox" id="section-f44d397cbaf18f4a23241a642c5d95ca" class="toggle" checked />
+    <label for="section-f44d397cbaf18f4a23241a642c5d95ca" class="flex justify-between">
       <a role="button" class="">自动机理论</a>
     </label>
   
@@ -297,8 +297,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="toggle"  />
-    <label for="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="flex justify-between">
+    <input type="checkbox" id="section-c6e70018c3380b17ff568157c6663973" class="toggle"  />
+    <label for="section-c6e70018c3380b17ff568157c6663973" class="flex justify-between">
       <a role="button" class="">计算机体系结构</a>
     </label>
   
@@ -349,8 +349,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-2a42a98837cbcf55263db65a309356f9" class="toggle"  />
-    <label for="section-2a42a98837cbcf55263db65a309356f9" class="flex justify-between">
+    <input type="checkbox" id="section-7834110d471b5b8c31ba85b53defefb5" class="toggle"  />
+    <label for="section-7834110d471b5b8c31ba85b53defefb5" class="flex justify-between">
       <a role="button" class="">重读CSAPP</a>
     </label>
   
@@ -365,8 +365,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-db68bb9624271c704aa7a3f3eb0e84a5" class="toggle"  />
-    <label for="section-db68bb9624271c704aa7a3f3eb0e84a5" class="flex justify-between">
+    <input type="checkbox" id="section-60f476cc863906259125f414544d5b58" class="toggle"  />
+    <label for="section-60f476cc863906259125f414544d5b58" class="flex justify-between">
       <a role="button" class="">第二章</a>
     </label>
   
@@ -453,6 +453,19 @@ https://github.com/alex-shpak/hugo-book
       
     
       
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E6%BA%A2%E5%87%BA%E6%A3%80%E6%B5%8B-copy/" class="">溢出检测 Copy</a>
+  
+
+        </li>
+      
+    
+      
     
   </ul>
 
@@ -476,8 +489,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7ff6b2b8a37987ef7dab1df904aea282" class="toggle"  />
-    <label for="section-7ff6b2b8a37987ef7dab1df904aea282" class="flex justify-between">
+    <input type="checkbox" id="section-4cb2487617b52817421380d9185ca1b2" class="toggle"  />
+    <label for="section-4cb2487617b52817421380d9185ca1b2" class="flex justify-between">
       <a role="button" class="">Hugo</a>
     </label>
   
@@ -523,8 +536,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="toggle"  />
-    <label for="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="flex justify-between">
+    <input type="checkbox" id="section-b2774c1bed9d3cc3dac066c29b3d0391" class="toggle"  />
+    <label for="section-b2774c1bed9d3cc3dac066c29b3d0391" class="flex justify-between">
       <a role="button" class="">Shortcodes</a>
     </label>
   
