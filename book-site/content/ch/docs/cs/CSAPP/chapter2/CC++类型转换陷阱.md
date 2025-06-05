@@ -40,5 +40,13 @@ bool result = (data2 == (data1 << 1));
 
 
 
+再分析这个：
 
+
+
+```c++
+  unsigned char data1 = 0b1000'0000;
+  signed char data2 = 0b1000'0000;
+  bool result = (data2 == (data1));
+```
 
