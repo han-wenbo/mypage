@@ -3,12 +3,28 @@
 <head><script src="/notes/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=notes/livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
+<meta name="description" content="
+  引言
+  #
+
+第一次读这一章是我上大一的时候，当时每天不上课，几乎所有时间都花在了这本书上，大概一天也只能看个两三页。那个时候觉得这一章的内容太过于 “数学” 了，导致看的痛苦至极。
+这些年来也翻看过数遍这本书，现在由于想设计一个CPU，回过头来再精读这一章，却发现有些地方并不是很严谨，涉及的内容也不够完整，缺失了一些内容与定义，考虑如下一些内容：
+
+本章提及的位向量、二进制数以及整数之间的关系是什么，如何形式化地描述这些差异？
+无符号数加法和补码加法的位级表示是否一样，为什么，又该如何证明？
+对于同一个位向量，它的无符号数的加法逆元和补码的加法逆元位向量是否相同？如何证明？
+无符号数较小的数字减去一个较大的数字时，该如何处理，结果是什么？
+无符号数与补码的减法如何定义？
+
+这些都是本章所缺失但又极其重要的内容，我在接下来的几篇文章要详细讨论上述内容。">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/csapp/chapter2/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="第二章">
+  <meta property="og:description" content="引言#第一次读这一章是我上大一的时候，当时每天不上课，几乎所有时间都花在了这本书上，大概一天也只能看个两三页。那个时候觉得这一章的内容太过于 “数学” 了，导致看的痛苦至极。
+这些年来也翻看过数遍这本书，现在由于想设计一个CPU，回过头来再精读这一章，却发现有些地方并不是很严谨，涉及的内容也不够完整，缺失了一些内容与定义，考虑如下一些内容：
+本章提及的位向量、二进制数以及整数之间的关系是什么，如何形式化地描述这些差异？ 无符号数加法和补码加法的位级表示是否一样，为什么，又该如何证明？ 对于同一个位向量，它的无符号数的加法逆元和补码的加法逆元位向量是否相同？如何证明？ 无符号数较小的数字减去一个较大的数字时，该如何处理，结果是什么？ 无符号数与补码的减法如何定义？ 这些都是本章所缺失但又极其重要的内容，我在接下来的几篇文章要详细讨论上述内容。">
   <meta property="og:locale" content="ch">
   <meta property="og:type" content="website">
 <title>第二章 | Wenbo&#39;s Study Notes</title>
@@ -17,7 +33,7 @@
 <link rel="canonical" href="http://localhost:1313/notes/docs/cs/csapp/chapter2/">
 <link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
-  <script defer src="/notes/ch.search.min.261c36c542194278d2ed967435491fafe93eb24ceb4561bc8b977b5804694f01.js" integrity="sha256-Jhw2xUIZQnjS7ZZ0NUkfr&#43;k&#43;skzrRWG8i5d7WARpTwE=" crossorigin="anonymous"></script>
+  <script defer src="/notes/ch.search.min.a26aae961a3dfff392ad53079752f6aa1ec5ac8c5dc3f4ae2a08f10ae88b2be4.js" integrity="sha256-omqulho9//OSrVMHl1L2qh7FrIxdw/SuKgjxCuiLK&#43;Q=" crossorigin="anonymous"></script>
 <link rel="alternate" type="application/rss+xml" href="http://localhost:1313/notes/docs/cs/csapp/chapter2/index.xml" title="Wenbo's Study Notes" />
 <!--
 Made with Book Theme
@@ -317,7 +333,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-db68bb9624271c704aa7a3f3eb0e84a5" class="toggle" checked />
     <label for="section-db68bb9624271c704aa7a3f3eb0e84a5" class="flex justify-between">
-      <a role="button" class="active">第二章</a>
+      <a href="/notes/docs/cs/csapp/chapter2/" class="active">第二章</a>
     </label>
   
 
@@ -638,7 +654,21 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"></article>
+  <article class="markdown book-article"><h1 id="引言">
+  引言
+  <a class="anchor" href="#%e5%bc%95%e8%a8%80">#</a>
+</h1>
+<p>第一次读这一章是我上大一的时候，当时每天不上课，几乎所有时间都花在了这本书上，大概一天也只能看个两三页。那个时候觉得这一章的内容太过于 “数学” 了，导致看的痛苦至极。</p>
+<p>这些年来也翻看过数遍这本书，现在由于想设计一个CPU，回过头来再精读这一章，却发现有些地方并不是很严谨，涉及的内容也不够完整，缺失了一些内容与定义，考虑如下一些内容：</p>
+<ol>
+<li>本章提及的位向量、二进制数以及整数之间的关系是什么，如何形式化地描述这些差异？</li>
+<li>无符号数加法和补码加法的位级表示是否一样，为什么，又该如何证明？</li>
+<li>对于同一个位向量，它的无符号数的加法逆元和补码的加法逆元位向量是否相同？如何证明？</li>
+<li>无符号数较小的数字减去一个较大的数字时，该如何处理，结果是什么？</li>
+<li>无符号数与补码的减法如何定义？</li>
+</ol>
+<p>这些都是本章所缺失但又极其重要的内容，我在接下来的几篇文章要详细讨论上述内容。</p>
+</article>
  
       
 
@@ -662,6 +692,10 @@ https://github.com/alex-shpak/hugo-book
       </footer>
 
       
+  
+  <div class="book-comments">
+
+</div>
   
  
 
