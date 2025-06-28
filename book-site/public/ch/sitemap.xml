@@ -16,6 +16,10 @@
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/linuxsysprograming/</loc>
   </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/nemu/makefile/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/nemu/</loc>
+  </url><url>
     <loc>http://localhost:1313/notes/docs/cs/csapp/chapter2/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/automaton/</loc>
@@ -42,6 +46,10 @@
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/csapp/chapter2/0%E6%89%A9%E5%B1%95%E7%9A%84%E5%8A%A0%E6%B3%95/</loc>
   </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/csapp/chapter2/cpp%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E9%99%B7%E9%98%B1/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/csapp/chapter2/c%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E9%99%B7%E9%98%B1%E9%99%A4%E6%B3%95/</loc>
+  </url><url>
     <loc>http://localhost:1313/notes/docs/cs/csapp/chapter2/%E6%BA%A2%E5%87%BA%E6%A3%80%E6%B5%8B/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/hidden/</loc>
@@ -49,6 +57,8 @@
     <loc>http://localhost:1313/notes/docs/cs/linuxsysprograming/3rd-level/4th-level/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/linuxsysprograming/3rd-level/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/nemu/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/math/hidden/</loc>
   </url><url>
