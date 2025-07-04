@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ch" dir="ltr">
+<head><script src="/notes/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=notes/livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  跟踪make命令
+  #
+
+
+  从make ARCH=riscv32-nemu run开始
+  #
+
+首先，进入ysyx-workbench/am-kernels/kernels/hello目录，运行make ARCH=riscv32-nemu run -nB 命令。其中
+
+ARCH=riscv32-nemu 定义了一个变量，在 Makefile 中即便没有 ARCH = ...这样的定义，也可以直接通过$(ARCH)使用这个变量。
+run 意味着会执行名为 run的规则。
+-n表明要只输出执行的规则，而不真正的执行。
+-B 不论新旧，强制执行所有依赖的规则。
+
+将该命令的结果输出到vim中，简单浏览一遍，发现有如下规律：
+
+有的地方执行了 make 命令，因此可以暂时先用 :%!grep &quot;^make&quot; 过滤出来简单查看。 但是发现有形如 make[1]的make输出，因此需要只保留make作为命令执行的行。
+以 gcc,g&#43;&#43;以及riscv 开头的命令大概率是编译、链接的命令。
+在最底下，能看到 nemu 被执行的命令，这一行可以先不保留。
+
+因此，可以通过思路来清洗输出：保留上述列出的三项内容的行，筛选掉其他的行，可命令 %!grep -E &quot;^make *-|^riscv|gcc|g\&#43;\&#43;&quot; 实现，加 -E 是因为 grep 默认不支持或运算符。执行完该命令后，可以发现，编译一些单独的.c源文件就有大量重复的内容：
+-std=gnu11 -O2 -MMD -Wall -Werror -I/home/ubuntu/ysyx-workbench/abstract-machine/am/src -I/home/ubuntu/ysyx-workbench/abstract-machine/am/include -I/home/ubuntu/ysyx-workbench/abstract-machine/am/include/ -I/home/ubuntu/ysyx-workb  ench/abstract-machine/klib/include/ -D__ISA__=\&#34;riscv32\&#34; -D__ISA_RISCV32__ -D__ARCH__=riscv32-nemu -D__ARCH_RISCV32_NEMU -D__PLATFORM__=nemu -D__PLATFORM_NEMU -DARCH_H=\&#34;arch/riscv.h\&#34; -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector 
+  -Wno-main -U_FORTIFY_SOURCE -fvisibility=hidden -fno-pic -march=rv64g -mcmodel=medany -mstrict-align -march=rv32im_zicsr -mabi=ilp32    -static -fdata-sections -ffunction-sections -I/home/ubuntu/ysyx-workbench/abstract-machine/am/src/platform/nemu/incl  ude -DMAINARGS_MAX_LEN=64 -DMAINARGS_PLACEHOLDER=\&#34;&#34;The insert-arg rule in Makefile will insert mainargs here.&#34;\&#34; -DISA_H=\&#34;riscv/riscv.h\&#34;
+可以简单的用:%s/foo/bar/g替换掉，这表示在整个文件中（%），把所有匹配 foo 的内容替换为 bar，g 表示每一行中所有匹配都替换。可以用正则表达式中.,*两个元字符，句号代表匹配任意字符一次，而星号表示匹配前一个字符0次或任意多次。">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E8%B7%9F%E8%B8%AAmake%E5%91%BD%E4%BB%A4/">
+  <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
+  <meta property="og:title" content="Wenbo&#39;s Study Notes">
+  <meta property="og:description" content="跟踪make命令#从make ARCH=riscv32-nemu run开始#首先，进入ysyx-workbench/am-kernels/kernels/hello目录，运行make ARCH=riscv32-nemu run -nB 命令。其中
+ARCH=riscv32-nemu 定义了一个变量，在 Makefile 中即便没有 ARCH = ...这样的定义，也可以直接通过$(ARCH)使用这个变量。 run 意味着会执行名为 run的规则。 -n表明要只输出执行的规则，而不真正的执行。 -B 不论新旧，强制执行所有依赖的规则。 将该命令的结果输出到vim中，简单浏览一遍，发现有如下规律：
+有的地方执行了 make 命令，因此可以暂时先用 :%!grep &#34;^make&#34; 过滤出来简单查看。 但是发现有形如 make[1]的make输出，因此需要只保留make作为命令执行的行。 以 gcc,g&#43;&#43;以及riscv 开头的命令大概率是编译、链接的命令。 在最底下，能看到 nemu 被执行的命令，这一行可以先不保留。 因此，可以通过思路来清洗输出：保留上述列出的三项内容的行，筛选掉其他的行，可命令 %!grep -E &#34;^make *-|^riscv|gcc|g\&#43;\&#43;&#34; 实现，加 -E 是因为 grep 默认不支持或运算符。执行完该命令后，可以发现，编译一些单独的.c源文件就有大量重复的内容：
+-std=gnu11 -O2 -MMD -Wall -Werror -I/home/ubuntu/ysyx-workbench/abstract-machine/am/src -I/home/ubuntu/ysyx-workbench/abstract-machine/am/include -I/home/ubuntu/ysyx-workbench/abstract-machine/am/include/ -I/home/ubuntu/ysyx-workb ench/abstract-machine/klib/include/ -D__ISA__=\&#34;riscv32\&#34; -D__ISA_RISCV32__ -D__ARCH__=riscv32-nemu -D__ARCH_RISCV32_NEMU -D__PLATFORM__=nemu -D__PLATFORM_NEMU -DARCH_H=\&#34;arch/riscv.h\&#34; -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector -Wno-main -U_FORTIFY_SOURCE -fvisibility=hidden -fno-pic -march=rv64g -mcmodel=medany -mstrict-align -march=rv32im_zicsr -mabi=ilp32 -static -fdata-sections -ffunction-sections -I/home/ubuntu/ysyx-workbench/abstract-machine/am/src/platform/nemu/incl ude -DMAINARGS_MAX_LEN=64 -DMAINARGS_PLACEHOLDER=\&#34;&#34;The insert-arg rule in Makefile will insert mainargs here.&#34;\&#34; -DISA_H=\&#34;riscv/riscv.h\&#34; 可以简单的用:%s/foo/bar/g替换掉，这表示在整个文件中（%），把所有匹配 foo 的内容替换为 bar，g 表示每一行中所有匹配都替换。可以用正则表达式中.,*两个元字符，句号代表匹配任意字符一次，而星号表示匹配前一个字符0次或任意多次。">
+  <meta property="og:locale" content="ch">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>跟踪make命令 | Wenbo&#39;s Study Notes</title>
+<link rel="icon" href="/notes/favicon.png" >
+<link rel="manifest" href="/notes/manifest.json">
+<link rel="canonical" href="http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E8%B7%9F%E8%B8%AAmake%E5%91%BD%E4%BB%A4/">
+<link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
+  <script defer src="/notes/fuse.min.js"></script>
+  <script defer src="/notes/ch.search.min.f20f9a08565d5e4bea296d45e9b0a8a7a228a6e4786d209e867c93af4b9a6ea8.js" integrity="sha256-8g&#43;aCFZdXkvqKW1F6bCop6IopuR4bSCehnyTr0uabqg=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/notes/"><span>Wenbo&#39;s Study Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="" aria-label="" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+  
+
+
+
+  
+    
+  
+
+
+
+<ul class="book-languages">
+  <li>
+    <input type="checkbox" id="languages" class="toggle" />
+    <label for="languages" class="flex justify-between">
+      <a role="button" class="flex align-center">
+        <img src="/notes/svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </label>
+
+    <ul>
+      
+      <li>
+        <a href="/notes/en/">
+          English
+        </a>
+      </li>
+      
+    </ul>
+  </li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-62127cf7ca1a8ad048b3975f74775e79" class="toggle"  />
+    <label for="section-62127cf7ca1a8ad048b3975f74775e79" class="flex justify-between">
+      <a role="button" class="">数学</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1c6520ef863c32fd72ab48eae3d159d7" class="toggle" checked />
+    <label for="section-1c6520ef863c32fd72ab48eae3d159d7" class="flex justify-between">
+      <a role="button" class="">计算机</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2646f4bb7955f414fa27e6bf033bd556" class="toggle"  />
+    <label for="section-2646f4bb7955f414fa27e6bf033bd556" class="flex justify-between">
+      <a role="button" class="">C programing Language</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3214e70fc2e9e10b345f37f6a865bd4e" class="toggle"  />
+    <label for="section-3214e70fc2e9e10b345f37f6a865bd4e" class="flex justify-between">
+      <a role="button" class="">Linux系统编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/linuxsysprograming/3rd-level/" class="">3rd Level</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/linuxsysprograming/3rd-level/4th-level/" class="">4th Level</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a3f477f7bb35dcf936a869de0e256fc" class="toggle" checked />
+    <label for="section-0a3f477f7bb35dcf936a869de0e256fc" class="flex justify-between">
+      <a role="button" class="">YSYX</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-eefa133d5688cd1f84d09e4291321e62" class="toggle"  />
+    <label for="section-eefa133d5688cd1f84d09e4291321e62" class="flex justify-between">
+      <a role="button" class="">Ahstarct-machine</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fc7c6348a8cbdec604f0e9021d5d1598" class="toggle"  />
+    <label for="section-fc7c6348a8cbdec604f0e9021d5d1598" class="flex justify-between">
+      <a href="/notes/docs/cs/ysyx/nemu/makefile/" class="">Makefile</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/ysyx/nemu/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/" class="">基本组织</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-8bb512fe5a22d9bd5d7e1508902e4be7" class="toggle" checked />
+    <label for="section-8bb512fe5a22d9bd5d7e1508902e4be7" class="flex justify-between">
+      <a role="button" class="">NEMU</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-468293f56e0fa98e6db1034a99c56d2c" class="toggle" checked />
+    <label for="section-468293f56e0fa98e6db1034a99c56d2c" class="flex justify-between">
+      <a href="/notes/docs/cs/ysyx/ahstarct-machine/makefile/" class="">Makefile</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E8%B7%9F%E8%B8%AAmake%E5%91%BD%E4%BB%A4/" class="active">跟踪make命令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/" class="">阅读源码</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f86fcfc4a67780762eea618a550688a2" class="toggle"  />
+    <label for="section-f86fcfc4a67780762eea618a550688a2" class="flex justify-between">
+      <a role="button" class="">自动机理论</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/automaton/%E4%B8%8A%E6%8E%A8%E8%87%AA%E5%8A%A8%E6%9C%BA/out/" class="">Out</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="toggle"  />
+    <label for="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="flex justify-between">
+      <a role="button" class="">计算机体系结构</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/arch/3rd-level/" class="">3rd Level</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/arch/3rd-level/4th-level/" class="">4th Level</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-2a42a98837cbcf55263db65a309356f9" class="toggle"  />
+    <label for="section-2a42a98837cbcf55263db65a309356f9" class="flex justify-between">
+      <a role="button" class="">重读CSAPP</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-db68bb9624271c704aa7a3f3eb0e84a5" class="toggle"  />
+    <label for="section-db68bb9624271c704aa7a3f3eb0e84a5" class="flex justify-between">
+      <a href="/notes/docs/cs/csapp/chapter2/" class="">第二章</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E8%AF%81%E6%98%8E%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E4%BD%8D%E7%BA%A7%E8%A1%A8%E7%A4%BA%E4%B8%80%E6%A0%B7/" class="">证明：无符号数和补码加法位级表示一样</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E4%B8%8E%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0/" class="">无符号数与补码加法硬件实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/" class="">无符号数减法的定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E8%A1%A5%E7%A0%81%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/" class="">补码减法的定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E5%8A%A0%E6%B3%95%E9%80%86%E5%85%83%E7%9A%84%E4%BD%8D%E5%90%91%E9%87%8F/" class="">加法逆元的位向量</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/0%E6%89%A9%E5%B1%95%E7%9A%84%E5%8A%A0%E6%B3%95/" class="">0扩展的加法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/cpp%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E9%99%B7%E9%98%B1/" class="">Cpp类型转换陷阱</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/c%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E9%99%B7%E9%98%B1%E9%99%A4%E6%B3%95/" class="">C类型转换陷阱：除法</a>
+  
+
+        </li>
+      
+    
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-7ff6b2b8a37987ef7dab1df904aea282" class="toggle"  />
+    <label for="section-7ff6b2b8a37987ef7dab1df904aea282" class="flex justify-between">
+      <a role="button" class="">Hugo</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/hugo/%E5%8E%BB%E6%8E%89%E5%BA%95%E9%83%A8%E5%B9%BF%E5%91%8A/" class="">去掉Hugo Blox模板底部广告</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/hugo/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%98%AF%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E7%9A%84/" class="">我的Page是如何搭建的</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="toggle"  />
+    <label for="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="flex justify-between">
+      <a role="button" class="">Shortcodes</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/buttons/" class="">Buttons</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/columns/" class="">Columns</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/details/" class="">Details</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/hints/" class="">Hints</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/mermaid/" class="">Mermaid</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/tabs/" class="">Tabs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/katex/" class="">KaTeX</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/notes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>跟踪make命令</h3>
+
+  <label for="toc-control">
+    
+    <img src="/notes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#从make-archriscv32-nemu-run开始">从make ARCH=riscv32-nemu run开始</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="跟踪make命令">
+  跟踪make命令
+  <a class="anchor" href="#%e8%b7%9f%e8%b8%aamake%e5%91%bd%e4%bb%a4">#</a>
+</h1>
+<h2 id="从make-archriscv32-nemu-run开始">
+  从make ARCH=riscv32-nemu run开始
+  <a class="anchor" href="#%e4%bb%8emake-archriscv32-nemu-run%e5%bc%80%e5%a7%8b">#</a>
+</h2>
+<p>首先，进入<code>ysyx-workbench/am-kernels/kernels/hello</code>目录，运行<code>make ARCH=riscv32-nemu run -nB</code> 命令。其中</p>
+<ul>
+<li><code>ARCH=riscv32-nemu</code> 定义了一个变量，在 Makefile 中即便没有 <code>ARCH = ...</code>这样的定义，也可以直接通过<code>$(ARCH)</code>使用这个变量。</li>
+<li><code>run</code> 意味着会执行名为 <code>run</code>的规则。</li>
+<li><code>-n</code>表明要只输出执行的规则，而不真正的执行。</li>
+<li><code>-B</code> 不论新旧，强制执行所有依赖的规则。</li>
+</ul>
+<p>将该命令的结果输出到vim中，简单浏览一遍，发现有如下规律：</p>
+<ul>
+<li>有的地方执行了 <code>make</code> 命令，因此可以暂时先用 <code>:%!grep &quot;^make&quot;</code> 过滤出来简单查看。 但是发现有形如 <code>make[1]</code>的make输出，因此需要只保留make作为命令执行的行。</li>
+<li>以 <code>gcc</code>,<code>g++</code>以及<code>riscv</code> 开头的命令大概率是编译、链接的命令。</li>
+<li>在最底下，能看到 nemu 被执行的命令，这一行可以先不保留。</li>
+</ul>
+<p>因此，可以通过思路来清洗输出：保留上述列出的三项内容的行，筛选掉其他的行，可命令 <code>%!grep -E &quot;^make *-|^riscv|gcc|g\+\+&quot;</code> 实现，加 <code>-E</code> 是因为 grep 默认不支持或运算符。执行完该命令后，可以发现，编译一些单独的<code>.c</code>源文件就有大量重复的内容：</p>
+<pre tabindex="0"><code>-std=gnu11 -O2 -MMD -Wall -Werror -I/home/ubuntu/ysyx-workbench/abstract-machine/am/src -I/home/ubuntu/ysyx-workbench/abstract-machine/am/include -I/home/ubuntu/ysyx-workbench/abstract-machine/am/include/ -I/home/ubuntu/ysyx-workb  ench/abstract-machine/klib/include/ -D__ISA__=\&#34;riscv32\&#34; -D__ISA_RISCV32__ -D__ARCH__=riscv32-nemu -D__ARCH_RISCV32_NEMU -D__PLATFORM__=nemu -D__PLATFORM_NEMU -DARCH_H=\&#34;arch/riscv.h\&#34; -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector 
+  -Wno-main -U_FORTIFY_SOURCE -fvisibility=hidden -fno-pic -march=rv64g -mcmodel=medany -mstrict-align -march=rv32im_zicsr -mabi=ilp32    -static -fdata-sections -ffunction-sections -I/home/ubuntu/ysyx-workbench/abstract-machine/am/src/platform/nemu/incl  ude -DMAINARGS_MAX_LEN=64 -DMAINARGS_PLACEHOLDER=\&#34;&#34;The insert-arg rule in Makefile will insert mainargs here.&#34;\&#34; -DISA_H=\&#34;riscv/riscv.h\&#34;
+</code></pre><p>可以简单的用<code>:%s/foo/bar/g</code>替换掉，这表示在整个文件中（<code>%</code>），把所有匹配 <code>foo</code> 的内容替换为 <code>bar</code>，<code>g</code> 表示每一行中所有匹配都替换。可以用正则表达式中<code>.</code>,<code>*</code>两个元字符，句号代表匹配任意字符一次，而星号表示匹配前一个字符0次或任意多次。</p>
+<p>此时还会发现有很多  <code>gcc ... -E ...</code>的行，这仅仅进行了预编译处理，可以删掉这些行。可以使用<code>:g/{pattern}/[command]</code>,该命令对<strong>所有匹配 <code>{pattern}</code> 的行</strong>，执行指定的 <code>[command]</code>。 command用<code>d</code> 可以删掉匹配到的行。</p>
+<p>最后，再用<code>%s/ -/\r   -/g</code>将每个以 <code>-</code>开头的参数换行。</p>
+<p>现在可以看到，make执行的命令主要分为两部分：</p>
+<ol>
+<li>编译hello所需的源文件，然后链接在一起，这用了一个额外的链接脚本。</li>
+<li>编译并链接nemu。</li>
+</ol>
+<p>这两部分通过如下这条make命令连接：</p>
+<pre tabindex="0"><code>make -C /home/ubuntu/ysyx-workbench/nemu 
+	ISA=riscv32 
+	run 
+	ARGS=&#34;-l /home/ubuntu/ysyx-workbench/am-kernels/kernels/hello/build/nemu-log.txt&#34; 
+	IMG=/home/ubuntu/ysyx-workbench/am-kernels/kernels/hello/build/hello-riscv32-nemu.bin
+</code></pre></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#从make-archriscv32-nemu-run开始">从make ARCH=riscv32-nemu run开始</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

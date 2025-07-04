@@ -14,11 +14,17 @@
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/</loc>
   </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/ysyx/nemu/</loc>
+  </url><url>
     <loc>http://localhost:1313/notes/docs/cs/linuxsysprograming/</loc>
   </url><url>
-    <loc>http://localhost:1313/notes/docs/cs/nemu/makefile/</loc>
+    <loc>http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/</loc>
   </url><url>
-    <loc>http://localhost:1313/notes/docs/cs/nemu/</loc>
+    <loc>http://localhost:1313/notes/docs/cs/ysyx/nemu/makefile/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/ysyx/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/csapp/chapter2/</loc>
   </url><url>
@@ -58,7 +64,9 @@
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/linuxsysprograming/3rd-level/</loc>
   </url><url>
-    <loc>http://localhost:1313/notes/docs/cs/nemu/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/</loc>
+    <loc>http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/ysyx/nemu/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/math/hidden/</loc>
   </url><url>

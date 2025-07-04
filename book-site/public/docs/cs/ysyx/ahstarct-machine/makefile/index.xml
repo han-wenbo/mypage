@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Makefile on Wenbo&#39;s Study Notes</title>
+    <link>http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/</link>
+    <description>Recent content in Makefile on Wenbo&#39;s Study Notes</description>
+    <generator>Hugo</generator>
+    <language>ch</language>
+    <atom:link href="http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E8%B7%9F%E8%B8%AAmake%E5%91%BD%E4%BB%A4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E8%B7%9F%E8%B8%AAmake%E5%91%BD%E4%BB%A4/</guid>
+      <description>&lt;h1 id=&#34;跟踪make命令&#34;&gt;&#xD;&#xA;  跟踪make命令&#xD;&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e8%b7%9f%e8%b8%aamake%e5%91%bd%e4%bb%a4&#34;&gt;#&lt;/a&gt;&#xD;&#xA;&lt;/h1&gt;&#xD;&#xA;&lt;h2 id=&#34;从make-archriscv32-nemu-run开始&#34;&gt;&#xD;&#xA;  从make ARCH=riscv32-nemu run开始&#xD;&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e4%bb%8emake-archriscv32-nemu-run%e5%bc%80%e5%a7%8b&#34;&gt;#&lt;/a&gt;&#xD;&#xA;&lt;/h2&gt;&#xD;&#xA;&lt;p&gt;首先，进入&lt;code&gt;ysyx-workbench/am-kernels/kernels/hello&lt;/code&gt;目录，运行&lt;code&gt;make ARCH=riscv32-nemu run -nB&lt;/code&gt; 命令。其中&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;ARCH=riscv32-nemu&lt;/code&gt; 定义了一个变量，在 Makefile 中即便没有 &lt;code&gt;ARCH = ...&lt;/code&gt;这样的定义，也可以直接通过&lt;code&gt;$(ARCH)&lt;/code&gt;使用这个变量。&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;run&lt;/code&gt; 意味着会执行名为 &lt;code&gt;run&lt;/code&gt;的规则。&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;-n&lt;/code&gt;表明要只输出执行的规则，而不真正的执行。&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;-B&lt;/code&gt; 不论新旧，强制执行所有依赖的规则。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;将该命令的结果输出到vim中，简单浏览一遍，发现有如下规律：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;有的地方执行了 &lt;code&gt;make&lt;/code&gt; 命令，因此可以暂时先用 &lt;code&gt;:%!grep &amp;quot;^make&amp;quot;&lt;/code&gt; 过滤出来简单查看。 但是发现有形如 &lt;code&gt;make[1]&lt;/code&gt;的make输出，因此需要只保留make作为命令执行的行。&lt;/li&gt;&#xA;&lt;li&gt;以 &lt;code&gt;gcc&lt;/code&gt;,&lt;code&gt;g++&lt;/code&gt;以及&lt;code&gt;riscv&lt;/code&gt; 开头的命令大概率是编译、链接的命令。&lt;/li&gt;&#xA;&lt;li&gt;在最底下，能看到 nemu 被执行的命令，这一行可以先不保留。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;因此，可以通过思路来清洗输出：保留上述列出的三项内容的行，筛选掉其他的行，可命令 &lt;code&gt;%!grep -E &amp;quot;^make *-|^riscv|gcc|g\+\+&amp;quot;&lt;/code&gt; 实现，加 &lt;code&gt;-E&lt;/code&gt; 是因为 grep 默认不支持或运算符。执行完该命令后，可以发现，编译一些单独的&lt;code&gt;.c&lt;/code&gt;源文件就有大量重复的内容：&lt;/p&gt;&#xA;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;-std=gnu11 -O2 -MMD -Wall -Werror -I/home/ubuntu/ysyx-workbench/abstract-machine/am/src -I/home/ubuntu/ysyx-workbench/abstract-machine/am/include -I/home/ubuntu/ysyx-workbench/abstract-machine/am/include/ -I/home/ubuntu/ysyx-workb  ench/abstract-machine/klib/include/ -D__ISA__=\&amp;#34;riscv32\&amp;#34; -D__ISA_RISCV32__ -D__ARCH__=riscv32-nemu -D__ARCH_RISCV32_NEMU -D__PLATFORM__=nemu -D__PLATFORM_NEMU -DARCH_H=\&amp;#34;arch/riscv.h\&amp;#34; -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector &#xD;&#xA;  -Wno-main -U_FORTIFY_SOURCE -fvisibility=hidden -fno-pic -march=rv64g -mcmodel=medany -mstrict-align -march=rv32im_zicsr -mabi=ilp32    -static -fdata-sections -ffunction-sections -I/home/ubuntu/ysyx-workbench/abstract-machine/am/src/platform/nemu/incl  ude -DMAINARGS_MAX_LEN=64 -DMAINARGS_PLACEHOLDER=\&amp;#34;&amp;#34;The insert-arg rule in Makefile will insert mainargs here.&amp;#34;\&amp;#34; -DISA_H=\&amp;#34;riscv/riscv.h\&amp;#34;&#xA;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以简单的用&lt;code&gt;:%s/foo/bar/g&lt;/code&gt;替换掉，这表示在整个文件中（&lt;code&gt;%&lt;/code&gt;），把所有匹配 &lt;code&gt;foo&lt;/code&gt; 的内容替换为 &lt;code&gt;bar&lt;/code&gt;，&lt;code&gt;g&lt;/code&gt; 表示每一行中所有匹配都替换。可以用正则表达式中&lt;code&gt;.&lt;/code&gt;,&lt;code&gt;*&lt;/code&gt;两个元字符，句号代表匹配任意字符一次，而星号表示匹配前一个字符0次或任意多次。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title></title>
+      <link>http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/</guid>
+      <description>&lt;h1 id=&#34;阅读源码&#34;&gt;&#xD;&#xA;  阅读源码&#xD;&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#%e9%98%85%e8%af%bb%e6%ba%90%e7%a0%81&#34;&gt;#&lt;/a&gt;&#xD;&#xA;&lt;/h1&gt;</description>
+    </item>
+  </channel>
+</rss>
