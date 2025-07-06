@@ -1,6 +1,6 @@
 # 跟踪make命令
 
-## 从make ARCH=riscv32-nemu run开始
+## 1.从make ARCH=riscv32-nemu run开始
 
 首先，进入`ysyx-workbench/am-kernels/kernels/hello`目录，运行`make ARCH=riscv32-nemu run -nB` 命令。其中
 
