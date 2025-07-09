@@ -6,13 +6,75 @@
 <meta name="description" content="
   阅读源码
   #
-">
+
+
+  1. 继续从make ARCH=riscv32-nemu run开始
+  #
+
+
+在ysyx-workbench/am-kernels/kernels/hello目录中，有一个 Makefile文件，在该目录下运行这条命令，自然会从这个文件里寻找规则去执行，因此先查看该文件的内容：
+NAME = hello
+SRCS = hello.c
+include $(AM_HOME)/Makefile
+SRCS 是一个非常重要的变量，它收集了本次运行make 所产生的进程的所有要编译的源文件（这是因为 makefile 文件里会再次执行make命令，编译 klib 和abstract-machine）。
+其中，$(AM_HOME)/Makefile 是最核心的 makefile 文件，在检查这个文件内容，可以发现如下include链：
+               ~/ysyx-workbench/am-kernels/kernels/hello/Makefile
+                                     ↓
+                           $(AM_HOME)/Makefile
+                                     ↓
+                    $(AM_HOME)/scripts/riscv32-nemu.mk
+                            ↙                     ↘
+$(AM_HOME)/scripts/isa/riscv.mk     $(AM_HOME)/scripts/platform/nemu.mk
+
+$(AM_HOME)/Makefile 的主要用处：
+
+
+
+根据传入的 ARCH 参数 &hellip;
+
+
+定义了 CC,LD,CCFLAG,LDFLAGS等变量，以及所有架构、平台可以共用的这些参数。
+
+
+定义了如何编译、链接你要跑的应用，在这里就是hello，同时也用相同的规则定义了 abstract-machine和 kilb 的编译为目标文件的规则，以及打包成静态库（递归调用）。
+
+
+
+
+$(AM_HOME)/scripts/isa/riscv.m :
+
+主要是 ISA 相关的内容，
+
+
+
+ $(AM_HOME)/scripts/platform/nemu.mk :
+
+
+
+  2. 先分析主Makefile中的 ARCH 变量
+  #
+
+
+
+  3. 从 run 规则开始分析
+  #
+
+
+run规则定义在平台相关的  $(AM_HOME)/scripts/platform/nemu.mk 中：">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="Wenbo&#39;s Study Notes">
-  <meta property="og:description" content="阅读源码#">
+  <meta property="og:description" content="阅读源码#1. 继续从make ARCH=riscv32-nemu run开始#在ysyx-workbench/am-kernels/kernels/hello目录中，有一个 Makefile文件，在该目录下运行这条命令，自然会从这个文件里寻找规则去执行，因此先查看该文件的内容：
+NAME = hello SRCS = hello.c include $(AM_HOME)/Makefile SRCS 是一个非常重要的变量，它收集了本次运行make 所产生的进程的所有要编译的源文件（这是因为 makefile 文件里会再次执行make命令，编译 klib 和abstract-machine）。
+其中，$(AM_HOME)/Makefile 是最核心的 makefile 文件，在检查这个文件内容，可以发现如下include链：
+~/ysyx-workbench/am-kernels/kernels/hello/Makefile ↓ $(AM_HOME)/Makefile ↓ $(AM_HOME)/scripts/riscv32-nemu.mk ↙ ↘ $(AM_HOME)/scripts/isa/riscv.mk $(AM_HOME)/scripts/platform/nemu.mk $(AM_HOME)/Makefile 的主要用处： 根据传入的 ARCH 参数 …
+定义了 CC,LD,CCFLAG,LDFLAGS等变量，以及所有架构、平台可以共用的这些参数。
+定义了如何编译、链接你要跑的应用，在这里就是hello，同时也用相同的规则定义了 abstract-machine和 kilb 的编译为目标文件的规则，以及打包成静态库（递归调用）。
+$(AM_HOME)/scripts/isa/riscv.m :
+主要是 ISA 相关的内容， $(AM_HOME)/scripts/platform/nemu.mk :
+2. 先分析主Makefile中的 ARCH 变量#3. 从 run 规则开始分析#run规则定义在平台相关的 $(AM_HOME)/scripts/platform/nemu.mk 中：">
   <meta property="og:locale" content="ch">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -22,7 +84,7 @@
 <link rel="canonical" href="http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/">
 <link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
-  <script defer src="/notes/ch.search.min.90b2747d15447ca124066c445969354471ba333c25b222bab39afa5949c30500.js" integrity="sha256-kLJ0fRVEfKEkBmxEWWk1RHG6MzwlsiK6s5r6WUnDBQA=" crossorigin="anonymous"></script>
+  <script defer src="/notes/ch.search.min.3a8bc2e8805fb7e5eb4e8254d7ea1a882692357bdfb0bf15cfd688d2cfae7cb3.js" integrity="sha256-OovC6IBft&#43;XrToJU1&#43;oaiCaSNXvfsL8Vz9aI0s&#43;ufLM=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -233,64 +295,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-eefa133d5688cd1f84d09e4291321e62" class="toggle"  />
-    <label for="section-eefa133d5688cd1f84d09e4291321e62" class="flex justify-between">
-      <a role="button" class="">Ahstarct-machine</a>
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-fc7c6348a8cbdec604f0e9021d5d1598" class="toggle"  />
-    <label for="section-fc7c6348a8cbdec604f0e9021d5d1598" class="flex justify-between">
-      <a href="/notes/docs/cs/ysyx/nemu/makefile/" class="">Makefile</a>
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/notes/docs/cs/ysyx/nemu/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/" class="">基本组织</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <input type="checkbox" id="section-8bb512fe5a22d9bd5d7e1508902e4be7" class="toggle" checked />
     <label for="section-8bb512fe5a22d9bd5d7e1508902e4be7" class="flex justify-between">
-      <a role="button" class="">NEMU</a>
+      <a role="button" class="">Ahstarct-machine</a>
     </label>
   
 
@@ -334,6 +341,61 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/" class="active">阅读源码</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-eefa133d5688cd1f84d09e4291321e62" class="toggle"  />
+    <label for="section-eefa133d5688cd1f84d09e4291321e62" class="flex justify-between">
+      <a role="button" class="">NEMU</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fc7c6348a8cbdec604f0e9021d5d1598" class="toggle"  />
+    <label for="section-fc7c6348a8cbdec604f0e9021d5d1598" class="flex justify-between">
+      <a href="/notes/docs/cs/ysyx/nemu/makefile/" class="">Makefile</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/ysyx/nemu/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/" class="">基本组织</a>
   
 
         </li>
@@ -801,7 +863,13 @@ https://github.com/alex-shpak/hugo-book
   <aside class="hidden clearfix">
     
   
-<nav id="TableOfContents"></nav>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-继续从make-archriscv32-nemu-run开始">1. 继续从make ARCH=riscv32-nemu run开始</a></li>
+    <li><a href="#2-先分析主makefile中的-arch-变量">2. 先分析主Makefile中的 ARCH 变量</a></li>
+    <li><a href="#3-从-run-规则开始分析">3. 从 run 规则开始分析</a></li>
+  </ul>
+</nav>
 
 
 
@@ -816,6 +884,99 @@ https://github.com/alex-shpak/hugo-book
   阅读源码
   <a class="anchor" href="#%e9%98%85%e8%af%bb%e6%ba%90%e7%a0%81">#</a>
 </h1>
+<h2 id="1-继续从make-archriscv32-nemu-run开始">
+  1. 继续从make ARCH=riscv32-nemu run开始
+  <a class="anchor" href="#1-%e7%bb%a7%e7%bb%ad%e4%bb%8emake-archriscv32-nemu-run%e5%bc%80%e5%a7%8b">#</a>
+</h2>
+<hr>
+<p>在<code>ysyx-workbench/am-kernels/kernels/hello</code>目录中，有一个 <code>Makefile</code>文件，在该目录下运行这条命令，自然会从这个文件里寻找规则去执行，因此先查看该文件的内容：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span>NAME <span style="color:#f92672">=</span> hello
+</span></span><span style="display:flex;"><span>SRCS <span style="color:#f92672">=</span> hello.c
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">include</span> <span style="color:#66d9ef">$(</span>AM_HOME<span style="color:#66d9ef">)</span><span style="color:#960050;background-color:#1e0010">/Makefile</span>
+</span></span></code></pre></div><p><code>SRCS</code> 是一个非常重要的变量，它收集了<strong>本次运行make 所产生的进程</strong>的所有要编译的源文件（这是因为 makefile 文件里会再次执行make命令，编译 klib 和abstract-machine）。</p>
+<p>其中，<code>$(AM_HOME)/Makefile</code> 是最核心的 makefile 文件，在检查这个文件内容，可以发现如下include链：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span>               ~/ysyx-workbench/am-kernels/kernels/hello/Makefile
+</span></span><span style="display:flex;"><span>                                     ↓
+</span></span><span style="display:flex;"><span>                           <span style="color:#66d9ef">$(</span>AM_HOME<span style="color:#66d9ef">)</span>/Makefile
+</span></span><span style="display:flex;"><span>                                     ↓
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">$(</span>AM_HOME<span style="color:#66d9ef">)</span>/scripts/riscv32-nemu.mk
+</span></span><span style="display:flex;"><span>                            ↙                     ↘
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">$(</span>AM_HOME<span style="color:#66d9ef">)</span><span style="color:#960050;background-color:#1e0010">/scripts/isa/riscv.mk</span>     <span style="color:#66d9ef">$(</span>AM_HOME<span style="color:#66d9ef">)</span><span style="color:#960050;background-color:#1e0010">/scripts/platform/nemu.mk</span>
+</span></span></code></pre></div><ol>
+<li><code>$(AM_HOME)/Makefile</code> 的主要用处：</li>
+</ol>
+<ul>
+<li>
+<p>根据传入的 <code>ARCH</code> 参数 &hellip;</p>
+</li>
+<li>
+<p>定义了 <code>CC</code>,<code>LD</code>,<code>CCFLAG</code>,<code>LDFLAGS</code>等变量，以及所有架构、平台可以共用的这些参数。</p>
+</li>
+<li>
+<p>定义了如何编译、链接你要跑的应用，在这里就是hello，同时也用相同的规则定义了 abstract-machine和 kilb 的编译为目标文件的规则，以及打包成静态库（递归调用）。</p>
+</li>
+</ul>
+<ol start="2">
+<li>
+<p><code>$(AM_HOME)/scripts/isa/riscv.m</code> :</p>
+<ul>
+<li>主要是 <strong>ISA</strong> 相关的内容，</li>
+</ul>
+</li>
+<li>
+<p><code> $(AM_HOME)/scripts/platform/nemu.mk</code> :</p>
+</li>
+</ol>
+<h2 id="2-先分析主makefile中的-arch-变量">
+  2. 先分析主Makefile中的 ARCH 变量
+  <a class="anchor" href="#2-%e5%85%88%e5%88%86%e6%9e%90%e4%b8%bbmakefile%e4%b8%ad%e7%9a%84-arch-%e5%8f%98%e9%87%8f">#</a>
+</h2>
+<hr>
+<h2 id="3-从-run-规则开始分析">
+  3. 从 run 规则开始分析
+  <a class="anchor" href="#3-%e4%bb%8e-run-%e8%a7%84%e5%88%99%e5%bc%80%e5%a7%8b%e5%88%86%e6%9e%90">#</a>
+</h2>
+<hr>
+<p><code>run</code>规则定义在平台相关的 <code> $(AM_HOME)/scripts/platform/nemu.mk</code> 中：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#a6e22e">insert-arg</span><span style="color:#f92672">:</span> image                                                                               
+</span></span><span style="display:flex;"><span>        @python <span style="color:#66d9ef">$(</span>AM_HOME<span style="color:#66d9ef">)</span>/tools/insert-arg.py <span style="color:#66d9ef">$(</span>IMAGE<span style="color:#66d9ef">)</span>.bin <span style="color:#66d9ef">$(</span>MAINARGS_MAX_LEN<span style="color:#66d9ef">)</span> <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>MAINARGS_PLACEHOLDER<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>mainargs<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">image</span><span style="color:#f92672">:</span> image-dep
+</span></span><span style="display:flex;"><span>        @<span style="color:#66d9ef">$(</span>OBJDUMP<span style="color:#66d9ef">)</span> -d <span style="color:#66d9ef">$(</span>IMAGE<span style="color:#66d9ef">)</span>.elf &gt; <span style="color:#66d9ef">$(</span>IMAGE<span style="color:#66d9ef">)</span>.txt                                              
+</span></span><span style="display:flex;"><span>        @echo + OBJCOPY <span style="color:#e6db74">&#34;-&gt;&#34;</span> <span style="color:#66d9ef">$(</span>IMAGE_REL<span style="color:#66d9ef">)</span>.bin                                                   
+</span></span><span style="display:flex;"><span>        @<span style="color:#66d9ef">$(</span>OBJCOPY<span style="color:#66d9ef">)</span> -S --set-section-flags .bss<span style="color:#f92672">=</span>alloc,contents -O binary <span style="color:#66d9ef">$(</span>IMAGE<span style="color:#66d9ef">)</span>.elf <span style="color:#66d9ef">$(</span>IMAGE<span style="color:#66d9ef">)</span>.bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">run</span><span style="color:#f92672">:</span> insert-arg
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">$(</span>MAKE<span style="color:#66d9ef">)</span> -C <span style="color:#66d9ef">$(</span>NEMU_HOME<span style="color:#66d9ef">)</span> ISA<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>ISA<span style="color:#66d9ef">)</span> run ARGS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>NEMUFLAGS<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> IMG<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>IMAGE<span style="color:#66d9ef">)</span>.bin         
+</span></span></code></pre></div><p>而其最终所依赖的 <code>image</code> 定义在 <code>$(AM_HOME)/Makefile</code>中：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#a6e22e">image</span><span style="color:#f92672">:</span> image-dep
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">archive</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">$(</span>ARCHIVE<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">image-dep</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">$(</span>LIBS<span style="color:#66d9ef">)</span> <span style="color:#66d9ef">$(</span>IMAGE<span style="color:#66d9ef">)</span>.elf
+</span></span></code></pre></div><p>在看 <code>IMAGE</code>的定义：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span>IMAGE_REL <span style="color:#f92672">=</span> build/<span style="color:#66d9ef">$(</span>NAME<span style="color:#66d9ef">)</span>-<span style="color:#66d9ef">$(</span>ARCH<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>IMAGE     <span style="color:#f92672">=</span> <span style="color:#66d9ef">$(</span>abspath <span style="color:#66d9ef">$(</span>IMAGE_REL<span style="color:#66d9ef">))</span>
+</span></span></code></pre></div><p>在开始后续分析前，先看一眼定义在该makefile中的 <code>WORK_DIR</code> 变量：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span>WORK_DIR  <span style="color:#f92672">=</span> <span style="color:#66d9ef">$(</span>shell pwd<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>DST_DIR   <span style="color:#f92672">=</span> <span style="color:#66d9ef">$(</span>WORK_DIR<span style="color:#66d9ef">)</span>/build/<span style="color:#66d9ef">$(</span>ARCH<span style="color:#66d9ef">)</span>
+</span></span></code></pre></div><p>尽管这是在 <code>$(AM_HOME)/Makefile</code>的定义的，但是这个文件是被 <code> $YSYX/am-kernels/kernels/hello/Makefile</code>  <em>include</em> 进来了，而 <code>make</code>命令是在  <code> $YSYX/am-kernels/kernels/hello</code> 目录下运行的，所以 <code>WORK_DIR</code> 的值也是这个目录。</p>
+<p>继续我们的分析，<code>IMAGE</code> 的值就是将 <code>build/hello-riscv32-neum</code> 转换为绝对路径，现在可以看<code>$(IMAGE)</code> 是如何被编译的了：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#a6e22e">$(IMAGE).elf</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">$(</span>/<span style="color:#66d9ef">)</span> <span style="color:#66d9ef">$(</span>LDSCRIPTS<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>        @echo <span style="color:#ae81ff">\#</span> Creating image <span style="color:#f92672">[</span><span style="color:#66d9ef">$(</span>ARCH<span style="color:#66d9ef">)</span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>        @echo + LD <span style="color:#e6db74">&#34;-&gt;&#34;</span> <span style="color:#66d9ef">$(</span>IMAGE_REL<span style="color:#66d9ef">)</span>.elf
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>OBJS      <span style="color:#f92672">=</span> <span style="color:#66d9ef">$(</span>addprefix <span style="color:#66d9ef">$(</span>DST_DIR<span style="color:#66d9ef">)</span>/, <span style="color:#66d9ef">$(</span>addsuffix .o, <span style="color:#66d9ef">$(</span>basename <span style="color:#66d9ef">$(</span>SRCS<span style="color:#66d9ef">))))</span>
+</span></span><span style="display:flex;"><span>LIBS     <span style="color:#f92672">:=</span> <span style="color:#66d9ef">$(</span>sort <span style="color:#66d9ef">$(</span>LIBS<span style="color:#66d9ef">)</span> am klib<span style="color:#66d9ef">)</span> <span style="color:#75715e"># lazy evaluation (&#34;=&#34;) causes infinite recursions</span>
+</span></span><span style="display:flex;"><span>LINKAGE   <span style="color:#f92672">=</span> <span style="color:#66d9ef">$(</span>OBJS<span style="color:#66d9ef">)</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  <span style="color:#66d9ef">$(</span>addsuffix -<span style="color:#66d9ef">$(</span>ARCH<span style="color:#66d9ef">)</span>.a, <span style="color:#66d9ef">$(</span>join <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#66d9ef">$(</span>addsuffix /build/, <span style="color:#66d9ef">$(</span>addprefix <span style="color:#66d9ef">$(</span>AM_HOME<span style="color:#66d9ef">)</span>/, <span style="color:#66d9ef">$(</span>LIBS<span style="color:#66d9ef">)))</span>, <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    <span style="color:#66d9ef">$(</span>LIBS<span style="color:#66d9ef">)</span> <span style="color:#f92672">))</span>
+</span></span></code></pre></div><p>先看一下内建函数<code>join</code>的效果：<code>$(join a b c, 1 2 3)</code> 的结果为 <code>a1 b2 c3</code>。注意，<code>addprefix</code>和<code>addsufix</code>是会给每个由空格隔开的单词都加上相同的前缀或后缀：<code>$(addprefix a, 1 2)</code> 的结果为 <code>a1 a2</code>.</p>
+<p>上面代码中的 <code>join</code> 两个参数分别为 ：</p>
+<ul>
+<li><code>$(addsuffix /build/, $(addprefix $(AM_HOME)/, $(LIBS)))</code></li>
+<li><code>$(LIBS)</code></li>
+</ul>
+<p>最终，<code>LINKAGE</code> 的结果就是 $(DST_DIR)/build/xxx.o  和 两个位于am/build 以及 klib/build中的 .a</p>
 </article>
  
       
@@ -855,7 +1016,13 @@ https://github.com/alex-shpak/hugo-book
       <div class="book-toc-content">
         
   
-<nav id="TableOfContents"></nav>
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-继续从make-archriscv32-nemu-run开始">1. 继续从make ARCH=riscv32-nemu run开始</a></li>
+    <li><a href="#2-先分析主makefile中的-arch-变量">2. 先分析主Makefile中的 ARCH 变量</a></li>
+    <li><a href="#3-从-run-规则开始分析">3. 从 run 规则开始分析</a></li>
+  </ul>
+</nav>
 
 
  

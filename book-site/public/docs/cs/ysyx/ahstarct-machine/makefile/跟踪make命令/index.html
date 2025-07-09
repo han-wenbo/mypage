@@ -8,7 +8,7 @@
   #
 
 
-  从make ARCH=riscv32-nemu run开始
+  1.从make ARCH=riscv32-nemu run开始
   #
 
 首先，进入ysyx-workbench/am-kernels/kernels/hello目录，运行make ARCH=riscv32-nemu run -nB 命令。其中
@@ -33,7 +33,7 @@ run 意味着会执行名为 run的规则。
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E8%B7%9F%E8%B8%AAmake%E5%91%BD%E4%BB%A4/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="Wenbo&#39;s Study Notes">
-  <meta property="og:description" content="跟踪make命令#从make ARCH=riscv32-nemu run开始#首先，进入ysyx-workbench/am-kernels/kernels/hello目录，运行make ARCH=riscv32-nemu run -nB 命令。其中
+  <meta property="og:description" content="跟踪make命令#1.从make ARCH=riscv32-nemu run开始#首先，进入ysyx-workbench/am-kernels/kernels/hello目录，运行make ARCH=riscv32-nemu run -nB 命令。其中
 ARCH=riscv32-nemu 定义了一个变量，在 Makefile 中即便没有 ARCH = ...这样的定义，也可以直接通过$(ARCH)使用这个变量。 run 意味着会执行名为 run的规则。 -n表明要只输出执行的规则，而不真正的执行。 -B 不论新旧，强制执行所有依赖的规则。 将该命令的结果输出到vim中，简单浏览一遍，发现有如下规律：
 有的地方执行了 make 命令，因此可以暂时先用 :%!grep &#34;^make&#34; 过滤出来简单查看。 但是发现有形如 make[1]的make输出，因此需要只保留make作为命令执行的行。 以 gcc,g&#43;&#43;以及riscv 开头的命令大概率是编译、链接的命令。 在最底下，能看到 nemu 被执行的命令，这一行可以先不保留。 因此，可以通过这样的思路来清洗输出：保留上述列出的三项内容的行，筛选掉其他的行，可命令 %!grep -E &#34;^make *-|^riscv|gcc|g\&#43;\&#43;&#34; 实现，加 -E 是因为 grep 默认不支持或运算符。执行完该命令后，可以发现，编译一些单独的.c源文件就有大量重复的内容：
 -std=gnu11 -O2 -MMD -Wall -Werror -I/home/ubuntu/ysyx-workbench/abstract-machine/am/src -I/home/ubuntu/ysyx-workbench/abstract-machine/am/include -I/home/ubuntu/ysyx-workbench/abstract-machine/am/include/ -I/home/ubuntu/ysyx-workb ench/abstract-machine/klib/include/ -D__ISA__=\&#34;riscv32\&#34; -D__ISA_RISCV32__ -D__ARCH__=riscv32-nemu -D__ARCH_RISCV32_NEMU -D__PLATFORM__=nemu -D__PLATFORM_NEMU -DARCH_H=\&#34;arch/riscv.h\&#34; -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector -Wno-main -U_FORTIFY_SOURCE -fvisibility=hidden -fno-pic -march=rv64g -mcmodel=medany -mstrict-align -march=rv32im_zicsr -mabi=ilp32 -static -fdata-sections -ffunction-sections -I/home/ubuntu/ysyx-workbench/abstract-machine/am/src/platform/nemu/incl ude -DMAINARGS_MAX_LEN=64 -DMAINARGS_PLACEHOLDER=\&#34;&#34;The insert-arg rule in Makefile will insert mainargs here.&#34;\&#34; -DISA_H=\&#34;riscv/riscv.h\&#34; 可以简单的用:%s/foo/bar/g替换掉，这表示在整个文件中（%），把所有匹配 foo 的内容替换为 bar，g 表示每一行中所有匹配都替换。可以用正则表达式中.,*两个元字符，句号代表匹配任意字符一次，而星号表示匹配前一个字符0次或任意多次。">
@@ -46,7 +46,7 @@ ARCH=riscv32-nemu 定义了一个变量，在 Makefile 中即便没有 ARCH = ..
 <link rel="canonical" href="http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E8%B7%9F%E8%B8%AAmake%E5%91%BD%E4%BB%A4/">
 <link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
-  <script defer src="/notes/ch.search.min.90b2747d15447ca124066c445969354471ba333c25b222bab39afa5949c30500.js" integrity="sha256-kLJ0fRVEfKEkBmxEWWk1RHG6MzwlsiK6s5r6WUnDBQA=" crossorigin="anonymous"></script>
+  <script defer src="/notes/ch.search.min.3a8bc2e8805fb7e5eb4e8254d7ea1a882692357bdfb0bf15cfd688d2cfae7cb3.js" integrity="sha256-OovC6IBft&#43;XrToJU1&#43;oaiCaSNXvfsL8Vz9aI0s&#43;ufLM=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -257,64 +257,9 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-eefa133d5688cd1f84d09e4291321e62" class="toggle"  />
-    <label for="section-eefa133d5688cd1f84d09e4291321e62" class="flex justify-between">
-      <a role="button" class="">Ahstarct-machine</a>
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <input type="checkbox" id="section-fc7c6348a8cbdec604f0e9021d5d1598" class="toggle"  />
-    <label for="section-fc7c6348a8cbdec604f0e9021d5d1598" class="flex justify-between">
-      <a href="/notes/docs/cs/ysyx/nemu/makefile/" class="">Makefile</a>
-    </label>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/notes/docs/cs/ysyx/nemu/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/" class="">基本组织</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
     <input type="checkbox" id="section-8bb512fe5a22d9bd5d7e1508902e4be7" class="toggle" checked />
     <label for="section-8bb512fe5a22d9bd5d7e1508902e4be7" class="flex justify-between">
-      <a role="button" class="">NEMU</a>
+      <a role="button" class="">Ahstarct-machine</a>
     </label>
   
 
@@ -358,6 +303,61 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/" class="">阅读源码</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-eefa133d5688cd1f84d09e4291321e62" class="toggle"  />
+    <label for="section-eefa133d5688cd1f84d09e4291321e62" class="flex justify-between">
+      <a role="button" class="">NEMU</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-fc7c6348a8cbdec604f0e9021d5d1598" class="toggle"  />
+    <label for="section-fc7c6348a8cbdec604f0e9021d5d1598" class="flex justify-between">
+      <a href="/notes/docs/cs/ysyx/nemu/makefile/" class="">Makefile</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/ysyx/nemu/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/" class="">基本组织</a>
   
 
         </li>
@@ -827,7 +827,7 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#从make-archriscv32-nemu-run开始">从make ARCH=riscv32-nemu run开始</a></li>
+    <li><a href="#1从make-archriscv32-nemu-run开始">1.从make ARCH=riscv32-nemu run开始</a></li>
     <li><a href="#2--分析hello是如何被编译链接的">2.  分析hello是如何被编译、链接的</a></li>
     <li><a href="#3-am-链接自己的-_start">3. am 链接自己的 _start</a></li>
   </ul>
@@ -846,9 +846,9 @@ https://github.com/alex-shpak/hugo-book
   跟踪make命令
   <a class="anchor" href="#%e8%b7%9f%e8%b8%aamake%e5%91%bd%e4%bb%a4">#</a>
 </h1>
-<h2 id="从make-archriscv32-nemu-run开始">
-  从make ARCH=riscv32-nemu run开始
-  <a class="anchor" href="#%e4%bb%8emake-archriscv32-nemu-run%e5%bc%80%e5%a7%8b">#</a>
+<h2 id="1从make-archriscv32-nemu-run开始">
+  1.从make ARCH=riscv32-nemu run开始
+  <a class="anchor" href="#1%e4%bb%8emake-archriscv32-nemu-run%e5%bc%80%e5%a7%8b">#</a>
 </h2>
 <p>首先，进入<code>ysyx-workbench/am-kernels/kernels/hello</code>目录，运行<code>make ARCH=riscv32-nemu run -nB</code> 命令。其中</p>
 <ul>
@@ -1057,7 +1057,7 @@ _start:
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#从make-archriscv32-nemu-run开始">从make ARCH=riscv32-nemu run开始</a></li>
+    <li><a href="#1从make-archriscv32-nemu-run开始">1.从make ARCH=riscv32-nemu run开始</a></li>
     <li><a href="#2--分析hello是如何被编译链接的">2.  分析hello是如何被编译、链接的</a></li>
     <li><a href="#3-am-链接自己的-_start">3. am 链接自己的 _start</a></li>
   </ul>

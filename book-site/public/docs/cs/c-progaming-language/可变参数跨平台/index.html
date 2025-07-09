@@ -3,53 +3,58 @@
 <head><script src="/notes/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=notes/livereload" data-no-instant defer></script>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="
-  This page is hidden in menu
+<meta name="description" content="111
+
+  0.问题引入
   #
 
+　　在做一生一芯的过程中，需要用到 abstract-machine ，其中需要实现可以跨平台的 vspinrtf ，这需要用到头文件 &lt;stdarg.h&gt;， 以及声明在这里面的一些宏以及函数。可以通过 man 3 va_start 查看他们的手册。
+　　我的实现大概如下：
+staitc int handle_fmt(char ** pout, char ** pp_fmt, va_list sp) {
+  ...
+ switch(**pp_fmt) {
+  case &#39;s&#39;:
+         ...
+  case &#39;d&#39;:
+         ...
+         int num = va_arg(sp, int);
+         ...
+ }
+  ...
+}
 
-  Quondam non pater est dignior ille Eurotas
-  #
+int vsprintf(char *out, const char *fmt, va_list ap) {
+  ...
+  handle_fmt(&amp;out, &amp;p_fmt, ap);
+  ...
+}
 
-
-  Latent te facies
-  #
-
-Lorem markdownum arma ignoscas vocavit quoque ille texit mandata mentis ultimus,
-frementes, qui in vel. Hippotades Peleus pennas
-conscia cuiquam Caeneus quas.
-
-Pater demittere evincitque reddunt
-Maxime adhuc pressit huc Danaas quid freta
-Soror ego
-Luctus linguam saxa ultroque prior Tatiumque inquit
-Saepe liquitur subita superata dederat Anius sudor
-
-
-  Cum honorum Latona
-  #
-
-O fallor in sustinui
-iussorum equidem.
-Nymphae operi oris alii fronde parens dumque, in auro ait mox ingenti proxima
-iamdudum maius?">
+int sprintf(char *out, const char *fmt, ...) {
+    va_list vlist;
+    va_start(vlist, fmt);
+    int r = vsprintf(out, fmt,vlist);
+    va_end(vlist);
+}
+　　对于上面这种实现，在x86 linux环境下可以正常运行，而在riscv32-nemu 和 riscv32 linux环境下，sprintf(buf, &quot;%d %d&quot;, 1, 3); 会将 &quot;1 1&quot; 复制到 buf。并且：">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
-<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/hidden/">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/c-progaming-language/%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E8%B7%A8%E5%B9%B3%E5%8F%B0/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
-  <meta property="og:title" content="Wenbo&#39;s Study Notes">
-  <meta property="og:description" content="This page is hidden in menu#Quondam non pater est dignior ille Eurotas#Latent te facies#Lorem markdownum arma ignoscas vocavit quoque ille texit mandata mentis ultimus, frementes, qui in vel. Hippotades Peleus pennas conscia cuiquam Caeneus quas.
-Pater demittere evincitque reddunt Maxime adhuc pressit huc Danaas quid freta Soror ego Luctus linguam saxa ultroque prior Tatiumque inquit Saepe liquitur subita superata dederat Anius sudor Cum honorum Latona#O fallor in sustinui iussorum equidem. Nymphae operi oris alii fronde parens dumque, in auro ait mox ingenti proxima iamdudum maius?">
+  <meta property="og:title" content="可变参数跨的平台">
+  <meta property="og:description" content="111
+0.问题引入#在做一生一芯的过程中，需要用到 abstract-machine ，其中需要实现可以跨平台的 vspinrtf ，这需要用到头文件 &lt;stdarg.h&gt;， 以及声明在这里面的一些宏以及函数。可以通过 man 3 va_start 查看他们的手册。
+我的实现大概如下：
+staitc int handle_fmt(char ** pout, char ** pp_fmt, va_list sp) { ... switch(**pp_fmt) { case &#39;s&#39;: ... case &#39;d&#39;: ... int num = va_arg(sp, int); ... } ... } int vsprintf(char *out, const char *fmt, va_list ap) { ... handle_fmt(&amp;out, &amp;p_fmt, ap); ... } int sprintf(char *out, const char *fmt, ...) { va_list vlist; va_start(vlist, fmt); int r = vsprintf(out, fmt,vlist); va_end(vlist); } 对于上面这种实现，在x86 linux环境下可以正常运行，而在riscv32-nemu 和 riscv32 linux环境下，sprintf(buf, &#34;%d %d&#34;, 1, 3); 会将 &#34;1 1&#34; 复制到 buf。并且：">
   <meta property="og:locale" content="ch">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="docs">
-<title>Hidden | Wenbo&#39;s Study Notes</title>
+  <meta property="og:type" content="website">
+<title>可变参数跨的平台 | Wenbo&#39;s Study Notes</title>
 <link rel="icon" href="/notes/favicon.png" >
 <link rel="manifest" href="/notes/manifest.json">
-<link rel="canonical" href="http://localhost:1313/notes/docs/cs/hidden/">
-<link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
+<link rel="canonical" href="http://localhost:1313/notes/docs/cs/c-progaming-language/%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E8%B7%A8%E5%B9%B3%E5%8F%B0/">
+<link rel="stylesheet" href="/notes/book.min.7bc972065ba8380494d6074bd191d8bf416964b6d9b4911d35dd0bf0f8e914e5.css" integrity="sha256-e8lyBluoOASU1gdL0ZHYv0FpZLbZtJEdNd0L8PjpFOU=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
-  <script defer src="/notes/ch.search.min.3a8bc2e8805fb7e5eb4e8254d7ea1a882692357bdfb0bf15cfd688d2cfae7cb3.js" integrity="sha256-OovC6IBft&#43;XrToJU1&#43;oaiCaSNXvfsL8Vz9aI0s&#43;ufLM=" crossorigin="anonymous"></script>
+  <script defer src="/notes/ch.search.min.d2a4a9cd81005c2d7bb6d486792082bc15e6c204eb29e03572be55c86b5a8dfd.js" integrity="sha256-0qSpzYEAXC17ttSGeSCCvBXmwgTrKeA1cr5VyGtajf0=" crossorigin="anonymous"></script>
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/notes/docs/cs/c-progaming-language/%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E8%B7%A8%E5%B9%B3%E5%8F%B0/index.xml" title="Wenbo's Study Notes" />
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -171,7 +176,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-2646f4bb7955f414fa27e6bf033bd556" class="toggle"  />
+    <input type="checkbox" id="section-2646f4bb7955f414fa27e6bf033bd556" class="toggle" checked />
     <label for="section-2646f4bb7955f414fa27e6bf033bd556" class="flex justify-between">
       <a role="button" class="">C programing Language</a>
     </label>
@@ -179,6 +184,26 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/c-progaming-language/%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E8%B7%A8%E5%B9%B3%E5%8F%B0/" class="active">可变参数跨的平台</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
     
   </ul>
 
@@ -814,7 +839,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/notes/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <h3>Hidden</h3>
+  <h3>可变参数跨的平台</h3>
 
   <label for="toc-control">
     
@@ -830,9 +855,11 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#latent-te-facies">Latent te facies</a></li>
-    <li><a href="#cum-honorum-latona">Cum honorum Latona</a></li>
-    <li><a href="#fronde-cetera-dextrae-sequens-pennis-voce-muneris">Fronde cetera dextrae sequens pennis voce muneris</a></li>
+    <li><a href="#12-system-v-amd64-abi">1.2 System V AMD64 ABI</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
@@ -845,63 +872,107 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown book-article"><h1 id="this-page-is-hidden-in-menu">
-  This page is hidden in menu
-  <a class="anchor" href="#this-page-is-hidden-in-menu">#</a>
+  <article class="markdown book-article"><p>111</p>
+<h1 id="0问题引入">
+  0.问题引入
+  <a class="anchor" href="#0%e9%97%ae%e9%a2%98%e5%bc%95%e5%85%a5">#</a>
 </h1>
-<h1 id="quondam-non-pater-est-dignior-ille-eurotas">
-  Quondam non pater est dignior ille Eurotas
-  <a class="anchor" href="#quondam-non-pater-est-dignior-ille-eurotas">#</a>
-</h1>
-<h2 id="latent-te-facies">
-  Latent te facies
-  <a class="anchor" href="#latent-te-facies">#</a>
-</h2>
-<p>Lorem markdownum arma ignoscas vocavit quoque ille texit mandata mentis ultimus,
-frementes, qui in vel. Hippotades Peleus <a href="http://gratia.net/tot-qua.php">pennas
-conscia</a> cuiquam Caeneus quas.</p>
+<p>　　在做一生一芯的过程中，需要用到 abstract-machine ，其中需要实现可以跨平台的 <code>vspinrtf</code> ，这需要用到头文件 <code>&lt;stdarg.h&gt;</code>， 以及声明在这里面的一些宏以及函数。可以通过 <code>man 3 va_start</code> 查看他们的手册。</p>
+<p>　　我的实现大概如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-C" data-lang="C"><span style="display:flex;"><span>staitc <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">handle_fmt</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span> pout, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span> pp_fmt, va_list sp) {
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">switch</span>(<span style="color:#f92672">**</span>pp_fmt) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;s&#39;</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>         ...
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;d&#39;</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>         ...
+</span></span><span style="display:flex;"><span>         <span style="color:#66d9ef">int</span> num <span style="color:#f92672">=</span> <span style="color:#a6e22e">va_arg</span>(sp, <span style="color:#66d9ef">int</span>);
+</span></span><span style="display:flex;"><span>         ...
+</span></span><span style="display:flex;"><span> }
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">vsprintf</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>out, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>fmt, va_list ap) {
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">handle_fmt</span>(<span style="color:#f92672">&amp;</span>out, <span style="color:#f92672">&amp;</span>p_fmt, ap);
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">sprintf</span>(<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>out, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>fmt, ...) {
+</span></span><span style="display:flex;"><span>    va_list vlist;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">va_start</span>(vlist, fmt);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> r <span style="color:#f92672">=</span> <span style="color:#a6e22e">vsprintf</span>(out, fmt,vlist);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">va_end</span>(vlist);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>　　对于上面这种实现，在x86 linux环境下可以正常运行，而在riscv32-nemu 和 riscv32 linux环境下，<code>sprintf(buf, &quot;%d %d&quot;, 1, 3);</code> 会将<code> &quot;1 1&quot;</code> 复制到 <code>buf</code>。并且：</p>
 <ul>
-<li>Pater demittere evincitque reddunt</li>
-<li>Maxime adhuc pressit huc Danaas quid freta</li>
-<li>Soror ego</li>
-<li>Luctus linguam saxa ultroque prior Tatiumque inquit</li>
-<li>Saepe liquitur subita superata dederat Anius sudor</li>
+<li>在 x86-linux 可以通过各种测试用例，而在 riscv32-nemu 无法通过；</li>
+<li>riscv32-nemu 与 spike 进行差分测试无报错。</li>
 </ul>
-<h2 id="cum-honorum-latona">
-  Cum honorum Latona
-  <a class="anchor" href="#cum-honorum-latona">#</a>
+<p>　　对于编译<em>linux x86</em> 架构程序，可以通过给 <em>x86_64-linux-gnu-gcc</em> 传递 <code>-m32</code> 和 <code>-m64</code> (System V AMD64 ABI) 选择相应的 <em>ABI</em>， 而对于 <em>riscv</em> ，则可以传递 <code>-mabi=ilp32/lp64/...</code> 来选择程序遵循的 <em>ABI</em>；此外，都可以通过 <code>-march</code> 来选择支持的扩展指令集。例如，<code>-march=rv64im</code> 表明支持乘法扩展的 64 位指令集。</p>
+<h1 id="1-阅读手册">
+  1. 阅读手册
+  <a class="anchor" href="#1-%e9%98%85%e8%af%bb%e6%89%8b%e5%86%8c">#</a>
+</h1>
+<hr>
+<p>　　阅读 C99 标准手册 <code>7.15 Variable arguments</code> 部分，发现上述宏都是  <em>implementation-defined</em> 的， 因此可以查询相应的 <em>ABI</em> 手册。</p>
+<p>##1.1 RISC-V ABI 对可变参数传参的描述</p>
+<hr>
+<p>这里只是对ABI手册做一个个简单的概述，具体可参考 <a href="https://github.com/riscv-non-isa/riscv-elf-psabi-doc/blob/master/riscv-abi.adoc">RISCV ABI</a> .</p>
+<ul>
+<li>可变参数优先通过寄存器传递：
+<ul>
+<li>该参数对齐到 <em>2 × XLEN</em> 且该参数大小最大为 <em>2 × XLEN</em> (例如，XLEN = 32， 那么1，2，4，8字节的可变参数都可以这种方式传递)，此时还需要找到一个寄存器 $a_i$ ，其中 $i$ 为偶数， 在 $a_i$​ 和 $a_{i+1} 中存放这个参数。</li>
+<li>遇到第一个需要放到栈上的可变参数后，后面的可变参数都需要放到栈上。</li>
+</ul>
+</li>
+<li><em>va_list</em> 类型上是一个 <code>void *</code> 。</li>
+<li>无论可变参数是否通过栈传递，最终都要放到栈上，并且由一个 <code>va_list</code> 类型的指针指向其第一个可变参数。</li>
+<li><code>va_arg</code> 取出一个可变参数，然后自增 <code>va_list</code> .</li>
+</ul>
+<h2 id="12-system-v-amd64-abi">
+  1.2 System V AMD64 ABI
+  <a class="anchor" href="#12-system-v-amd64-abi">#</a>
 </h2>
-<p>O fallor <a href="http://www.spectataharundine.org/aquas-relinquit.html">in sustinui
-iussorum</a> equidem.
-Nymphae operi oris alii fronde parens dumque, in auro ait mox ingenti proxima
-iamdudum maius?</p>
-<pre><code>reality(burnDocking(apache_nanometer),
-        pad.property_data_programming.sectorBrowserPpga(dataMask, 37,
-        recycleRup));
-intellectualVaporwareUser += -5 * 4;
-traceroute_key_upnp /= lag_optical(android.smb(thyristorTftp));
-surge_host_golden = mca_compact_device(dual_dpi_opengl, 33,
-        commerce_add_ppc);
-if (lun_ipv) {
-    verticalExtranet(1, thumbnail_ttl, 3);
-    bar_graphics_jpeg(chipset - sector_xmp_beta);
-}
-</code></pre>
-<h2 id="fronde-cetera-dextrae-sequens-pennis-voce-muneris">
-  Fronde cetera dextrae sequens pennis voce muneris
-  <a class="anchor" href="#fronde-cetera-dextrae-sequens-pennis-voce-muneris">#</a>
-</h2>
-<p>Acta cretus diem restet utque; move integer, oscula non inspirat, noctisque
-scelus! Nantemque in suas vobis quamvis, et labori!</p>
-<pre><code>var runtimeDiskCompiler = home - array_ad_software;
-if (internic &gt; disk) {
-    emoticonLockCron += 37 + bps - 4;
-    wan_ansi_honeypot.cardGigaflops = artificialStorageCgi;
-    simplex -= downloadAccess;
-}
-var volumeHardeningAndroid = pixel + tftp + onProcessorUnmount;
-sector(memory(firewire + interlaced, wired));
-</code></pre>
+<hr>
+<p>　　首先引入一个 <em>System V AMD64 ABI</em> 对函数传递的参数分类中的一个类型, <strong>INTEGER</strong> 类型 : <em>This class consists of integral types that fit into one of the general purpose registers.</em></p>
+<p>阅读 <em>System V AMD64 ABI</em> 手册 <strong>3.5.7 Variable Argument Lists</strong> , 重点关注该类型的参数在可变的情况下是如何传递的：</p>
+<ul>
+<li>
+<p>依旧优先使用 %RDI, %RSI, %RDX, %RCX, %R8, %R9 来传递，这 6 个寄存器用完了再放在栈上(这里和普通参数规则一样)；</p>
+</li>
+<li>
+<p>在确定函数具有可变参数列表且调用 <code>va_start</code> 的情况下，<strong>一定会在这个函数 <em>prolgue</em> 部分将寄存器中的参数复制到在 <em>register save area</em> 内存区域</strong>，对于这6个寄存器来说，其位置有固定的从 <em>register save area</em> 开始的偏移 <em>%rdi 0，%rsi 8,&hellip;,%r9 40</em></p>
+</li>
+<li>
+<p><code>va_list</code> 类型是只有一个元素的结构体数组：</p>
+<ul>
+<li><code>reg_save_area</code> 指向 <em>reg_save_area</em> 区域；</li>
+<li><code>reg_save_area</code> 初始时指向第一个由栈传递的参数（不包括寄存器保存在 <em>register save area</em> 的），每取一个由栈传递参数，自增该指针。</li>
+<li><code>gp_offset</code> 以字节为单位，从 <em>register save area</em>  到下一个要取的存放在 <em>register save area</em>  区域的寄存器参数的距离。假设 6 个通用目的寄存器中的参数都放在了该区域，且都被取完时，该值为 <code>48</code>。</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> gp_offset;
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> fp_offset;
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>overflow_arg_area;
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>reg_save_area;
+</span></span><span style="display:flex;"><span>} va_list[<span style="color:#ae81ff">1</span>];
+</span></span></code></pre></div><p>　　调用 <code>va_args</code> 取参数的算法大致先用 <code>gp_offset</code> 判断是否还能在  <em>register save area</em>  区域取到参数，如果可以，就在该区域取，取完一次后将 <code>gp_offset += 8</code> . 如果该区域已经没有可以取的参数了，那么就通过 <code>overflow_arg_area</code>指针取出参数。</p>
+<h3 id="">
+  
+  <a class="anchor" href="#">#</a>
+</h3>
+<h1 id="2-问题的分析与解决">
+  2. 问题的分析与解决
+  <a class="anchor" href="#2-%e9%97%ae%e9%a2%98%e7%9a%84%e5%88%86%e6%9e%90%e4%b8%8e%e8%a7%a3%e5%86%b3">#</a>
+</h1>
+<hr>
+<p>　　现在原因已经很明显了，在 <em>RISCV ABI</em> 定义下， <code>vsprintf()</code> 向 <code>handle_fmt()</code> 传递了下一个要取的参数的地址，对于 <code>handle_fmt()</code>来说，这个地址就是一个局部变量，因此 <code>va_args()</code> 对其的改变并不会反映在 <code>vsprintf()</code>中。 这意味着，无论有多少个可变参数， <code>va_list</code> 永远都指向第一个可变参数。</p>
+<p>　　这可以通过一个简单的方法去验证，调用 <code>sprintf(buf, &quot;%d %d&quot;, 1, 3)</code> ，去检查 <code>buf</code> 区域的前三个字节，会发现依次为 <code>0x31</code> <code>0x20</code> <code>0x31</code>。 当然，这要保证函数 <code>handle_fmt()</code> 不被内联，在内联的情况下函数的行为也不会正确。</p>
+<p>　　可以通过给 <em>gcc</em> 传递<code>-fopt-info-optimized-inline=inline.log </code> ，将内联日志保存下来，去查看是否内联。也可以通过 <em>objdump</em> 去验证。</p>
+<p>要想解决这个问题，只需要<strong>将 <code>va_list ap</code>值传递改为引用传递</strong>。</p>
 </article>
  
       
@@ -943,9 +1014,11 @@ sector(memory(firewire + interlaced, wired));
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#latent-te-facies">Latent te facies</a></li>
-    <li><a href="#cum-honorum-latona">Cum honorum Latona</a></li>
-    <li><a href="#fronde-cetera-dextrae-sequens-pennis-voce-muneris">Fronde cetera dextrae sequens pennis voce muneris</a></li>
+    <li><a href="#12-system-v-amd64-abi">1.2 System V AMD64 ABI</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 

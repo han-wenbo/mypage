@@ -1,16 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Fira+Code&display=swap');
 
 body {
-  font-family:   "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
 code, pre {
-  font-family: "Fira Code", "Courier New", monospace;
+  font-family: 'Fira Code', 'Courier New', monospace;
 }
+
 .book-hint.def {
   background-color: #f2ffec;
   border-left: 5px solid #52c41a;
   padding: 1em;
   border-radius: 4px;
   margin: 1em 0;
-  /* 不设置 color，使用默认字体颜色 */
+  /* 保持默认字体颜色 */
 }
