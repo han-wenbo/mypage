@@ -85,15 +85,15 @@ U2B_w(B2U_w(\vec{x}) &#43;_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) &#43;_
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E8%AF%81%E6%98%8E%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E4%BD%8D%E7%BA%A7%E8%A1%A8%E7%A4%BA%E4%B8%80%E6%A0%B7/">
   <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
   <meta property="og:title" content="Wenbo&#39;s Study Notes">
-  <meta property="og:description" content="1.引入问题#在本章中，CSAPP定义了用长度为\(w\)的位向量编码无符号数与有符号数的方式，以及它们的各种算术运算。位向量可以写成两种形式 \(\vec{x}\)表示整个向量，或 \([x_{w-1},...,x_0]\)形式，将其每一位表示出来。
+  <meta property="og:description" content="1.引入问题 # 在本章中，CSAPP定义了用长度为 \(w\) 的位向量编码无符号数与有符号数的方式，以及它们的各种算术运算。位向量可以写成两种形式 \(\vec{x}\) 表示整个向量，或 \([x_{w-1},...,x_0]\) 形式，将其每一位表示出来。
 注意
 在考虑本章中位向量时，要注意的是，虽然它长相与二进制数相同，但在本章中的含义并不是二进制数，而是上面所说的位向量，也并未在这种向量上定义加法，例如
-\(10&#43;01=11\)； 仅仅是使用0和1构成的串进行编码，每一位有根据其编码方式所定义的权重。现在考虑这样一个问题：设有 \(w\)位的两个位向量 \(\vec{x}\)和 \(\vec{y}\), 考虑如下等式是否成立：
-\[U2B_w(B2U_w(\vec{x}) &#43;_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) &#43;_{t}^{w} B2T_w(\vec{y}))\]换句话说，将这两个向量转换成无符号数做加法，同时也将这两个数转换为有符号数做加法，再将两个加法的结果转换回向量形式，这两个向量是否相等？或者说，由于这两个加法是封闭的，加完之后的数一定也在各自相应的集合中，编码这两个数的位向量是否相同？
-2. 证明这个等式的意义是什么？#如果这个等式成立，这意味着可以用只需要用二进制数的加法就能同时计算补码和无符号数，那么就在机器指令层面就不需要区分无符号数和补码编码的数，只需要一条add指令即可完成这两种编码的数据的加法操作。如果对于减法、乘法、触发或是其他运算的该公式成立，那么ALU实现这些指令的时候，都不需要区分这两种数据编码方式。
-3.两个引理#想解决这个问题，需要先引入一些前置引理，来描述什么时候一个 \(w\)​​ 位无符号数 \(u = B2U_w(\vec{u})\)和一个补码编码的有符号数 \(t = B2U_w(\vec{t})\)的向量相等。
-引理3.1：如果 \(u - t = 0\)，则 \(\vec{u}=\vec{t}\).
-引理3.2： 如果 \(u - t = 2^w\)，则 \(\vec{u}=\vec{t}\).">
+\(10&#43;01=11\) ； 仅仅是使用0和1构成的串进行编码，每一位有根据其编码方式所定义的权重。 现在考虑这样一个问题：设有 \(w\) 位的两个位向量 \(\vec{x}\) 和 \(\vec{y}\) , 考虑如下等式是否成立：
+\[ U2B_w(B2U_w(\vec{x}) &#43;_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) &#43;_{t}^{w} B2T_w(\vec{y})) \] 换句话说，将这两个向量转换成无符号数做加法，同时也将这两个数转换为有符号数做加法，再将两个加法的结果转换回向量形式，这两个向量是否相等？或者说，由于这两个加法是封闭的，加完之后的数一定也在各自相应的集合中，编码这两个数的位向量是否相同？
+2. 证明这个等式的意义是什么？ # 如果这个等式成立，这意味着可以用只需要用二进制数的加法就能同时计算补码和无符号数，那么就在机器指令层面就不需要区分无符号数和补码编码的数，只需要一条add指令即可完成这两种编码的数据的加法操作。如果对于减法、乘法、触发或是其他运算的该公式成立，那么ALU实现这些指令的时候，都不需要区分这两种数据编码方式。
+3.两个引理 # 想解决这个问题，需要先引入一些前置引理，来描述什么时候一个 \(w\) ​​ 位无符号数 \(u = B2U_w(\vec{u})\) 和一个补码编码的有符号数 \(t = B2U_w(\vec{t})\) 的向量相等。
+引理3.1：如果 \(u - t = 0\) ，则 \(\vec{u}=\vec{t}\) .
+引理3.2： 如果 \(u - t = 2^w\) ，则 \(\vec{u}=\vec{t}\) .">
   <meta property="og:locale" content="ch">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -101,9 +101,9 @@ U2B_w(B2U_w(\vec{x}) &#43;_{u}^{w} B2U_w(\vec{y})) = T2B_w(B2T_w(\vec{x}) &#43;_
 <link rel="icon" href="/notes/favicon.png" >
 <link rel="manifest" href="/notes/manifest.json">
 <link rel="canonical" href="http://localhost:1313/notes/docs/cs/csapp/chapter2/%E8%AF%81%E6%98%8E%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E4%BD%8D%E7%BA%A7%E8%A1%A8%E7%A4%BA%E4%B8%80%E6%A0%B7/">
-<link rel="stylesheet" href="/notes/book.min.be2ddad050c15bfe61e391dd39f3a423b915ac1fab744663e669ad15518d87cc.css" integrity="sha256-vi3a0FDBW/5h45HdOfOkI7kVrB&#43;rdEZj5mmtFVGNh8w=" crossorigin="anonymous">
+<link rel="stylesheet" href="/notes/book.min.7bc972065ba8380494d6074bd191d8bf416964b6d9b4911d35dd0bf0f8e914e5.css" integrity="sha256-e8lyBluoOASU1gdL0ZHYv0FpZLbZtJEdNd0L8PjpFOU=" crossorigin="anonymous">
   <script defer src="/notes/fuse.min.js"></script>
-  <script defer src="/notes/ch.search.min.3a8bc2e8805fb7e5eb4e8254d7ea1a882692357bdfb0bf15cfd688d2cfae7cb3.js" integrity="sha256-OovC6IBft&#43;XrToJU1&#43;oaiCaSNXvfsL8Vz9aI0s&#43;ufLM=" crossorigin="anonymous"></script>
+  <script defer src="/notes/ch.search.min.1b4552d846c5a695ecdeac6b05225a3f84bee4adb21c9a1d4b84193c6a708334.js" integrity="sha256-G0VS2EbFppXs3qxrBSJaP4S&#43;5K2yHJodS4QZPGpwgzQ=" crossorigin="anonymous"></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -188,8 +188,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-62127cf7ca1a8ad048b3975f74775e79" class="toggle"  />
-    <label for="section-62127cf7ca1a8ad048b3975f74775e79" class="flex justify-between">
+    <input type="checkbox" id="section-20535e814cb0e9fbc418302e148287db" class="toggle"  />
+    <label for="section-20535e814cb0e9fbc418302e148287db" class="flex justify-between">
       <a role="button" class="">数学</a>
     </label>
   
@@ -209,8 +209,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-1c6520ef863c32fd72ab48eae3d159d7" class="toggle" checked />
-    <label for="section-1c6520ef863c32fd72ab48eae3d159d7" class="flex justify-between">
+    <input type="checkbox" id="section-a8afdc623c7f05ddd9d3323a5f24ab17" class="toggle" checked />
+    <label for="section-a8afdc623c7f05ddd9d3323a5f24ab17" class="flex justify-between">
       <a role="button" class="">计算机</a>
     </label>
   
@@ -225,14 +225,34 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-2646f4bb7955f414fa27e6bf033bd556" class="toggle"  />
-    <label for="section-2646f4bb7955f414fa27e6bf033bd556" class="flex justify-between">
+    <input type="checkbox" id="section-002438c68499130bd3a4d57e8ce70429" class="toggle"  />
+    <label for="section-002438c68499130bd3a4d57e8ce70429" class="flex justify-between">
       <a role="button" class="">C programing Language</a>
     </label>
   
 
           
   <ul>
+    
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/c-progaming-language/%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E8%B7%A8%E5%B9%B3%E5%8F%B0/" class="">可变参数跨的平台</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
     
   </ul>
 
@@ -246,8 +266,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-3214e70fc2e9e10b345f37f6a865bd4e" class="toggle"  />
-    <label for="section-3214e70fc2e9e10b345f37f6a865bd4e" class="flex justify-between">
+    <input type="checkbox" id="section-bbe8481416d37ff148d90e1b55aa9455" class="toggle"  />
+    <label for="section-bbe8481416d37ff148d90e1b55aa9455" class="flex justify-between">
       <a role="button" class="">Linux系统编程</a>
     </label>
   
@@ -298,8 +318,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-0a3f477f7bb35dcf936a869de0e256fc" class="toggle"  />
-    <label for="section-0a3f477f7bb35dcf936a869de0e256fc" class="flex justify-between">
+    <input type="checkbox" id="section-41373c7ccc5f2851e1dd9b049a0b0eb3" class="toggle"  />
+    <label for="section-41373c7ccc5f2851e1dd9b049a0b0eb3" class="flex justify-between">
       <a role="button" class="">YSYX</a>
     </label>
   
@@ -314,8 +334,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-8bb512fe5a22d9bd5d7e1508902e4be7" class="toggle"  />
-    <label for="section-8bb512fe5a22d9bd5d7e1508902e4be7" class="flex justify-between">
+    <input type="checkbox" id="section-6eb6b4496591e877deb7041468b14c5d" class="toggle"  />
+    <label for="section-6eb6b4496591e877deb7041468b14c5d" class="flex justify-between">
       <a role="button" class="">Ahstarct-machine</a>
     </label>
   
@@ -330,8 +350,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-468293f56e0fa98e6db1034a99c56d2c" class="toggle"  />
-    <label for="section-468293f56e0fa98e6db1034a99c56d2c" class="flex justify-between">
+    <input type="checkbox" id="section-c0759843681831b9d7c760608a706361" class="toggle"  />
+    <label for="section-c0759843681831b9d7c760608a706361" class="flex justify-between">
       <a href="/notes/docs/cs/ysyx/ahstarct-machine/makefile/" class="">Makefile</a>
     </label>
   
@@ -382,8 +402,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-eefa133d5688cd1f84d09e4291321e62" class="toggle"  />
-    <label for="section-eefa133d5688cd1f84d09e4291321e62" class="flex justify-between">
+    <input type="checkbox" id="section-78400b319b513445b7fd190a472208f1" class="toggle"  />
+    <label for="section-78400b319b513445b7fd190a472208f1" class="flex justify-between">
       <a role="button" class="">NEMU</a>
     </label>
   
@@ -398,8 +418,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-fc7c6348a8cbdec604f0e9021d5d1598" class="toggle"  />
-    <label for="section-fc7c6348a8cbdec604f0e9021d5d1598" class="flex justify-between">
+    <input type="checkbox" id="section-b1a01d85a9e747d7b4511f34f2d46cd7" class="toggle"  />
+    <label for="section-b1a01d85a9e747d7b4511f34f2d46cd7" class="flex justify-between">
       <a href="/notes/docs/cs/ysyx/nemu/makefile/" class="">Makefile</a>
     </label>
   
@@ -442,8 +462,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f86fcfc4a67780762eea618a550688a2" class="toggle"  />
-    <label for="section-f86fcfc4a67780762eea618a550688a2" class="flex justify-between">
+    <input type="checkbox" id="section-b03eed1fe077c2734a3a82f668e3ae54" class="toggle"  />
+    <label for="section-b03eed1fe077c2734a3a82f668e3ae54" class="flex justify-between">
       <a role="button" class="">自动机理论</a>
     </label>
   
@@ -476,8 +496,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="toggle"  />
-    <label for="section-fbb13bf9a2a41b55bec7b7991ba18dc5" class="flex justify-between">
+    <input type="checkbox" id="section-98f1713060afc41e5bbfe772a1ea1b60" class="toggle"  />
+    <label for="section-98f1713060afc41e5bbfe772a1ea1b60" class="flex justify-between">
       <a role="button" class="">计算机体系结构</a>
     </label>
   
@@ -528,8 +548,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-2a42a98837cbcf55263db65a309356f9" class="toggle" checked />
-    <label for="section-2a42a98837cbcf55263db65a309356f9" class="flex justify-between">
+    <input type="checkbox" id="section-4e09593fbba0e2dab0f3a45006960669" class="toggle" checked />
+    <label for="section-4e09593fbba0e2dab0f3a45006960669" class="flex justify-between">
       <a role="button" class="">重读CSAPP</a>
     </label>
   
@@ -544,8 +564,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-db68bb9624271c704aa7a3f3eb0e84a5" class="toggle" checked />
-    <label for="section-db68bb9624271c704aa7a3f3eb0e84a5" class="flex justify-between">
+    <input type="checkbox" id="section-3c0400cb5a64f18f82be5ada6a36a304" class="toggle" checked />
+    <label for="section-3c0400cb5a64f18f82be5ada6a36a304" class="flex justify-between">
       <a href="/notes/docs/cs/csapp/chapter2/" class="">第二章</a>
     </label>
   
@@ -681,8 +701,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-7ff6b2b8a37987ef7dab1df904aea282" class="toggle"  />
-    <label for="section-7ff6b2b8a37987ef7dab1df904aea282" class="flex justify-between">
+    <input type="checkbox" id="section-3dc0332fdce4a710073932a6e679f19b" class="toggle"  />
+    <label for="section-3dc0332fdce4a710073932a6e679f19b" class="flex justify-between">
       <a role="button" class="">Hugo</a>
     </label>
   
@@ -728,8 +748,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="toggle"  />
-    <label for="section-f0b11d63a1bf300b0e22de599a9fd9e3" class="flex justify-between">
+    <input type="checkbox" id="section-c37cf45590308ffd8c7e52fb18385ee5" class="toggle"  />
+    <label for="section-c37cf45590308ffd8c7e52fb18385ee5" class="flex justify-between">
       <a role="button" class="">Shortcodes</a>
     </label>
   

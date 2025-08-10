@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>第九章 on Wenbo&#39;s Study Notes</title>
+    <link>http://localhost:1313/notes/docs/cs/csapp/chapter9/</link>
+    <description>Recent content in 第九章 on Wenbo&#39;s Study Notes</description>
+    <generator>Hugo</generator>
+    <language>ch</language>
+    <atom:link href="http://localhost:1313/notes/docs/cs/csapp/chapter9/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>http://localhost:1313/notes/docs/cs/csapp/chapter9/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/docs/cs/csapp/chapter9/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/</guid>
+      <description>&lt;h1 id=&#34;0&#34;&gt;&#xA;  0.&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#0&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;深入理解计算机系统第八章围绕着 &lt;strong&gt;异常控制流（Exceptional control flow）&lt;/strong&gt; 讲解了一系列概念，在此做一个简单的总结 。&lt;/p&gt;&#xA;&lt;p&gt;假设处理器从上电到断电为止，其 &lt;strong&gt;程序计数器&lt;/strong&gt; 是一个非负整数的序列：&lt;span&gt;&#xA;  \(a_0,...a_{n-1} \)&#xA;&lt;/span&gt;&#xA;，其中 &lt;span&gt;&#xA;  \( a_i \)&#xA;&lt;/span&gt;&#xA;是指令 &lt;span&gt;&#xA;  \( I_i \)&#xA;&lt;/span&gt;&#xA; 的地址。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;控制转移（control transfer）：&lt;/strong&gt; 程序计数器的状态从 &lt;span&gt;&#xA;  \(a_i \)&#xA;&lt;/span&gt;&#xA; 到 &lt;span&gt;&#xA;  \(a_{i+1} \)&#xA;&lt;/span&gt;&#xA; 的变化。因此，一次控制转移可以定义为一个二元组 &lt;span&gt;&#xA;  \((x,y) \)&#xA;&lt;/span&gt;&#xA;，其中，若&lt;span&gt;&#xA;  \(x = a_i \)&#xA;&lt;/span&gt;&#xA; ，则 &lt;span&gt;&#xA;  \(y = a_{i+1} \)&#xA;&lt;/span&gt;&#xA;，反之也成立。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;控制流（control flow）&lt;/strong&gt;： 一个由控制转移构成的 &lt;strong&gt;序列（sequence）&lt;/strong&gt;，这可以从元组的序列退化为非负整数的序列。&lt;/p&gt;&#xA;&lt;blockquote class=&#34;book-hint danger&#34;&gt;&#xA;    设指令 &#xA;&lt;link rel=&#34;stylesheet&#34; href=&#34;http://localhost:1313/notes/katex/katex.min.css&#34; /&gt;&#xA;&lt;script defer src=&#34;http://localhost:1313/notes/katex/katex.min.js&#34;&gt;&lt;/script&gt;&#xA;&lt;script defer src=&#34;http://localhost:1313/notes/katex/auto-render.min.js&#34; onload=&#34;renderMathInElement(document.body);&#34;&gt;&lt;/script&gt;&lt;span&gt;&#xA;  \(I_i \)&#xA;&lt;/span&gt;&#xA; 的长度为 &lt;span&gt;&#xA;  \(L \)&#xA;&lt;/span&gt;&#xA;，若 &lt;span&gt;&#xA;  \(a_i + L = a_{i+1}\)&#xA;&lt;/span&gt;&#xA; ，则称 &lt;span&gt;&#xA;  \(I_i , I_{i+1}\)&#xA;&lt;/span&gt;&#xA; 在内存中相邻。&#xA;&lt;/blockquote&gt;&#xA;&lt;blockquote class=&#34;book-hint danger&#34;&gt;&#xA;&lt;p&gt;对于一个控制流，若其每个控制转移对应的指令都是相邻的，那么称这个控制流是平滑的。若存在至少一个控制转移的对应的指令不是相邻的，那这个控制流被称为是非平滑的。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

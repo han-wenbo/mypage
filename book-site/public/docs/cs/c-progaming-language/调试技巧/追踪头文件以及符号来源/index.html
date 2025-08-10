@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ch" dir="ltr">
+<head><script src="/notes/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=notes/livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="
+  1. 追踪符号来源
+  #
+
+
+通过给链接器 ld 传递参数 -y name 或--trace-symbol=name 来追踪对某个符号的引用。要追踪多个符号只能多次使用这个参数。而要想通过 gcc 给链接器传递参数，需要 -Wl,--trace-symbol=name
+
+man ld 原文:
+    Print the name of each linked file in which symbol appears.  This option may be given any number of times.  On many systems it is necessary to prepend an underscore.
+    This option is useful when you have an undefined symbol in your link but don&rsquo;t know  where  the  reference  is coming from.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#343a40">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/notes/docs/cs/c-progaming-language/%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/%E8%BF%BD%E8%B8%AA%E5%A4%B4%E6%96%87%E4%BB%B6%E4%BB%A5%E5%8F%8A%E7%AC%A6%E5%8F%B7%E6%9D%A5%E6%BA%90/">
+  <meta property="og:site_name" content="Wenbo&#39;s Study Notes">
+  <meta property="og:title" content="Wenbo&#39;s Study Notes">
+  <meta property="og:description" content="1. 追踪符号来源 # 通过给链接器 ld 传递参数 -y name 或--trace-symbol=name 来追踪对某个符号的引用。要追踪多个符号只能多次使用这个参数。而要想通过 gcc 给链接器传递参数，需要 -Wl,--trace-symbol=name
+man ld 原文:
+Print the name of each linked file in which symbol appears. This option may be given any number of times. On many systems it is necessary to prepend an underscore.
+This option is useful when you have an undefined symbol in your link but don’t know where the reference is coming from.">
+  <meta property="og:locale" content="ch">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+<title>追踪头文件以及符号来源 | Wenbo&#39;s Study Notes</title>
+<link rel="icon" href="/notes/favicon.png" >
+<link rel="manifest" href="/notes/manifest.json">
+<link rel="canonical" href="http://localhost:1313/notes/docs/cs/c-progaming-language/%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/%E8%BF%BD%E8%B8%AA%E5%A4%B4%E6%96%87%E4%BB%B6%E4%BB%A5%E5%8F%8A%E7%AC%A6%E5%8F%B7%E6%9D%A5%E6%BA%90/">
+<link rel="stylesheet" href="/notes/book.min.7bc972065ba8380494d6074bd191d8bf416964b6d9b4911d35dd0bf0f8e914e5.css" integrity="sha256-e8lyBluoOASU1gdL0ZHYv0FpZLbZtJEdNd0L8PjpFOU=" crossorigin="anonymous">
+  <script defer src="/notes/fuse.min.js"></script>
+  <script defer src="/notes/ch.search.min.5a4db6b720729cbc7fce1feb8a808089f83aa03aea4adeee02af3b50fbe6f9b8.js" integrity="sha256-Wk22tyBynLx/zh/rioCAifg6oDrqSt7uAq87UPvm&#43;bg=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/notes/"><span>Wenbo&#39;s Study Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search hidden">
+  <input type="text" id="book-search-input" placeholder="" aria-label="" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+<script>document.querySelector(".book-search").classList.remove("hidden")</script>
+
+
+
+  
+
+
+
+  
+    
+  
+
+
+
+<ul class="book-languages">
+  <li>
+    <input type="checkbox" id="languages" class="toggle" />
+    <label for="languages" class="flex justify-between">
+      <a role="button" class="flex align-center">
+        <img src="/notes/svg/translate.svg" class="book-icon" alt="Languages" />
+        中文
+      </a>
+    </label>
+
+    <ul>
+      
+      <li>
+        <a href="/notes/en/">
+          English
+        </a>
+      </li>
+      
+    </ul>
+  </li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-20535e814cb0e9fbc418302e148287db" class="toggle"  />
+    <label for="section-20535e814cb0e9fbc418302e148287db" class="flex justify-between">
+      <a role="button" class="">数学</a>
+    </label>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a8afdc623c7f05ddd9d3323a5f24ab17" class="toggle" checked />
+    <label for="section-a8afdc623c7f05ddd9d3323a5f24ab17" class="flex justify-between">
+      <a role="button" class="">计算机</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-002438c68499130bd3a4d57e8ce70429" class="toggle" checked />
+    <label for="section-002438c68499130bd3a4d57e8ce70429" class="flex justify-between">
+      <a role="button" class="">C programing Language</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/c-progaming-language/%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E8%B7%A8%E5%B9%B3%E5%8F%B0/" class="">可变参数跨的平台</a>
+  
+
+          
+  <ul>
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-9a23960b08277b30e3f513147cd987aa" class="toggle" checked />
+    <label for="section-9a23960b08277b30e3f513147cd987aa" class="flex justify-between">
+      <a role="button" class="">调试技巧</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/c-progaming-language/%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/%E8%BF%BD%E8%B8%AA%E5%A4%B4%E6%96%87%E4%BB%B6%E4%BB%A5%E5%8F%8A%E7%AC%A6%E5%8F%B7%E6%9D%A5%E6%BA%90/" class="active">追踪头文件以及符号来源</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-bbe8481416d37ff148d90e1b55aa9455" class="toggle"  />
+    <label for="section-bbe8481416d37ff148d90e1b55aa9455" class="flex justify-between">
+      <a role="button" class="">Linux系统编程</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/linuxsysprograming/3rd-level/" class="">3rd Level</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/linuxsysprograming/3rd-level/4th-level/" class="">4th Level</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-41373c7ccc5f2851e1dd9b049a0b0eb3" class="toggle"  />
+    <label for="section-41373c7ccc5f2851e1dd9b049a0b0eb3" class="flex justify-between">
+      <a role="button" class="">YSYX</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-6eb6b4496591e877deb7041468b14c5d" class="toggle"  />
+    <label for="section-6eb6b4496591e877deb7041468b14c5d" class="flex justify-between">
+      <a role="button" class="">Ahstarct-machine</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c0759843681831b9d7c760608a706361" class="toggle"  />
+    <label for="section-c0759843681831b9d7c760608a706361" class="flex justify-between">
+      <a href="/notes/docs/cs/ysyx/ahstarct-machine/makefile/" class="">Makefile</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E8%B7%9F%E8%B8%AAmake%E5%91%BD%E4%BB%A4/" class="">跟踪make命令</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/" class="">阅读源码</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-78400b319b513445b7fd190a472208f1" class="toggle"  />
+    <label for="section-78400b319b513445b7fd190a472208f1" class="flex justify-between">
+      <a role="button" class="">NEMU</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b1a01d85a9e747d7b4511f34f2d46cd7" class="toggle"  />
+    <label for="section-b1a01d85a9e747d7b4511f34f2d46cd7" class="flex justify-between">
+      <a href="/notes/docs/cs/ysyx/nemu/makefile/" class="">Makefile</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/ysyx/nemu/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/" class="">基本组织</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-b03eed1fe077c2734a3a82f668e3ae54" class="toggle"  />
+    <label for="section-b03eed1fe077c2734a3a82f668e3ae54" class="flex justify-between">
+      <a role="button" class="">自动机理论</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/automaton/%E4%B8%8A%E6%8E%A8%E8%87%AA%E5%8A%A8%E6%9C%BA/out/" class="">Out</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-98f1713060afc41e5bbfe772a1ea1b60" class="toggle"  />
+    <label for="section-98f1713060afc41e5bbfe772a1ea1b60" class="flex justify-between">
+      <a role="button" class="">计算机体系结构</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/arch/3rd-level/" class="">3rd Level</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/arch/3rd-level/4th-level/" class="">4th Level</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-4e09593fbba0e2dab0f3a45006960669" class="toggle"  />
+    <label for="section-4e09593fbba0e2dab0f3a45006960669" class="flex justify-between">
+      <a role="button" class="">重读CSAPP</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-f2032864562f98b934c96e2b2bfccae4" class="toggle"  />
+    <label for="section-f2032864562f98b934c96e2b2bfccae4" class="flex justify-between">
+      <a href="/notes/docs/cs/csapp/chapter9/" class="">第九章</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter9/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/" class="">基础概念</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3c0400cb5a64f18f82be5ada6a36a304" class="toggle"  />
+    <label for="section-3c0400cb5a64f18f82be5ada6a36a304" class="flex justify-between">
+      <a href="/notes/docs/cs/csapp/chapter2/" class="">第二章</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E8%AF%81%E6%98%8E%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%92%8C%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E4%BD%8D%E7%BA%A7%E8%A1%A8%E7%A4%BA%E4%B8%80%E6%A0%B7/" class="">证明：无符号数和补码加法位级表示一样</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E4%B8%8E%E8%A1%A5%E7%A0%81%E5%8A%A0%E6%B3%95%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0/" class="">无符号数与补码加法硬件实现</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E6%97%A0%E7%AC%A6%E5%8F%B7%E6%95%B0%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/" class="">无符号数减法的定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E8%A1%A5%E7%A0%81%E5%87%8F%E6%B3%95%E7%9A%84%E5%AE%9A%E4%B9%89/" class="">补码减法的定义</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/%E5%8A%A0%E6%B3%95%E9%80%86%E5%85%83%E7%9A%84%E4%BD%8D%E5%90%91%E9%87%8F/" class="">加法逆元的位向量</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/0%E6%89%A9%E5%B1%95%E7%9A%84%E5%8A%A0%E6%B3%95/" class="">0扩展的加法</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/cpp%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E9%99%B7%E9%98%B1/" class="">Cpp类型转换陷阱</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/cs/csapp/chapter2/c%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E9%99%B7%E9%98%B1%E9%99%A4%E6%B3%95/" class="">C类型转换陷阱：除法</a>
+  
+
+        </li>
+      
+    
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-3dc0332fdce4a710073932a6e679f19b" class="toggle"  />
+    <label for="section-3dc0332fdce4a710073932a6e679f19b" class="flex justify-between">
+      <a role="button" class="">Hugo</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/hugo/%E5%8E%BB%E6%8E%89%E5%BA%95%E9%83%A8%E5%B9%BF%E5%91%8A/" class="">去掉Hugo Blox模板底部广告</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/hugo/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%98%AF%E5%A6%82%E4%BD%95%E6%90%AD%E5%BB%BA%E7%9A%84/" class="">我的Page是如何搭建的</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c37cf45590308ffd8c7e52fb18385ee5" class="toggle"  />
+    <label for="section-c37cf45590308ffd8c7e52fb18385ee5" class="flex justify-between">
+      <a role="button" class="">Shortcodes</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/buttons/" class="">Buttons</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/columns/" class="">Columns</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/details/" class="">Details</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/hints/" class="">Hints</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/mermaid/" class="">Mermaid</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/tabs/" class="">Tabs</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/notes/docs/shortcodes/katex/" class="">KaTeX</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/notes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <h3>追踪头文件以及符号来源</h3>
+
+  <label for="toc-control">
+    
+    <img src="/notes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents"></nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown book-article"><h1 id="1-追踪符号来源">
+  1. 追踪符号来源
+  <a class="anchor" href="#1-%e8%bf%bd%e8%b8%aa%e7%ac%a6%e5%8f%b7%e6%9d%a5%e6%ba%90">#</a>
+</h1>
+<hr>
+<p>通过给链接器 <code>ld</code> 传递参数 <code>-y name</code> 或<code>--trace-symbol=name</code> 来追踪对某个符号的引用。要追踪多个符号只能多次使用这个参数。而要想通过 <code>gcc</code> 给链接器传递参数，需要 <code>-Wl,--trace-symbol=name</code></p>
+<blockquote class="book-hint info">
+<p><strong>man ld 原文:</strong><br>
+    <em>Print the name of each linked file in which symbol appears.  This option may be given any number of times.  On many systems it is necessary to prepend an underscore.</em></p>
+<p>    <em>This option is useful when you have an undefined symbol in your link but don&rsquo;t know  where  the  reference  is coming from.</em></p>
+</blockquote>
+<h1 id="2-头文件引用追踪">
+  2. 头文件引用追踪
+  <a class="anchor" href="#2-%e5%a4%b4%e6%96%87%e4%bb%b6%e5%bc%95%e7%94%a8%e8%bf%bd%e8%b8%aa">#</a>
+</h1>
+<hr>
+<p>可以给 <code>gcc</code> 传递 <code>-H</code> 来输出头文件递归包含情况，<code>-E</code> 参数可以预处理输入的 <code>.c</code>文件。 对于大型的项目，可以对单个 <code>.c</code> 源文件进行这两个操作， 但是要注意：<strong>需要完整的包含编译的参数</strong> 。</p>
+<blockquote class="book-hint info">
+<p><strong>man gcc 原文:</strong></p>
+<p>-H</p>
+<p>     <em>Print the name of each header file used, in addition to other normal activities.  Each  name  is  indented  to show  how deep in the #include stack it is.  Precompiled header files are also printed, even if they are found to be invalid; an invalid precompiled header file is printed with &hellip;x and a valid one with &hellip;! .</em></p>
+</blockquote>
+<blockquote class="book-hint info">
+<p><strong>man gcc 原文:</strong><br>
+-E</p>
+<p>    <em>Stop after the preprocessing stage; do not run the compiler proper.  The output is in the form of preprocessed source code, which is sent to the standard output. Input files that don&rsquo;t require preprocessing are ignored.</em></p>
+</blockquote>
+<h1 id="">
+  
+  <a class="anchor" href="#">#</a>
+</h1>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents"></nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
