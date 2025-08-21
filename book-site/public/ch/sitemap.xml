@@ -2,7 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/notes/docs/cs/c-progaming-language/_index---%E5%89%AF%E6%9C%AC/</loc>
+  </url><url>
     <loc>http://localhost:1313/notes/docs/cs/c-progaming-language/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/c-progaming-language/%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E8%B7%A8%E5%B9%B3%E5%8F%B0/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/math/</loc>
   </url><url>
@@ -23,6 +27,8 @@
     <loc>http://localhost:1313/notes/docs/cs/ysyx/nemu/makefile/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/ysyx/nemu/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/ysyx/nemu/pa2/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/ysyx/</loc>
   </url><url>
@@ -69,6 +75,10 @@
     <loc>http://localhost:1313/notes/docs/cs/ysyx/ahstarct-machine/makefile/%E9%98%85%E8%AF%BB%E6%BA%90%E7%A0%81/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/cs/ysyx/nemu/makefile/%E5%9F%BA%E6%9C%AC%E7%BB%84%E7%BB%87/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/ysyx/nemu/pa2/trace/</loc>
+  </url><url>
+    <loc>http://localhost:1313/notes/docs/cs/ysyx/nemu/pa2/%E5%88%A4%E6%96%ADcall%E4%B8%8Eret/</loc>
   </url><url>
     <loc>http://localhost:1313/notes/docs/math/hidden/</loc>
   </url><url>
