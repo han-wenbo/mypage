@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>调试技巧 on Wenbo&#39;s Study Notes</title>
+    <link>http://localhost:1313/notes/docs/cs/c-progaming-language/%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/</link>
+    <description>Recent content in 调试技巧 on Wenbo&#39;s Study Notes</description>
+    <generator>Hugo</generator>
+    <language>ch</language>
+    <atom:link href="http://localhost:1313/notes/docs/cs/c-progaming-language/%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>http://localhost:1313/notes/docs/cs/c-progaming-language/%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/%E8%BF%BD%E8%B8%AA%E5%A4%B4%E6%96%87%E4%BB%B6%E4%BB%A5%E5%8F%8A%E7%AC%A6%E5%8F%B7%E6%9D%A5%E6%BA%90/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/notes/docs/cs/c-progaming-language/%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7/%E8%BF%BD%E8%B8%AA%E5%A4%B4%E6%96%87%E4%BB%B6%E4%BB%A5%E5%8F%8A%E7%AC%A6%E5%8F%B7%E6%9D%A5%E6%BA%90/</guid>
+      <description>&lt;h1 id=&#34;1-追踪符号来源&#34;&gt;&#xD;&#xA;  1. 追踪符号来源&#xD;&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#1-%e8%bf%bd%e8%b8%aa%e7%ac%a6%e5%8f%b7%e6%9d%a5%e6%ba%90&#34;&gt;#&lt;/a&gt;&#xD;&#xA;&lt;/h1&gt;&#xD;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;通过给链接器 &lt;code&gt;ld&lt;/code&gt; 传递参数 &lt;code&gt;-y name&lt;/code&gt; 或&lt;code&gt;--trace-symbol=name&lt;/code&gt; 来追踪对某个符号的引用。要追踪多个符号只能多次使用这个参数。而要想通过 &lt;code&gt;gcc&lt;/code&gt; 给链接器传递参数，需要 &lt;code&gt;-Wl,--trace-symbol=name&lt;/code&gt;&lt;/p&gt;&#xA;&lt;blockquote class=&#34;book-hint info&#34;&gt;&#xD;&#xA;&lt;p&gt;&lt;strong&gt;man ld 原文:&lt;/strong&gt;&lt;br&gt;&#xA;    &lt;em&gt;Print the name of each linked file in which symbol appears.  This option may be given any number of times.  On many systems it is necessary to prepend an underscore.&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;    &lt;em&gt;This option is useful when you have an undefined symbol in your link but don&amp;rsquo;t know  where  the  reference  is coming from.&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
